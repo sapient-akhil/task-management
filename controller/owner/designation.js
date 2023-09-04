@@ -7,13 +7,13 @@ module.exports = {
             const req_data = req.body;
 
             const designation = await designationServices.findDesignation(req_data.designation);
-            if (designation) throw createError.Conflict("this designation already define.")
+            if (designation) throw createError.Conflict("This designation is already exists.")
 
             const designationData = await designationServices.createDesignationData(req_data)
-
+            
             res.status(201).send({
                 success: true,
-                message: "designation is loaded..",
+                message: "Designation is successfully created.",
                 data: designationData
             })
         } catch (error) {
@@ -27,7 +27,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "get all designationData",
+                message: "All designationData is fetch successfully.",
                 data: alldesignationData
             })
         } catch (error) {
@@ -44,7 +44,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "get one designationData",
+                message: "One designationData is fetch successfully.",
                 data: designationData
             })
         } catch (error) {
@@ -58,13 +58,14 @@ module.exports = {
             const req_data = req.body
 
             const designation = await designationServices.findDesignation(req_data.designation);
-            if (designation) throw createError.Conflict("this designation already define.")
+            if (designation) throw createError.Conflict("This designation already exists.")
 
             const designationData = await designationServices.updateDesignation(id, req_data)
+            if (!designationData) throw createError.NotFound("The designationData with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).json({
                 success: true,
-                message: "designationData is loaded...",
+                message: "DesignationData is update successfully.",
                 data: designationData
             });
         } catch (error) {
@@ -81,7 +82,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "designationData delete successfully",
+                message: "DesignationData is delete successfully",
                 data: designationData
             })
         } catch (error) {

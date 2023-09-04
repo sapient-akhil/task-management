@@ -40,5 +40,13 @@ router.get("/technology_skills/:id", Validators.forParams(Schema.params), techno
 router.delete("/technology_skills/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), technology_skills_controller.delete_technology_skills)
 router.put("/technology_skills/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), Validators.forReqBody(Schema.technology_skills_Schema), technology_skills_controller.update_technology_skills)
 
+// project_category routes
+const project_category_controller = require("../controller/owner/project_category")
+
+router.post("/project_category", verifyAccessTokenforOwner, Validators.forReqBody(Schema.technology_skills_Schema), project_category_controller.create_project_category)
+router.get("/project_category", project_category_controller.all_project_category)
+router.get("/project_category/:id", Validators.forParams(Schema.params), project_category_controller.one_project_category)
+router.delete("/project_category/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), project_category_controller.delete_project_category)
+router.put("/project_category/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), Validators.forReqBody(Schema.technology_skills_Schema), project_category_controller.update_project_category)
 
 module.exports = router;

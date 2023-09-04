@@ -14,11 +14,11 @@ module.exports = {
             const search = req.query.search
 
             const users = await usersServices.findAllData(page, pageSize, search)
-            if (!users) throw createError.NotFound("The users with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!users) throw createError.NotFound("No any userData is found.")
 
             res.status(201).send({
                 success: true,
-                message: "get all users",
+                message: "All userData is fetch successfully.",
                 data: users,
                 meta: {
                     pagination: {
@@ -40,7 +40,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "get one users",
+                message: "One userData is fetch successfully.",
                 data: usersData
             })
         } catch (error) {
@@ -67,7 +67,7 @@ module.exports = {
 
                 res.status(201).json({
                     success: true,
-                    message: "users is loaded...",
+                    message: "User is created successfully.",
                     data: usersData
                 });
             } else {
@@ -99,10 +99,11 @@ module.exports = {
 
             if (existData.status) {
                 const usersData = await usersServices.updateUsersData(id, req_data)
+                if (!usersData) throw createError.NotFound("The users with the provided ID could not be found. Please ensure the ID is correct and try again")
 
                 res.status(201).json({
                     success: true,
-                    message: "users is loaded...",
+                    message: "UserData is update successfully.",
                     data: usersData
                 });
             } else {
@@ -125,7 +126,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "users delete successfully",
+                message: "User is delete successfully",
                 data: users
             })
         } catch (error) {

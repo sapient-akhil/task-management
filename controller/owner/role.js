@@ -13,7 +13,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "role is loaded..",
+                message: "Role is created successfully.",
                 data: roleData
             })
         } catch (error) {
@@ -27,7 +27,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "get all roleData",
+                message: "All roleData is fetch successfully.",
                 data: allRoleData
             })
         } catch (error) {
