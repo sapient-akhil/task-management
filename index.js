@@ -15,8 +15,8 @@ app.all("/", (req, res) => {
 });
 
 app.use("/api/owner", require("./routes/owner.routes"));
-app.use("/api/employee", require("./routes/employee.routes"));
-app.use("/api/common", require("./routes/common.routes"));
+app.use("/api/users", require("./routes/users.routes"));
+app.use("/api/auth", require("./routes/auth.routes")); //this is used only for login
 
 app.use(async (req, res, next) => {
     const err = createError.BadRequest("URL not found")

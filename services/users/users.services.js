@@ -1,11 +1,11 @@
-const employeeModel = require("./employee.model")
-const projectionFields = { createdAt: 0, updatedAt: 0, __v: 0, _id: 0 }
+const usersModel = require("./users.model")
+const projectionFields = { __v: 0 }
 
 module.exports = {
     findbyEmail: async (email) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await employeeModel.findOne(
+                await usersModel.findOne(
                     { email },
                     projectionFields
                 )
@@ -18,7 +18,7 @@ module.exports = {
     findbyphoneNumber: async (phoneNumber) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await employeeModel.findOne(
+                await usersModel.findOne(
                     { phoneNumber },
                     projectionFields
                 )
@@ -28,7 +28,7 @@ module.exports = {
     findAllData: async (page, pageSize, search) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await employeeModel.find(
+                await usersModel.find(
                     search ? {
                         active: true,
                         $or:
@@ -49,52 +49,66 @@ module.exports = {
     emailphoneNumber: async (email, phoneNumber) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await employeeModel.findOne(
+                await usersModel.findOne(
                     { email, phoneNumber },
                     projectionFields
                 )
             );
         });
     },
-    existData: async (emergencyContact, aadharCard, bankAccountNumber, ifscCode, panCard, username) => {
+    existData: async (id, email, phoneNumber, emergencyContact, aadharCard, bankAccountNumber, ifscCode, panCard, username) => {
         return new Promise(async (resolve) => {
-
-            var existemergencyContact = await employeeModel.countDocuments({ emergencyContact })
+            const existeEmail = await usersModel.countDocuments({ _id: { $nin: [id] }, email })
+            console.log("existeEmail", existeEmail)
+            if (existeEmail) {
+                return resolve({
+                    status: false,
+                    message: "email already exist"
+                });
+            };
+            const existphoneNumber = await usersModel.countDocuments({ _id: { $nin: [id] }, phoneNumber })
+            if (existphoneNumber) {
+                return resolve({
+                    status: false,
+                    message: "phoneNumber already exist"
+                });
+            };
+            const existemergencyContact = await usersModel.countDocuments({ _id: { $nin: [id] }, emergencyContact })
             if (existemergencyContact) {
                 return resolve({
                     status: false,
                     message: "emergencyContact already exist"
                 });
             };
-            var existaadharCard = await employeeModel.countDocuments({ aadharCard })
+            const existaadharCard = await usersModel.countDocuments({ _id: { $nin: [id] }, aadharCard })
             if (existaadharCard) {
                 return resolve({
                     status: false,
                     message: "aadharCard already exist"
                 });
             };
-            var existebankAccountNumber = await employeeModel.countDocuments({ bankAccountNumber })
+            const existebankAccountNumber = await usersModel.countDocuments({ _id: { $nin: [id] }, bankAccountNumber })
             if (existebankAccountNumber) {
                 return resolve({
                     status: false,
                     message: "bankAccountNumber already exist"
                 });
             };
-            var existeifscCode = await employeeModel.countDocuments({ ifscCode })
+            const existeifscCode = await usersModel.countDocuments({ _id: { $nin: [id] }, ifscCode })
             if (existeifscCode) {
                 return resolve({
                     status: false,
                     message: "ifscCode already exist"
                 });
             };
-            var existepanCard = await employeeModel.countDocuments({ panCard })
+            const existepanCard = await usersModel.countDocuments({ _id: { $nin: [id] }, panCard })
             if (existepanCard) {
                 return resolve({
                     status: false,
                     message: "panCard already exist"
                 });
             };
-            var existeusername = await employeeModel.countDocuments({ username })
+            const existeusername = await usersModel.countDocuments({ _id: { $nin: [id] }, username })
             if (existeusername) {
                 return resolve({
                     status: false,
@@ -106,58 +120,53 @@ module.exports = {
                     status: true,
                     message: "all not exist"
                 });
-            };
+            }
         });
     },
-    findByEmployeeId: async (_id) => {
+    findByUsersId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await employeeModel.findOne(
+                await usersModel.findOne(
                     { _id },
                     projectionFields
                 )
-                .populate("designation", projectionFields)
+                    .populate("designation", projectionFields)
                     .populate("user_role", projectionFields)
-                    .populate("technology_skills", projectionFields) 
+                    .populate("technology_skills", projectionFields)
             );
         });
     },
-    createUpdateEmployeeData: async (email, phoneNumber, req_data) => {
+    createUsersData: async (req_data) => {
         return new Promise(async (resolve) => {
-            await employeeModel.updateOne({ email, phoneNumber }, { ...req_data }, { upsert: true });
+            await usersModel.insertMany({ ...req_data });
             return resolve(
-                await employeeModel.find(
-                    { email, phoneNumber },
+                await usersModel.find(
+                    { ...req_data },
                     projectionFields
                 )
             );
         });
     },
-    deleteEmployeeData: async (_id) => {
+    updateUsersData: async (_id, req_data) => {
         return new Promise(async (resolve) => {
-            await employeeModel.updateOne({ _id }, { active: false }, { new: true });
+            await usersModel.findByIdAndUpdate({ _id }, { ...req_data }, { new: true });
             return resolve(
-                await employeeModel.findOne(
+                await usersModel.findOne(
                     { _id },
                     projectionFields
                 )
             );
         });
     },
-    // findSuperAdminExistOrNOt: async () => {
-    //     return new Promise(async (resolve) => {
-    //         return resolve(await employeeModel.countDocuments({ role: "superadmin" }));
-    //     });
-    // },
-    // createUpdateSuperAdmin: async (email, phoneNumber, req_data) => {
-    //     return new Promise(async (resolve) => {
-    //         await employeeModel.updateOne({ "contactdetails.email": email, "contactdetails.phoneNumber": phoneNumber }, { role: "superadmin", ...req_data }, { upsert: true });
-    //         return resolve(
-    //             await employeeModel.find(
-    //                 { "contactdetails.email": email, "contactdetails.phoneNumber": phoneNumber },
-    //                 projectionFields
-    //             )
-    //         );
-    //     });
-    // }
+    deleteUsersData: async (_id) => {
+        return new Promise(async (resolve) => {
+            await usersModel.updateOne({ _id }, { active: false }, { new: true });
+            return resolve(
+                await usersModel.findOne(
+                    { _id },
+                    projectionFields
+                )
+            );
+        });
+    },
 }

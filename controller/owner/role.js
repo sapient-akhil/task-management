@@ -2,14 +2,14 @@ const createError = require("http-errors")
 const { roleServices } = require("../../services/index")
 
 module.exports = {
-    createUpdateRole: async (req, res, next) => {
+    createRole: async (req, res, next) => {
         try {
             const req_data = req.body;
 
             const role = await roleServices.findRole(req_data.role);
             if (role) throw createError.Conflict("this role already define.")
 
-            const roleData = await roleServices.createUpdateRole(req_data.role, req_data)
+            const roleData = await roleServices.createRole(req_data)
 
             res.status(201).send({
                 success: true,
@@ -49,6 +49,26 @@ module.exports = {
             })
         } catch (error) {
             next(error)
+        }
+    },
+    updateRole: async (req, res, next) => {
+        try {
+
+            const id = req.params.id
+            const req_data = req.body
+
+            const role = await roleServices.findRole(req_data.role);
+            if (role) throw createError.Conflict("this role already define.")
+
+            const roleData = await roleServices.updateRole(id, req_data)
+
+            res.status(201).json({
+                success: true,
+                message: "roleData is loaded...",
+                data: roleData
+            });
+        } catch (error) {
+            next(error);
         }
     },
     deleteRoleData: async (req, res, next) => {

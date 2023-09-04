@@ -2,14 +2,14 @@ const createError = require("http-errors")
 const { designationServices } = require("../../services/index")
 
 module.exports = {
-    createUpdateDesignation: async (req, res, next) => {
+    createDesignation: async (req, res, next) => {
         try {
             const req_data = req.body;
 
             const designation = await designationServices.findDesignation(req_data.designation);
             if (designation) throw createError.Conflict("this designation already define.")
 
-            const designationData = await designationServices.createUpdateDesignation(req_data.designation, req_data)
+            const designationData = await designationServices.createDesignationData(req_data)
 
             res.status(201).send({
                 success: true,
@@ -51,7 +51,27 @@ module.exports = {
             next(error)
         }
     },
-    deletedesignationDesignation: async (req, res, next) => {
+    updateDesignation: async (req, res, next) => {
+        try {
+
+            const id = req.params.id
+            const req_data = req.body
+
+            const designation = await designationServices.findDesignation(req_data.designation);
+            if (designation) throw createError.Conflict("this designation already define.")
+
+            const designationData = await designationServices.updateDesignation(id, req_data)
+
+            res.status(201).json({
+                success: true,
+                message: "designationData is loaded...",
+                data: designationData
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+    deleteDesignation: async (req, res, next) => {
         try {
 
             const { id } = req.params

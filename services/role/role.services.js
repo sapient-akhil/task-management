@@ -1,5 +1,5 @@
 const roleModel = require("./role.model")
-const projectionFields = { createdAt: 0, updatedAt: 0, __v: 0, _id: 0 }
+const projectionFields = { __v: 0 }
 
 module.exports = {
     findRole: async (role) => {
@@ -29,12 +29,23 @@ module.exports = {
             );
         });
     },
-    createUpdateRole: async (role, req_data) => {
+    createRole: async (req_data) => {
         return new Promise(async (resolve) => {
-            await roleModel.updateOne({ role }, { ...req_data }, { upsert: true });
+            await roleModel.insertMany({ ...req_data });
             return resolve(
                 await roleModel.find(
-                    { role },
+                    { ...req_data },
+                    projectionFields
+                )
+            );
+        });
+    },
+    updateRole: async (_id, req_data) => {
+        return new Promise(async (resolve) => {
+            await roleModel.findByIdAndUpdate({ _id }, { ...req_data });
+            return resolve(
+                await roleModel.find(
+                    { _id },
                     projectionFields
                 )
             );

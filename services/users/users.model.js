@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const employeeModel = new mongoose.Schema({
+const usersModel = new mongoose.Schema({
     username: {
         type: String,
         required: [true, "username are require"]
@@ -13,7 +13,7 @@ const employeeModel = new mongoose.Schema({
         type: String,
         required: [true, "name are require"]
     },
-    password:{
+    password: {
         type: String,
         required: [true, "password are require"]
     },
@@ -89,15 +89,15 @@ const employeeModel = new mongoose.Schema({
     },
     designation: {
         type: mongoose.Types.ObjectId,
-        ref:"designation"
+        ref: "designation"
     },
     user_role: {
         type: mongoose.Types.ObjectId,
-        ref:"role"
+        ref: "role"
     },
     technology_skills: [{
         type: mongoose.Types.ObjectId,
-        ref:"technology_skills"
+        ref: "technology_skills"
     }],
     confirmed: {
         type: String,
@@ -113,4 +113,4 @@ const employeeModel = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model("employee", employeeModel)
+module.exports = mongoose.model("user", usersModel)

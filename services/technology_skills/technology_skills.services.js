@@ -1,5 +1,5 @@
 const technology_skills_model = require("./technology_skills.model")
-const projectionFields = { createdAt: 0, updatedAt: 0, __v: 0, _id: 0 }
+const projectionFields = { __v: 0 }
 
 module.exports = {
     find_technology_skills: async (technology_skills) => {
@@ -29,12 +29,23 @@ module.exports = {
             );
         });
     },
-    create_update_technology_skills: async (technology_skills, req_data) => {
+    create_technology_skills: async (req_data) => {
         return new Promise(async (resolve) => {
-            await technology_skills_model.updateOne({ technology_skills }, { ...req_data }, { upsert: true });
+            await technology_skills_model.insertMany({ ...req_data });
             return resolve(
                 await technology_skills_model.find(
-                    { technology_skills },
+                    { ...req_data },
+                    projectionFields
+                )
+            );
+        });
+    },
+    update_technology_skills: async (_id, req_data) => {
+        return new Promise(async (resolve) => {
+            await technology_skills_model.findByIdAndUpdate({ _id }, { ...req_data });
+            return resolve(
+                await technology_skills_model.find(
+                    { _id },
                     projectionFields
                 )
             );

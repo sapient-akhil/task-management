@@ -1,16 +1,15 @@
 const path = require('path');
 const fs = require('fs');
 const createError = require('http-errors');
-// require("../../")
 
-// // THIS IS SUPERADMIN, ADMIN AND TRAINER PROFILE PHOTO UPLOAD AND UPDATE TIME OLD PHOTO DELETE FUNCTIO.
+// THIS IS SUPERADMIN, ADMIN AND TRAINER PROFILE PHOTO UPLOAD AND UPDATE TIME OLD PHOTO DELETE FUNCTIO.
 
-function uploadProfilePhoto(req, res, roleData) {
+function uploadProfilePhoto(req, res, profilePhoto) {
 
     if (req.files && req.files.profilePhoto) {
         let holderArray = [];
-        if (roleData?.profilePhoto) {
-            roleData.profilePhoto.forEach((imagePath) => {
+        if (profilePhoto) {
+            profilePhoto.forEach((imagePath) => {
                 fs.unlink(imagePath, (err) => {
                     if (err) {
                         console.error(`Error deleting ${imagePath}:`, err);

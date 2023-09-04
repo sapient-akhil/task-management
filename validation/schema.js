@@ -2,7 +2,7 @@ const joi = require("joi");
 const validate = require("../validation/joivalidation")
 
 module.exports = {
-    employeeSchema: joi.object().keys({
+    usersSchema: joi.object().keys({
         username: validate.reqstring,
         email: validate.email,
         name: validate.reqstring,
@@ -27,15 +27,16 @@ module.exports = {
         designation: validate.id,
         user_role: validate.id,
         technology_skills: validate.string,
-        password: validate.password
+        password: validate.password,
+        profilePhoto:validate.string
     }),
-    role: joi.object().keys({
+    roleSchema: joi.object().keys({
         role: validate.reqstring
     }),
-    designation: joi.object().keys({
+    designationSchema: joi.object().keys({
         designation: validate.reqstring
     }),
-    technology_skills: joi.object().keys({
+    technology_skills_Schema: joi.object().keys({
         technology_skills: validate.reqstring
     }),
     params: joi.object().keys({
@@ -48,7 +49,7 @@ module.exports = {
     //     startDate:validate.date,
     //     endDate:validate.date
     // }),
-    employeeLogin: joi.object().keys({
+    loginSchema: joi.object().keys({
         password: validate.password,
         email: validate.email
     }),

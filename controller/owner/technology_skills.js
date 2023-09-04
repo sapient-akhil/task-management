@@ -2,14 +2,14 @@ const createError = require("http-errors")
 const { technology_skills_services } = require("../../services/index")
 
 module.exports = {
-    create_update_technology_skills: async (req, res, next) => {
+    create_technology_skills: async (req, res, next) => {
         try {
             const req_data = req.body;
 
             const technology_skill = await technology_skills_services.find_technology_skills(req_data.technology_skills);
             if (technology_skill) throw createError.Conflict("technology_skills already define.")
 
-            const technology_skillsData = await technology_skills_services.create_update_technology_skills(req_data.technology_skills, req_data)
+            const technology_skillsData = await technology_skills_services.create_technology_skills(req_data)
 
             res.status(201).send({
                 success: true,
@@ -45,6 +45,25 @@ module.exports = {
             res.status(201).send({
                 success: true,
                 message: "get one technology_skills_data",
+                data: technology_skillsData
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    update_technology_skills: async (req, res, next) => {
+        try {
+            const req_data = req.body;
+            const id = req.params.id
+
+            const technology_skill = await technology_skills_services.find_technology_skills(req_data.technology_skills);
+            if (technology_skill) throw createError.Conflict("technology_skills already define.")
+
+            const technology_skillsData = await technology_skills_services.update_technology_skills(id,req_data)
+
+            res.status(201).send({
+                success: true,
+                message: "technology_skills is loaded..",
                 data: technology_skillsData
             })
         } catch (error) {
