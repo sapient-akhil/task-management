@@ -27,7 +27,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "All roleData is fetch successfully.",
+                message: "All role data is fetch successfully.",
                 data: allRoleData
             })
         } catch (error) {
@@ -44,7 +44,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "get one roleData",
+                message: "One role data is fetch successfully.",
                 data: roleData
             })
         } catch (error) {
@@ -64,7 +64,7 @@ module.exports = {
 
             res.status(201).json({
                 success: true,
-                message: "roleData is loaded...",
+                message: "role data is update successfully.",
                 data: roleData
             });
         } catch (error) {
@@ -81,7 +81,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "roleData delete successfully",
+                message: "roleData is delete successfully",
                 data: roleData
             })
         } catch (error) {

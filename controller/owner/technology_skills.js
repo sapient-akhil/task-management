@@ -9,12 +9,12 @@ module.exports = {
             const technology_skill = await technology_skills_services.find_technology_skills(req_data.technology_skills);
             if (technology_skill) throw createError.Conflict("technology_skills already define.")
 
-            const technology_skillsData = await technology_skills_services.create_technology_skills(req_data)
+            const technology_skills_data = await technology_skills_services.create_technology_skills(req_data)
 
             res.status(201).send({
                 success: true,
-                message: "technology_skills is loaded..",
-                data: technology_skillsData
+                message: "technology_skill is created successfully.",
+                data: technology_skills_data
             })
         } catch (error) {
             next(error)
@@ -23,12 +23,12 @@ module.exports = {
     all_technology_skills: async (req, res, next) => {
         try {
 
-            const alltechnology_skillsData = await technology_skills_services.find_all_technology_skills()
+            const technology_skills = await technology_skills_services.find_all_technology_skills()
 
             res.status(201).send({
                 success: true,
-                message: "get all technology_skills_data",
-                data: alltechnology_skillsData
+                message: "All technology_skills is fetch successfully.",
+                data: technology_skills
             })
         } catch (error) {
             next(error)
@@ -39,12 +39,12 @@ module.exports = {
 
             const { id } = req.params
 
-            const technology_skillsData = await technology_skills_services.find_by_technology_skills_id(id)
-            if (!technology_skillsData) throw createError.NotFound("The technology_skillsData with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const technology_skills = await technology_skills_services.find_by_technology_skills_id(id)
+            if (!technology_skills) throw createError.NotFound("The technology_skill with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "get one technology_skills_data",
+                message: "One technology_skill is fetch successfully.",
                 data: technology_skillsData
             })
         } catch (error) {
@@ -59,12 +59,12 @@ module.exports = {
             const technology_skill = await technology_skills_services.find_technology_skills(req_data.technology_skills);
             if (technology_skill) throw createError.Conflict("technology_skills already define.")
 
-            const technology_skillsData = await technology_skills_services.update_technology_skills(id,req_data)
+            const technology_skills_data = await technology_skills_services.update_technology_skills(id, req_data)
 
             res.status(201).send({
                 success: true,
-                message: "technology_skills is loaded..",
-                data: technology_skillsData
+                message: "technology_skill is update successfully.",
+                data: technology_skills_data
             })
         } catch (error) {
             next(error)
@@ -75,13 +75,13 @@ module.exports = {
 
             const { id } = req.params
 
-            const technology_skillsData = await technology_skills_services.delete_technology_skills(id)
-            if (!technology_skillsData) throw createError.NotFound("The technology_skillsData with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const technology_skill = await technology_skills_services.delete_technology_skills(id)
+            if (!technology_skill) throw createError.NotFound("The technology_skill with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "technology_skills_data delete successfully",
-                data: technology_skillsData
+                message: "technology_skill is delete successfully",
+                data: technology_skill
             })
         } catch (error) {
             next(error)

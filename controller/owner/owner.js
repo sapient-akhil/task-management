@@ -9,7 +9,7 @@ module.exports = {
         try {
             const page = parseInt(req.query.page || 1);
             const pageSize = 2
-            const total = await usersModel.countDocuments();
+            const total = await usersServices.countUsers();
             const pageCount = Math.ceil(total / pageSize)
             const search = req.query.search
 
@@ -103,7 +103,7 @@ module.exports = {
 
                 res.status(201).json({
                     success: true,
-                    message: "UserData is update successfully.",
+                    message: "User is update successfully.",
                     data: usersData
                 });
             } else {

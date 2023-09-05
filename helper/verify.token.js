@@ -21,7 +21,7 @@ module.exports = {
         })
     },
 
-    verifyAccessTokenforUsers: (req, res, next) => {
+    verifyAccessTokenforUsersAdmin: (req, res, next) => {
         if (!req.headers['authorization']) return next(createError.Unauthorized())
         const token = req.headers['authorization']
 
@@ -29,8 +29,8 @@ module.exports = {
             if (err) {
                 return next(createError.Unauthorized(err.message));
             }
-            if (payload.user_role.role !== 'users') {
-                const message = 'Only users can access this route';
+            if (payload.user_role.role !== 'users' || payload.user_role.role !== 'admin') {
+                const message = 'permission denied';
                 return next(createError.Unauthorized(message));
             }
             req.payload = payload;

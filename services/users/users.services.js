@@ -2,6 +2,13 @@ const usersModel = require("./users.model")
 const projectionFields = { __v: 0 }
 
 module.exports = {
+    countUsers: async () => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await usersModel.countDocuments()
+            )
+        });
+    },
     findbyEmail: async (email) => {
         return new Promise(async (resolve) => {
             return resolve(

@@ -2,20 +2,30 @@ const project_category_model = require("./project_category.model")
 const projectionFields = { __v: 0 }
 
 module.exports = {
-    find_project_category: async (project_category) => {
+    count_project_category: async () => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await project_category_model.countDocuments()
+            )
+        });
+    },
+    find_project_category: async (name) => {
         return new Promise(async (resolve) => {
             return resolve(
                 await project_category_model.findOne(
-                    { project_category },
+                    { name },
                     projectionFields
                 )
             )
         });
     },
-    find_all_project_category: async () => {
+    find_all_project_category: async (page, pageSize, search) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await project_category_model.find({}, projectionFields)
+                await project_category_model.find(
+                    search ? { active: true, name: { $regex: search, $options: 'i' } } : { active: true }, projectionFields)
+                    .limit(pageSize * 1)
+                    .skip((page - 1) * pageSize)
             )
         });
     },

@@ -1,5 +1,5 @@
 const joi = require("joi");
-const validate = require("../validation/joivalidation")
+const validate = require("./joivalidation")
 
 module.exports = {
     usersSchema: joi.object().keys({
@@ -7,10 +7,10 @@ module.exports = {
         email: validate.email,
         name: validate.reqstring,
         address: validate.reqstring,
-        birthDate: validate.date,
-        joinDate: validate.date,
-        probationDate: validate.date,
-        appraisalDate: validate.date,
+        birthDate: validate.reqDate,
+        joinDate: validate.reqDate,
+        probationDate: validate.reqDate,
+        appraisalDate: validate.reqDate,
         phoneNumber: validate.reqstring,
         emergencyContact: validate.reqstring,
         aadharCard: validate.number,
@@ -28,7 +28,7 @@ module.exports = {
         user_role: validate.id,
         technology_skills: validate.string,
         password: validate.password,
-        profilePhoto:validate.string
+        profilePhoto: validate.string
     }),
     roleSchema: joi.object().keys({
         role: validate.reqstring
@@ -42,9 +42,22 @@ module.exports = {
     params: joi.object().keys({
         id: validate.reqId
     }),
-    // bodyPartId: joi.object().keys({
-    //     bodyPartId: validate.reqId
-    // }), 
+    project_category_Schema: joi.object().keys({
+        name: validate.reqstring
+    }),
+    projectsSchema: joi.object().keys({
+        name: validate.reqstring,
+        startDate: validate.reqDate,
+        description: validate.reqstring,
+        technology_skills: validate.reqstring,
+    }),
+    assigned_project_schema: joi.object().keys({
+        project: validate.reqstring,
+        user: validate.reqstring,
+        startDate: validate.date,
+        endDate: validate.date,
+        project_category: validate.reqstring,
+    }),
     // bodyPartByDate: joi.object().keys({
     //     startDate:validate.date,
     //     endDate:validate.date

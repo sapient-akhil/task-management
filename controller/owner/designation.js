@@ -82,7 +82,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "DesignationData is delete successfully",
+                message: "DesignationData is delete successfully.",
                 data: designationData
             })
         } catch (error) {
