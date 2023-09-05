@@ -2,16 +2,7 @@ const roleModel = require("./role.model")
 const projectionFields = { __v: 0 }
 
 module.exports = {
-    findRole: async (role) => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await roleModel.findOne(
-                    { role },
-                    projectionFields
-                )
-            )
-        });
-    },
+
     findAllRole: async () => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -27,6 +18,16 @@ module.exports = {
                     projectionFields
                 )
             );
+        });
+    },
+    findRole: async (role) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await roleModel.findOne(
+                    { role },
+                    projectionFields
+                )
+            )
         });
     },
     createRole: async (req_data) => {

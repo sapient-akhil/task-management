@@ -20,8 +20,8 @@ module.exports = {
                 email: users.email,
                 password: users.password
             };
-
-            const jwt = Jwt.sign(payload, JWTSecretKey, { expiresIn: 600 })
+            // console.log("payload", payload)
+            const jwt = Jwt.sign(payload, JWTSecretKey, { expiresIn: 86400 })
             res.status(201).send({
                 jwt,
                 user: users,

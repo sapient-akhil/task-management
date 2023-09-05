@@ -2,6 +2,27 @@ const usersModel = require("./users.model")
 const projectionFields = { __v: 0 }
 
 module.exports = {
+    findAllData: async (page, pageSize, search) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await usersModel.find(
+                    search ? {
+                        active: true,
+                        $or:
+                            [
+                                { name: { $regex: search, $options: 'i' } },
+                                { email: { $regex: search, $options: 'i' } },
+                                { phoneNumber: { $regex: search, $options: 'i' } }
+                            ]
+                    } : { active: true }, projectionFields)
+                    .populate("designation", projectionFields)
+                    .populate("user_role", projectionFields)
+                    .populate("technology_skills", projectionFields)
+                    .limit(pageSize * 1)
+                    .skip((page - 1) * pageSize)
+            )
+        });
+    },
     countUsers: async () => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -27,37 +48,6 @@ module.exports = {
             return resolve(
                 await usersModel.findOne(
                     { phoneNumber },
-                    projectionFields
-                )
-            );
-        });
-    },
-    findAllData: async (page, pageSize, search) => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await usersModel.find(
-                    search ? {
-                        active: true,
-                        $or:
-                            [
-                                { name: { $regex: search, $options: 'i' } },
-                                { email: { $regex: search, $options: 'i' } },
-                                { phoneNumber: { $regex: search, $options: 'i' } }
-                            ]
-                    } : { active: true }, projectionFields)
-                    .populate("designation", projectionFields)
-                    .populate("user_role", projectionFields)
-                    .populate("technology_skills", projectionFields)
-                    .limit(pageSize * 1)
-                    .skip((page - 1) * pageSize)
-            )
-        });
-    },
-    emailphoneNumber: async (email, phoneNumber) => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await usersModel.findOne(
-                    { email, phoneNumber },
                     projectionFields
                 )
             );

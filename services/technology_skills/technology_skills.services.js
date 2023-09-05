@@ -2,16 +2,6 @@ const technology_skills_model = require("./technology_skills.model")
 const projectionFields = { __v: 0 }
 
 module.exports = {
-    find_technology_skills: async (technology_skills) => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await technology_skills_model.findOne(
-                    { technology_skills },
-                    projectionFields
-                )
-            )
-        });
-    },
     find_all_technology_skills: async () => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -27,6 +17,16 @@ module.exports = {
                     projectionFields
                 )
             );
+        });
+    },
+    find_technology_skills: async (technology_skills) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await technology_skills_model.findOne(
+                    { technology_skills },
+                    projectionFields
+                )
+            )
         });
     },
     create_technology_skills: async (req_data) => {

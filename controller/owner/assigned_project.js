@@ -72,6 +72,7 @@ module.exports = {
             req_data.project_category = await JSON.parse(req_data.project_category);
 
             const assigned_project = await assigned_project_services.update_assigned_project(id, req_data)
+            if (!assigned_project) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,

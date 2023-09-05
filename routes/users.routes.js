@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Schema = require("../helper/schema")
 const Validators = require("../helper/validation")
-const { verifyAccessTokenforUsersAdmin } = require("../helper/verify.token")
+const { verifyAccessTokenforUsersAdmin,verifyAccessTokenforUser } = require("../helper/verify.token")
 
 //admin routes
 const usersController = require("../controller/users/users")
@@ -45,6 +45,13 @@ const assigned_project_controller = require("../controller/users/assigned_projec
 
 router.get("/assigned_projects", verifyAccessTokenforUsersAdmin, assigned_project_controller.all_assigned_project)
 router.get("/assigned_projects/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), assigned_project_controller.one_assigned_project)
+
+// daily_task routes
+const daily_task_controller = require("../controller/users/daily_task")
+
+router.post("/daily_tasks", verifyAccessTokenforUser, Validators.forReqBody(Schema.daily_task_schema), daily_task_controller.create_daily_task)
+router.get("/daily_tasks", verifyAccessTokenforUsersAdmin, daily_task_controller.all_daily_task)
+router.get("/daily_tasks/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), daily_task_controller.one_daily_task)
 
 module.exports = router;
 

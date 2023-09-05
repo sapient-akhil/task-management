@@ -2,16 +2,6 @@ const designationModel = require("./designation.model")
 const projectionFields = { __v: 0 }
 
 module.exports = {
-    findDesignation: async (designation) => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await designationModel.findOne(
-                    { designation },
-                    projectionFields
-                )
-            )
-        });
-    },
     findAllDesignation: async () => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -27,6 +17,16 @@ module.exports = {
                     projectionFields
                 )
             );
+        });
+    },
+    findDesignation: async (designation) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await designationModel.findOne(
+                    { designation },
+                    projectionFields
+                )
+            )
         });
     },
     createDesignationData: async (req_data) => {

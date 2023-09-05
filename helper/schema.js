@@ -58,25 +58,19 @@ module.exports = {
         endDate: validate.date,
         project_category: validate.reqstring,
     }),
-    // bodyPartByDate: joi.object().keys({
-    //     startDate:validate.date,
-    //     endDate:validate.date
-    // }),
     loginSchema: joi.object().keys({
         password: validate.password,
         email: validate.email
     }),
-    // clientLoginSchema: joi.object().keys({
-    //     password: validate.reqstring,
-    //     email: validate.email
-    // }),
-    // clientSchema: joi.object().keys({
-    //     name: validate.reqstring,
-    //     address: validate.reqstring,
-    //     mobilenumber: validate.reqstring,
-    //     email: validate.email,
-    //     password: validate.password,
-    // }),
+    daily_task_schema: joi.object().keys({
+        user: validate.reqId,
+        project: validate.reqId,
+        project_category: validate.id,
+        date: validate.date,
+        hours: validate.reqNumber,
+        minutes: validate.reqNumber,
+        description: validate.reqstring,
+    }),
     // mealItemSchema: joi.object().keys({
     //     trainer_id: validate.id,
     //     mealItem: validate.reqstring,

@@ -5,6 +5,39 @@ const bcrypt = require("bcrypt")
 const usersModel = require("../../services/users/users.model")
 
 module.exports = {
+    createUsersByOwner: async (req, res, next) => {
+        try {
+            const req_data = req.body
+
+            req_data.technology_skills = await JSON.parse(req_data.technology_skills);
+
+            const hash = await bcrypt.hash(req_data.password, 10);
+            req_data.password = hash
+
+            const existData = await usersServices.existData(null, req_data.email, req_data.phoneNumber, req_data.emergencyContact, req_data.aadharCard, req_data.bankAccountNumber, req_data.ifscCode, req_data.panCard, req_data.username)
+
+            // IMAGE UPLOAD AND WHEN IMAGE IS UPDATE OLD IMAGE DELETE FUNCTION
+            const upload = uploadProfilePhoto(req, res, req_data.profilePhoto);
+            req_data.profilePhoto = upload
+
+            if (existData.status) {
+                const usersData = await usersServices.createUsersData(req_data);
+
+                res.status(201).json({
+                    success: true,
+                    message: "User is created successfully.",
+                    data: usersData
+                });
+            } else {
+                res.status(201).json({
+                    success: false,
+                    message: existData.message,
+                });
+            }
+        } catch (error) {
+            next(error);
+        }
+    },
     allUsers: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);
@@ -45,39 +78,6 @@ module.exports = {
             })
         } catch (error) {
             next(error)
-        }
-    },
-    createUsersByOwner: async (req, res, next) => {
-        try {
-            const req_data = req.body
-
-            req_data.technology_skills = await JSON.parse(req_data.technology_skills);
-
-            const hash = await bcrypt.hash(req_data.password, 10);
-            req_data.password = hash
-
-            const existData = await usersServices.existData(null, req_data.email, req_data.phoneNumber, req_data.emergencyContact, req_data.aadharCard, req_data.bankAccountNumber, req_data.ifscCode, req_data.panCard, req_data.username)
-
-            // IMAGE UPLOAD AND WHEN IMAGE IS UPDATE OLD IMAGE DELETE FUNCTION
-            const upload = uploadProfilePhoto(req, res, req_data.profilePhoto);
-            req_data.profilePhoto = upload
-
-            if (existData.status) {
-                const usersData = await usersServices.createUsersData(req_data);
-
-                res.status(201).json({
-                    success: true,
-                    message: "User is created successfully.",
-                    data: usersData
-                });
-            } else {
-                res.status(201).json({
-                    success: false,
-                    message: existData.message,
-                });
-            }
-        } catch (error) {
-            next(error);
         }
     },
     updateUsersByOwner: async (req, res, next) => {

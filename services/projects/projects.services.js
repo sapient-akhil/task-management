@@ -2,13 +2,6 @@ const projectsModel = require("./projects.model")
 const projectionFields = { __v: 0 }
 
 module.exports = {
-    countProjects: async () => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await projectsModel.countDocuments()
-            )
-        });
-    },
     findAllProjects: async (page, pageSize, search) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -37,6 +30,13 @@ module.exports = {
                 .populate("technology_skills", projectionFields)
 
             );
+        });
+    },
+    countProjects: async () => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await projectsModel.countDocuments()
+            )
         });
     },
     createProjects: async (req_data) => {

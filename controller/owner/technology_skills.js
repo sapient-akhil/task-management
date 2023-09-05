@@ -13,7 +13,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "technology_skill is created successfully.",
+                message: "technology skill is created successfully.",
                 data: technology_skills_data
             })
         } catch (error) {
@@ -27,7 +27,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "All technology_skills is fetch successfully.",
+                message: "All technology skills is fetch successfully.",
                 data: technology_skills
             })
         } catch (error) {
@@ -40,7 +40,7 @@ module.exports = {
             const { id } = req.params
 
             const technology_skills = await technology_skills_services.find_by_technology_skills_id(id)
-            if (!technology_skills) throw createError.NotFound("The technology_skill with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!technology_skills) throw createError.NotFound("The technology skill with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
@@ -60,6 +60,7 @@ module.exports = {
             if (technology_skill) throw createError.Conflict("technology_skills already define.")
 
             const technology_skills_data = await technology_skills_services.update_technology_skills(id, req_data)
+            if (!technology_skill.length) throw createError.NotFound("The technology skill with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
@@ -76,7 +77,7 @@ module.exports = {
             const { id } = req.params
 
             const technology_skill = await technology_skills_services.delete_technology_skills(id)
-            if (!technology_skill) throw createError.NotFound("The technology_skill with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!technology_skill) throw createError.NotFound("The technology skill with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
