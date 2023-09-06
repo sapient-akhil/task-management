@@ -74,12 +74,10 @@ const usersModel = new mongoose.Schema({
         required: [true, "pastExperience are require"]
     },
     experienceWithUS: {
-        type: Number,
-        required: [true, "experienceWithUS are require"]
+        type: Number
     },
     totalExperience: {
-        type: Number,
-        required: [true, "totalExperience are require"]
+        type: Number
     },
     ctc: {
         type: Number,

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Schema = require("../helper/schema")
 const Validators = require("../helper/validation")
-const { verifyAccessTokenforUsersAdmin,verifyAccessTokenforUser } = require("../helper/verify.token")
+const { verifyAccessTokenforUsersAdmin, verifyAccessTokenforUser } = require("../helper/verify.token")
 
 //admin routes
 const usersController = require("../controller/users/users")
@@ -50,8 +50,20 @@ router.get("/assigned_projects/:id", verifyAccessTokenforUsersAdmin, Validators.
 const daily_task_controller = require("../controller/users/daily_task")
 
 router.post("/daily_tasks", verifyAccessTokenforUser, Validators.forReqBody(Schema.daily_task_schema), daily_task_controller.create_daily_task)
-router.get("/daily_tasks", verifyAccessTokenforUsersAdmin, daily_task_controller.all_daily_task)
+router.post("/get_daily_tasks", verifyAccessTokenforUsersAdmin, daily_task_controller.all_daily_task)
 router.get("/daily_tasks/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), daily_task_controller.one_daily_task)
+
+// leaveStatus routes
+const leaveStatuscontroller = require("../controller/users/leaveStatus")
+
+router.get("/leave-status", verifyAccessTokenforUsersAdmin, leaveStatuscontroller.allLeaveStatus)
+router.get("/leave-status/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveStatuscontroller.oneLeaveStatus)
+
+// leaveType routes
+const leaveTypecontroller = require("../controller/users/leaveType")
+
+router.get("/leave-type", verifyAccessTokenforUsersAdmin, leaveTypecontroller.allLeaveType)
+router.get("/leave-type/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveTypecontroller.oneLeaveType)
 
 module.exports = router;
 

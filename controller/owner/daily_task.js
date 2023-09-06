@@ -5,11 +5,33 @@ module.exports = {
     all_daily_task: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);
-            const pageSize = 2
+            const pageSize = parseInt(req.query.pageSize || 5);
             const total = await daily_task_services.count_daily_task();
             const pageCount = Math.ceil(total / pageSize)
-            // const search = req.query.search
-            const daily_task = await daily_task_services.find_all_daily_task(page, pageSize)
+            // const user = req.query.user
+            const req_data = req.body
+
+            req_data.user = req_data.user ? JSON.parse(req_data.user) : []
+            req_data.project = req_data.project ? JSON.parse(req_data.project) : []
+            req_data.project_category = req_data.project_category ? JSON.parse(req_data.project_category) : []
+            req_data.date = req_data.date ? JSON.parse(req_data.date) : null
+            let filter = {}
+            const pageObj = { page_per: pageSize, page_no: page }
+            // req_data.date = req_data.date ? JSON.parse(req_data.date) : null
+            if (req_data.user && req_data.user.length) {
+                filter.user = { $in: req_data.user }
+            }
+            if (req_data.project && req_data.project.length) {
+                filter.project = { $in: req_data.project }
+            }
+            if (req_data.project_category && req_data.project_category.length) {
+                filter.project_category = { $in: req_data.project_category }
+            }
+            if (req_data.date && req_data.date.length === 2) {
+                filter.date = { $gte: new Date(req_data.date[0]), $lte: new Date(req_data.date[1]) }
+            }
+            const daily_task = await daily_task_services.find_all_daily_task(filter, pageObj)
+            console.log("daily_task : ", daily_task)
 
             res.status(201).send({
                 success: true,
@@ -41,7 +63,7 @@ module.exports = {
         } catch (error) {
             next(error)
         }
-    },  
+    },
     update_daily_task: async (req, res, next) => {
         try {
             const req_data = req.body;

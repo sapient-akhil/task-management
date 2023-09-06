@@ -10,7 +10,7 @@ module.exports = {
     password: joi.string().min(5).max(10).required(),
     reqDate: joi.date().required(),
     date: joi.date(),
-    number: joi.number().required(),
+    number: joi.number(),
     reqNumber: joi.number().required(),
-    password: joi.string().min(5).max(10).required(),
+    password: joi.string().min(5).message("password lenght more than 5 characters").required(),
 }

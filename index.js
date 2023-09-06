@@ -9,6 +9,8 @@ app.use(fileupload());
 const bodyParser = require("body-parser")
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
+var cors = require('cors')
+app.use(cors())
 
 app.all("/", (req, res) => {
     res.send("task-management is strat successfully...")

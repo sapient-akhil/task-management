@@ -70,9 +70,27 @@ router.delete("/assigned_projects/:id", verifyAccessTokenforOwner, Validators.fo
 // daily_task routes
 const daily_task_controller = require("../controller/owner/daily_task")
 
-router.get("/daily_tasks", verifyAccessTokenforUsersAdmin, daily_task_controller.all_daily_task)
+router.post("/daily_tasks", verifyAccessTokenforUsersAdmin, daily_task_controller.all_daily_task)
 router.get("/daily_tasks/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), daily_task_controller.one_daily_task)
 router.put("/daily_tasks/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), Validators.forReqBody(Schema.daily_task_schema), daily_task_controller.update_daily_task)
 router.delete("/daily_tasks/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), daily_task_controller.delete_daily_task)
+
+// leaveStatus routes
+const leaveStatuscontroller = require("../controller/owner/leaveStatus")
+
+router.post("/leave-status", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.leaveStatusSchema), leaveStatuscontroller.createLeaveStatus)
+router.get("/leave-status", verifyAccessTokenforUsersAdmin, leaveStatuscontroller.allLeaveStatus)
+router.get("/leave-status/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveStatuscontroller.oneLeaveStatus)
+router.put("/leave-status/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), Validators.forReqBody(Schema.leaveStatusSchema), leaveStatuscontroller.updateLeaveStatus)
+router.delete("/leave-status/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), leaveStatuscontroller.deleteLeaveStatus)
+
+// leaveType routes
+const leaveTypecontroller = require("../controller/owner/leaveType")
+
+router.post("/leave-type", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.leaveTypeSchema), leaveTypecontroller.createLeaveType)
+router.get("/leave-type", verifyAccessTokenforUsersAdmin, leaveTypecontroller.allLeaveType)
+router.get("/leave-type/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveTypecontroller.oneLeaveType)
+router.put("/leave-type/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), Validators.forReqBody(Schema.leaveTypeSchema), leaveTypecontroller.updateLeaveType)
+router.delete("/leave-type/:id", verifyAccessTokenforOwner, Validators.forParams(Schema.params), leaveTypecontroller.deleteLeaveType)
 
 module.exports = router;

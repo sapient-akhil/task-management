@@ -9,7 +9,8 @@ module.exports = {
         try {
             const req_data = req.body
 
-            req_data.technology_skills = await JSON.parse(req_data.technology_skills);
+            // req_data.technology_skills = await JSON.parse(req_data.technology_skills);
+            req_data.technology_skills = req_data.technology_skills ? JSON.parse(req_data.technology_skills) : []
 
             const hash = await bcrypt.hash(req_data.password, 10);
             req_data.password = hash
@@ -41,7 +42,7 @@ module.exports = {
     allUsers: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);
-            const pageSize = 2
+            const pageSize = 10
             const total = await usersServices.countUsers();
             const pageCount = Math.ceil(total / pageSize)
             const search = req.query.search

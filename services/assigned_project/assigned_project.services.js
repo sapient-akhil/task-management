@@ -5,7 +5,7 @@ module.exports = {
     find_all_assigned_project: async (page, pageSize, user) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await assigned_project_model.find({ user: { $eq: user } }, projectionFields)
+                await assigned_project_model.find({ user })
                     .populate({
                         path: "project",
                         populate: {

@@ -20,8 +20,8 @@ module.exports = {
         ifscCode: validate.reqstring,
         nameAsPerBank: validate.reqstring,
         pastExperience: validate.reqNumber,
-        experienceWithUS: validate.reqNumber,
-        totalExperience: validate.reqNumber,
+        experienceWithUS: validate.number,
+        totalExperience: validate.number,
         ctc: validate.number,
         profilePhoto: validate.string,
         designation: validate.id,
@@ -71,13 +71,12 @@ module.exports = {
         minutes: validate.reqNumber,
         description: validate.reqstring,
     }),
-    // mealItemSchema: joi.object().keys({
-    //     trainer_id: validate.id,
-    //     mealItem: validate.reqstring,
-    //     calary: validate.reqstring,
-    //     description: validate.reqstring,
-    //     ingredients: validate.reqstring
-    // }),
+    leaveStatusSchema: joi.object().keys({
+        name: validate.reqstring
+    }),
+    leaveTypeSchema: joi.object().keys({
+        name: validate.reqstring
+    }),
     // mealPlanSchema: joi.object().keys({
     //     clientId: validate.reqId,
     //     breakFast: validate.reqstring,
