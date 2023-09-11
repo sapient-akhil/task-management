@@ -15,7 +15,7 @@ module.exports = {
             req_data.project = req_data.project ? JSON.parse(req_data.project) : []
             req_data.project_category = req_data.project_category ? JSON.parse(req_data.project_category) : []
             req_data.date = req_data.date ? JSON.parse(req_data.date) : null
-            let filter = {}
+            let filter = { active: true }
             const pageObj = { page_per: pageSize, page_no: page }
             // req_data.date = req_data.date ? JSON.parse(req_data.date) : null
             if (req_data.user && req_data.user.length) {

@@ -69,7 +69,7 @@ router.get("/leave-type/:id", verifyAccessTokenforUsersAdmin, Validators.forPara
 const leaveController = require("../controller/users/leave")
 
 router.post("/leave", Validators.forReqBody(Schema.leaveSchema), leaveController.createLeave)
-router.get("/leave", leaveController.allLeave)
+router.get("/get-leave", leaveController.allLeave)
 router.get("/leave/:id", Validators.forParams(Schema.params), leaveController.oneLeave)
 
 module.exports = router;

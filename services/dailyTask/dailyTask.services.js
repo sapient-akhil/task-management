@@ -10,7 +10,7 @@ module.exports = {
             // }
             // console.log("findQuery : ", findQuery)
             return resolve(
-                await dailyTaskModel.find({ filter, active: true })
+                await dailyTaskModel.find(filter)
                     .populate({
                         path: "project",
                         populate: {

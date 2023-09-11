@@ -44,7 +44,7 @@ module.exports = {
             if (req_data.date && req_data.date.length === 2) {
                 filter.date = { $gte: new Date(req_data.date[0]), $lte: new Date(req_data.date[1]) }
             }
-            const daily_task = await daily_task_services.findAllDailyTask(filter, pageObj)
+            const daily_task = await dailyTaskServices.findAllDailyTask(filter, pageObj)
             console.log("daily_task : ", daily_task)
 
             res.status(201).send({

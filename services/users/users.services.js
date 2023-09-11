@@ -61,62 +61,62 @@ module.exports = {
             if (existeEmail) {
                 return resolve({
                     status: false,
-                    message: "email already exist"
+                    message: "Email Already Exist"
                 });
             };
             const existphoneNumber = await usersModel.countDocuments({ _id: { $nin: [id] }, phoneNumber })
             if (existphoneNumber) {
                 return resolve({
                     status: false,
-                    message: "phoneNumber already exist"
+                    message: "Phone Number Aready Exist"
                 });
             };
             const existemergencyContact = await usersModel.countDocuments({ _id: { $nin: [id] }, emergencyContact })
             if (existemergencyContact) {
                 return resolve({
                     status: false,
-                    message: "emergencyContact already exist"
+                    message: "Emergency Contact Already Exist"
                 });
             };
             const existaadharCard = await usersModel.countDocuments({ _id: { $nin: [id] }, aadharCard })
             if (existaadharCard) {
                 return resolve({
                     status: false,
-                    message: "aadharCard already exist"
+                    message: "Aadhar Card Already Exist"
                 });
             };
             const existebankAccountNumber = await usersModel.countDocuments({ _id: { $nin: [id] }, bankAccountNumber })
             if (existebankAccountNumber) {
                 return resolve({
                     status: false,
-                    message: "bankAccountNumber already exist"
+                    message: "Bank Account Number already exist"
                 });
             };
             const existeifscCode = await usersModel.countDocuments({ _id: { $nin: [id] }, ifscCode })
             if (existeifscCode) {
                 return resolve({
                     status: false,
-                    message: "ifscCode already exist"
+                    message: "ifsc Code aAready Exist"
                 });
             };
             const existepanCard = await usersModel.countDocuments({ _id: { $nin: [id] }, panCard })
             if (existepanCard) {
                 return resolve({
                     status: false,
-                    message: "panCard already exist"
+                    message: "Pan Card Already Exist"
                 });
             };
             const existeusername = await usersModel.countDocuments({ _id: { $nin: [id] }, username })
             if (existeusername) {
                 return resolve({
                     status: false,
-                    message: "username already exist"
+                    message: "Username Already Exist"
                 });
             }
             if (!existemergencyContact && !existaadharCard && !existebankAccountNumber && !existeifscCode && !existepanCard && !existeusername) {
                 return resolve({
                     status: true,
-                    message: "all not exist"
+                    message: "All Data Is Not Exist"
                 });
             }
         });

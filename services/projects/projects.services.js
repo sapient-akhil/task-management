@@ -13,7 +13,7 @@ module.exports = {
                                 { description: { $regex: search, $options: 'i' } },
                             ]
                     } : { active: true }, { __v: 0 })
-                    .populate("technology_skills", { __v: 0 })
+                    // .populate("technology_skills", { __v: 0 })
                     .limit(pageSize * 1)
                     .skip((page - 1) * pageSize)
                     .sort({ createdAt: -1 })
@@ -27,7 +27,7 @@ module.exports = {
                     { _id },
                     { __v: 0 }
                 )
-                    .populate("technology_skills", { __v: 0 })
+                    // .populate("technology_skills", { __v: 0 })
 
             );
         });

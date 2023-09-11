@@ -14,7 +14,7 @@ const assignedProjectModel = new mongoose.Schema({
     project_category: [{
         type: mongoose.Types.ObjectId,
         required: [true, "project_category are require"],
-        ref: "project_category"
+        ref: "projectCategory"
     }],
     startDate: {
         type: Date

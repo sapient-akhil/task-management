@@ -6,7 +6,7 @@ module.exports = {
         try {
             const req_data = req.body;
 
-            req_data.technology_skills = await JSON.parse(req_data.technology_skills);
+            // req_data.technology_skills = await JSON.parse(req_data.technology_skills);
 
             const project = await projectServices.createProjects(req_data)
 
@@ -67,7 +67,7 @@ module.exports = {
             const req_data = req.body;
             const id = req.params.id
 
-            req_data.technology_skills = await JSON.parse(req_data.technology_skills);
+            // req_data.technology_skills = await JSON.parse(req_data.technology_skills);
 
             const projectData = await projectServices.updateProjects(id, req_data)
 

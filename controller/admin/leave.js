@@ -10,20 +10,24 @@ module.exports = {
             const pageCount = Math.ceil(total / pageSize)
 
             const req_data = req.body
-
+            
+            req_data.user = req_data.user ? JSON.parse(req_data.user) : []
             req_data.leaveStatus = req_data.leaveStatus ? JSON.parse(req_data.leaveStatus) : []
-            // req_data.project = req_data.project ? JSON.parse(req_data.project) : []
+            req_data.fromDate = req_data.fromDate ? JSON.parse(req_data.fromDate) : []
 
-            let filter = {}
+            let filter = { active: true }
             const pageObj = { page_per: pageSize, page_no: page }
-
+            if (req_data.user && req_data.user.length) {
+                filter.user = { $in: req_data.user }
+            }
             if (req_data.leaveStatus && req_data.leaveStatus.length) {
                 filter.leaveStatus = { $in: req_data.leaveStatus }
             }
-            // if (req_data.date && req_data.date.length === 2) {
-            //     filter.date = { $gte: new Date(req_data.date[0]), $lte: new Date(req_data.date[1]) }
-            // }
+            if (req_data.fromDate && req_data.fromDate.length === 2) {
+                filter.fromDate = { $gte: new Date(req_data.fromDate[0]), $lte: new Date(req_data.fromDate[1]) }
+            }
             const leave = await leaveServices.findAllLeave(filter, pageObj)
+            console.log("leave : ", leave)
 
             res.status(201).send({
                 success: true,

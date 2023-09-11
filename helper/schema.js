@@ -49,7 +49,7 @@ module.exports = {
         name: validate.reqstring,
         startDate: validate.reqDate,
         description: validate.reqstring,
-        technology_skills: validate.reqstring,
+        // technology_skills: validate.reqstring,
     }),
     assignedProjectSchema: joi.object().keys({
         project: validate.reqstring,

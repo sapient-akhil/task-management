@@ -13,11 +13,11 @@ const projectModel = new mongoose.Schema({
         type: String,
         required: [true, "description are require"]
     },
-    technology_skills: [{
-        type: mongoose.Types.ObjectId,
-        required: [true, "technology_skills are require"],
-        ref: "technologySkills"
-    }],
+    // technology_skills: [{
+    //     type: mongoose.Types.ObjectId,
+    //     required: [true, "technology_skills are require"],
+    //     ref: "technologySkills"
+    // }],
     deployed: {
         type: Boolean,
         default: false

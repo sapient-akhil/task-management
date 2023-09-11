@@ -1,10 +1,13 @@
 const leaveModel = require("./leave.model")
 
 module.exports = {
-    findAllLeave: async (filter, page, pageSize) => {
+    findAllLeave: async (filter, page) => {
         return new Promise(async (resolve) => {
+            // console.log("filter", filter)
+            // console.log("page", page)
+
             return resolve(
-                await leaveModel.find({ filter, active: true })
+                await leaveModel.find(filter)
                     .populate("leaveType", { __v: 0 })
                     .populate("leaveStatus", { __v: 0 })
                     .populate({
@@ -28,8 +31,8 @@ module.exports = {
                             model: "designation"
                         }
                     })
-                    .limit(pageSize * 1)
-                    .skip((page - 1) * pageSize)
+                    .limit(page.page_per * 1)
+                    .skip((page.page_no - 1) * page.page_per)
                     .sort({ createdAt: -1 })
             )
         });
