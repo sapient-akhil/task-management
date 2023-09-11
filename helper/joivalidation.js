@@ -13,4 +13,5 @@ module.exports = {
     number: joi.number(),
     reqNumber: joi.number().required(),
     password: joi.string().min(5).message("password lenght more than 5 characters").required(),
+    boolean: joi.boolean()
 }
