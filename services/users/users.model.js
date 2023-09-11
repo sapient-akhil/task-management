@@ -38,11 +38,11 @@ const usersModel = new mongoose.Schema({
         required: [true, "appraisalDate are require"]
     },
     phoneNumber: {
-        type: String,
+        type: Number,
         required: [true, "phoneNumber are require"]
     },
     emergencyContact: {
-        type: String,
+        type: Number,
         required: [true, "emergencyContact are require"]
     },
     aadharCard: {
@@ -83,7 +83,7 @@ const usersModel = new mongoose.Schema({
         type: Number,
     },
     profilePhoto: {
-        type: Array,
+        type: String,
     },
     designation: {
         type: mongoose.Types.ObjectId,

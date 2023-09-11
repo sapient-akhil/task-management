@@ -9,5 +9,6 @@ module.exports = {
     assignedProjectServices: require("./assignedProject/assignedProject.services"),
     dailyTaskServices: require("./dailyTask/dailyTask.services"),
     leaveStatusServices: require("./leaveStatus/leaveStatus.services"),
-    leaveTypeServices: require("./leaveType/leaveType.services")
+    leaveTypeServices: require("./leaveType/leaveType.services"),
+    leaveServices: require("./leave/leave.services")
 }

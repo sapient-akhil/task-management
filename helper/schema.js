@@ -11,8 +11,8 @@ module.exports = {
         joinDate: validate.reqDate,
         probationDate: validate.reqDate,
         appraisalDate: validate.reqDate,
-        phoneNumber: validate.reqstring,
-        emergencyContact: validate.reqstring,
+        phoneNumber: validate.reqNumber,
+        emergencyContact: validate.reqNumber,
         aadharCard: validate.number,
         panCard: validate.reqstring,
         bankName: validate.reqstring,
@@ -77,37 +77,13 @@ module.exports = {
     leaveTypeSchema: joi.object().keys({
         name: validate.reqstring
     }),
-    // mealPlanSchema: joi.object().keys({
-    //     clientId: validate.reqId,
-    //     breakFast: validate.reqstring,
-    //     morningSnack: validate.reqstring,
-    //     lunch: validate.reqstring,
-    //     eveningSnack: validate.reqstring,
-    //     dinner: validate.reqstring,
-    //     date:validate.date
-    // }),
-    // exercisesSchema: joi.object().keys({
-    //     exercisesName: validate.reqstring,
-    //     muscles: validate.reqstring,
-    //     description: validate.reqstring,
-    //     videoLink: validate.reqstring
-    // }),
-    // workOutSchema: joi.object().keys({
-    //     client_id: validate.reqId,
-    //     trainer_id :validate.reqId,
-    //     workOut :validate.reqstring,
-    //     date: validate.date
-    // }),
-    // unitSchema: joi.object().keys({
-    //     unit: validate.reqstring,
-    // }),
-    // bodyPartSchema: joi.object().keys({
-    //     unitId: validate.reqId,
-    //     bodyPart: validate.reqstring,
-    // }),
-    // measurmentSchema: joi.object().keys({
-    //     bodyPartId: validate.reqId,
-    //     date: validate.date,
-    //     unitValue: validate.number
-    // })
+    leaveSchema: joi.object().keys({
+        totalLeave: validate.reqNumber,
+        reason: validate.reqstring,
+        fromDate: validate.reqDate,
+        toDate: validate.reqDate,
+        leaveType: validate.reqId,
+        leaveStatus: validate.reqId,
+        user: validate.reqId
+    })
 }

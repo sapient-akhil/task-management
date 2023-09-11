@@ -70,27 +70,35 @@ router.delete("/assigned-projects/:id", verifyAccessTokenforAdmin, Validators.fo
 // daily_task routes
 const dailyTaskController = require("../controller/admin/dailyTask")
 
-router.post("/daily-tasks", verifyAccessTokenforUsersAdmin,Validators.forReqBody(Schema.dailyTaskSchema), dailyTaskController.allDailyTask)
+router.post("/daily-tasks", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.dailyTaskSchema), dailyTaskController.allDailyTask)
 router.get("/daily-tasks/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), dailyTaskController.oneDailyTask)
 router.put("/daily-tasks/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.dailyTaskSchema), dailyTaskController.updateDailyTask)
 router.delete("/daily-tasks/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), dailyTaskController.deleteDailyTask)
 
 // leaveStatus routes
-const leaveStatuscontroller = require("../controller/admin/leaveStatus")
+const leaveStatusController = require("../controller/admin/leaveStatus")
 
-router.post("/leave-status", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.leaveStatusSchema), leaveStatuscontroller.createLeaveStatus)
-router.get("/leave-status", verifyAccessTokenforUsersAdmin, leaveStatuscontroller.allLeaveStatus)
-router.get("/leave-status/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveStatuscontroller.oneLeaveStatus)
-router.put("/leave-status/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.leaveStatusSchema), leaveStatuscontroller.updateLeaveStatus)
-router.delete("/leave-status/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveStatuscontroller.deleteLeaveStatus)
+router.post("/leave-status", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.leaveStatusSchema), leaveStatusController.createLeaveStatus)
+router.get("/leave-status", verifyAccessTokenforUsersAdmin, leaveStatusController.allLeaveStatus)
+router.get("/leave-status/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveStatusController.oneLeaveStatus)
+router.put("/leave-status/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.leaveStatusSchema), leaveStatusController.updateLeaveStatus)
+router.delete("/leave-status/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveStatusController.deleteLeaveStatus)
 
 // leaveType routes
-const leaveTypecontroller = require("../controller/admin/leaveType")
+const leaveTypeController = require("../controller/admin/leaveType")
 
-router.post("/leave-type", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.leaveTypeSchema), leaveTypecontroller.createLeaveType)
-router.get("/leave-type", verifyAccessTokenforUsersAdmin, leaveTypecontroller.allLeaveType)
-router.get("/leave-type/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveTypecontroller.oneLeaveType)
-router.put("/leave-type/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.leaveTypeSchema), leaveTypecontroller.updateLeaveType)
-router.delete("/leave-type/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveTypecontroller.deleteLeaveType)
+router.post("/leave-type", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.leaveTypeSchema), leaveTypeController.createLeaveType)
+router.get("/leave-type", verifyAccessTokenforUsersAdmin, leaveTypeController.allLeaveType)
+router.get("/leave-type/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveTypeController.oneLeaveType)
+router.put("/leave-type/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.leaveTypeSchema), leaveTypeController.updateLeaveType)
+router.delete("/leave-type/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveTypeController.deleteLeaveType)
+
+// leave routes
+const leaveController = require("../controller/admin/leave")
+
+router.post("/leave", leaveController.allLeave)
+router.get("/leave/:id", Validators.forParams(Schema.params), leaveController.oneLeave)
+router.put("/leave/:id", Validators.forParams(Schema.params), Validators.forReqBody(Schema.leaveSchema), leaveController.updateLeave)
+router.delete("/leave/:id", Validators.forParams(Schema.params), leaveController.deleteLeave)
 
 module.exports = router;
