@@ -18,7 +18,7 @@ module.exports = {
 
             // IMAGE UPLOAD AND WHEN IMAGE IS UPDATE OLD IMAGE DELETE FUNCTION
             const upload = uploadProfilePhoto(req, res, req_data.profilePhoto);
-            req_data.profilePhoto = upload
+            req_data.profilePhoto = upload[0]
 
             if (existData.status) {
                 const usersData = await usersServices.createUsersData(req_data);
