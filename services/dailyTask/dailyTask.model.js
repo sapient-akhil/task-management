@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const daily_task_model = new mongoose.Schema({
+const dailyTaskModel = new mongoose.Schema({
     user: {
         type: mongoose.Types.ObjectId,
         required: [true, "user are require"],
@@ -37,4 +37,4 @@ const daily_task_model = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model("daily_task", daily_task_model)
+module.exports = mongoose.model("dailyTask", dailyTaskModel)

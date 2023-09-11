@@ -36,13 +36,13 @@ module.exports = {
     designationSchema: joi.object().keys({
         designation: validate.reqstring
     }),
-    technology_skills_Schema: joi.object().keys({
+    technologySkillsSchema: joi.object().keys({
         technology_skills: validate.reqstring
     }),
     params: joi.object().keys({
         id: validate.reqId
     }),
-    project_category_Schema: joi.object().keys({
+    projectCategorySchema: joi.object().keys({
         name: validate.reqstring
     }),
     projectsSchema: joi.object().keys({
@@ -51,7 +51,7 @@ module.exports = {
         description: validate.reqstring,
         technology_skills: validate.reqstring,
     }),
-    assigned_project_schema: joi.object().keys({
+    assignedProjectSchema: joi.object().keys({
         project: validate.reqstring,
         user: validate.reqstring,
         startDate: validate.date,
@@ -62,7 +62,7 @@ module.exports = {
         password: validate.password,
         email: validate.email
     }),
-    daily_task_schema: joi.object().keys({
+    dailyTaskSchema: joi.object().keys({
         user: validate.reqId,
         project: validate.reqId,
         project_category: validate.id,

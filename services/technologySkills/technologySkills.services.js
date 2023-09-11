@@ -1,60 +1,60 @@
-const leaveStatusModel = require("./leaveStatus.model")
+const technologySkillsModel = require("./technologySkills.model")
 
 module.exports = {
-    findAllLeaveStatus: async () => {
+    findAllTechnologySkills: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await leaveStatusModel.find({ active: true }, { __v: 0 }).sort({ createdAt: -1 })
+                await technologySkillsModel.find({ active: true }, { __v: 0 }).sort({ createdAt: -1 })
             )
         });
     },
-    findByLeaveStatusId: async (_id) => {
+    findByTechnologySkillsId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await leaveStatusModel.findOne(
+                await technologySkillsModel.findOne(
                     { _id },
                     { __v: 0 }
                 )
             );
         });
     },
-    findLeaveStatus: async (name) => {
+    findTechnologySkills: async (technology_skills) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await leaveStatusModel.findOne(
-                    { name },
+                await technologySkillsModel.findOne(
+                    { technology_skills },
                     { __v: 0 }
                 )
             )
         });
     },
-    createLeaveStatus: async (req_data) => {
+    createTechnologySkills: async (req_data) => {
         return new Promise(async (resolve) => {
-            await leaveStatusModel.insertMany({ ...req_data });
+            await technologySkillsModel.insertMany({ ...req_data });
             return resolve(
-                await leaveStatusModel.find(
+                await technologySkillsModel.find(
                     { ...req_data },
                     { __v: 0 }
                 )
             );
         });
     },
-    updateLeaveStatus: async (_id, req_data) => {
+    updateTechnologySkills: async (_id, req_data) => {
         return new Promise(async (resolve) => {
-            await leaveStatusModel.findByIdAndUpdate({ _id }, { ...req_data });
+            await technologySkillsModel.findByIdAndUpdate({ _id }, { ...req_data });
             return resolve(
-                await leaveStatusModel.find(
+                await technologySkillsModel.find(
                     { _id },
                     { __v: 0 }
                 )
             );
         });
     },
-    deleteLeaveStatus: async (_id) => {
+    deleteTechnologySkills: async (_id) => {
         return new Promise(async (resolve) => {
-            await leaveStatusModel.updateOne({ _id }, { active: false }, { new: true });
+            await technologySkillsModel.updateOne({ _id }, { active: false }, { new: true });
             return resolve(
-                await leaveStatusModel.findOne(
+                await technologySkillsModel.findOne(
                     { _id },
                     { __v: 0 }
                 )

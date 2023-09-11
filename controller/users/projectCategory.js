@@ -1,15 +1,15 @@
 const createError = require("http-errors")
-const { project_category_services } = require("../../services/index")
+const { projectCategoryServices } = require("../../services/index")
 
 module.exports = {
-    all_project_category: async (req, res, next) => {
+    allProjectCategory: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);
-            const pageSize = 2
-            const total = await project_category_services.count_project_category();
+            const pageSize = 10
+            const total = await projectCategoryServices.countProjectCategory();
             const pageCount = Math.ceil(total / pageSize)
             const search = req.query.search
-            const project_category = await project_category_services.find_all_project_category(page, pageSize, search)
+            const project_category = await projectCategoryServices.findAllProjectCategory(page, pageSize, search)
 
             res.status(201).send({
                 success: true,
@@ -25,12 +25,12 @@ module.exports = {
             next(error)
         }
     },
-    one_project_category: async (req, res, next) => {
+    oneProjectCategory: async (req, res, next) => {
         try {
 
             const { id } = req.params
 
-            const project_category = await project_category_services.find_by_project_category_id(id)
+            const project_category = await projectCategoryServices.findByProjectCategoryId(id)
             if (!project_category) throw createError.NotFound("The project_categoryData with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({

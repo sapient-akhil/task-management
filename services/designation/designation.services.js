@@ -1,11 +1,10 @@
 const designationModel = require("./designation.model")
-const projectionFields = { __v: 0 }
 
 module.exports = {
     findAllDesignation: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await designationModel.find()
+                await designationModel.find({ active: true }, { __v: 0 }).sort({ createdAt: -1 })
             )
         });
     },
@@ -14,7 +13,7 @@ module.exports = {
             return resolve(
                 await designationModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -24,7 +23,7 @@ module.exports = {
             return resolve(
                 await designationModel.findOne(
                     { designation },
-                    projectionFields
+                    { __v: 0 }
                 )
             )
         });
@@ -35,7 +34,7 @@ module.exports = {
             return resolve(
                 await designationModel.find(
                     { ...req_data },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -46,7 +45,7 @@ module.exports = {
             return resolve(
                 await designationModel.find(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -57,7 +56,7 @@ module.exports = {
             return resolve(
                 await designationModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });

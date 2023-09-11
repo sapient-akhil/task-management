@@ -23,16 +23,16 @@ router.get("/designations", verifyAccessTokenforUsersAdmin, designationControlle
 router.get("/designations/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), designationController.oneDesignation)
 
 // technology_skills routes
-const technology_skills_controller = require("../controller/users/technology_skills")
+const technologySkillsController = require("../controller/users/technologySkills")
 
-router.get("/technology_skills", verifyAccessTokenforUsersAdmin, technology_skills_controller.all_technology_skills)
-router.get("/technology_skills/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), technology_skills_controller.one_technology_skills)
+router.get("/technology-skills", verifyAccessTokenforUsersAdmin, technologySkillsController.allTechnologySkills)
+router.get("/technology-skills/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), technologySkillsController.oneTechnologySkills)
 
 // project_category routes
-const project_category_controller = require("../controller/users/project_category")
+const projectCategoryController = require("../controller/users/projectCategory")
 
-router.get("/project_category", verifyAccessTokenforUsersAdmin, project_category_controller.all_project_category)
-router.get("/project_category/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), project_category_controller.one_project_category)
+router.get("/project-category", verifyAccessTokenforUsersAdmin, projectCategoryController.allProjectCategory)
+router.get("/project-category/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), projectCategoryController.oneProjectCategory)
 
 // projects routes
 const projectsController = require("../controller/users/projects")
@@ -41,17 +41,17 @@ router.get("/projects", verifyAccessTokenforUsersAdmin, projectsController.allPr
 router.get("/projects/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), projectsController.oneProjects)
 
 // assigned_project routes
-const assigned_project_controller = require("../controller/users/assigned_project")
+const assignedProjectController = require("../controller/users/assignedProject")
 
-router.get("/assigned_projects", verifyAccessTokenforUsersAdmin, assigned_project_controller.all_assigned_project)
-router.get("/assigned_projects/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), assigned_project_controller.one_assigned_project)
+router.get("/assigned-projects", verifyAccessTokenforUsersAdmin, assignedProjectController.allAssignedProject)
+router.get("/assigned-projects/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), assignedProjectController.oneAssignedProject)
 
 // daily_task routes
-const daily_task_controller = require("../controller/users/daily_task")
+const dailyTaskController = require("../controller/users/dailyTask")
 
-router.post("/daily_tasks", verifyAccessTokenforUser, Validators.forReqBody(Schema.daily_task_schema), daily_task_controller.create_daily_task)
-router.post("/get_daily_tasks", verifyAccessTokenforUsersAdmin, daily_task_controller.all_daily_task)
-router.get("/daily_tasks/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), daily_task_controller.one_daily_task)
+router.post("/daily-tasks", verifyAccessTokenforUser, Validators.forReqBody(Schema.dailyTaskSchema), dailyTaskController.createDailyTask)
+router.post("/get-daily-tasks", verifyAccessTokenforUsersAdmin, dailyTaskController.allDailyTask)
+router.get("/daily-tasks/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), dailyTaskController.oneDailyTask)
 
 // leaveStatus routes
 const leaveStatuscontroller = require("../controller/users/leaveStatus")

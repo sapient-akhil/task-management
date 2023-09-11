@@ -1,16 +1,15 @@
-const assigned_project_model = require("./assigned_project.model")
-const projectionFields = { __v: 0 }
+const assignedProjectModel = require("./assignedProject.model")
 
 module.exports = {
-    find_all_assigned_project: async (page, pageSize, user) => {
+    findAllAssignedProject: async (page, pageSize, user) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await assigned_project_model.find({ user })
+                await assignedProjectModel.find({ user, active: true })
                     .populate({
                         path: "project",
                         populate: {
                             path: "technology_skills",
-                            model: "technology_skills"
+                            model: "technologySkills"
                         }
                     })
                     .populate("user")
@@ -18,7 +17,7 @@ module.exports = {
                         path: "user",
                         populate: {
                             path: "technology_skills",
-                            model: "technology_skills"
+                            model: "technologySkills"
                         }
                     })
                     .populate({
@@ -35,21 +34,22 @@ module.exports = {
                             model: "designation"
                         }
                     })
-                    .populate("project_category", projectionFields)
+                    .populate("project_category")
                     .limit(pageSize * 1)
                     .skip((page - 1) * pageSize)
+                    .sort({ createdAt: -1 })
             )
         });
     },
-    find_by_assigned_project_id: async (_id) => {
+    findByAssignedProjectId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await assigned_project_model.findOne({ _id }, projectionFields)
+                await assignedProjectModel.findOne({ _id }, { __v: 0 })
                     .populate({
                         path: "project",
                         populate: {
                             path: "technology_skills",
-                            model: "technology_skills"
+                            model: "technologySkills"
                         }
                     })
                     .populate("user")
@@ -57,7 +57,7 @@ module.exports = {
                         path: "user",
                         populate: {
                             path: "technology_skills",
-                            model: "technology_skills"
+                            model: "technologySkills"
                         }
                     })
                     .populate({
@@ -74,46 +74,46 @@ module.exports = {
                             model: "designation"
                         }
                     })
-                    .populate("project_category", projectionFields)
+                    .populate("project_category", { __v: 0 })
             )
         });
     },
-    count_assigned_project: async () => {
+    countAssignedProject: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await assigned_project_model.countDocuments()
+                await assignedProjectModel.countDocuments()
             )
         });
     },
-    create_assigned_project: async (req_data) => {
+    createAssignedProject: async (req_data) => {
         return new Promise(async (resolve) => {
-            await assigned_project_model.insertMany({ ...req_data });
+            await assignedProjectModel.insertMany({ ...req_data });
             return resolve(
-                await assigned_project_model.find(
+                await assignedProjectModel.find(
                     { ...req_data },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
     },
-    update_assigned_project: async (_id, req_data) => {
+    updateAssignedProject: async (_id, req_data) => {
         return new Promise(async (resolve) => {
-            await assigned_project_model.findByIdAndUpdate({ _id }, { ...req_data }, { new: true });
+            await assignedProjectModel.findByIdAndUpdate({ _id }, { ...req_data }, { new: true });
             return resolve(
-                await assigned_project_model.find(
+                await assignedProjectModel.find(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
     },
-    delete_assigned_project: async (_id) => {
+    deleteAssignedProject: async (_id) => {
         return new Promise(async (resolve) => {
-            await assigned_project_model.updateOne({ _id }, { active: false }, { new: true });
+            await assignedProjectModel.updateOne({ _id }, { active: false }, { new: true });
             return resolve(
-                await assigned_project_model.findOne(
+                await assignedProjectModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });

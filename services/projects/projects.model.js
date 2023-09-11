@@ -16,7 +16,7 @@ const projectModel = new mongoose.Schema({
     technology_skills: [{
         type: mongoose.Types.ObjectId,
         required: [true, "technology_skills are require"],
-        ref: "technology_skills"
+        ref: "technologySkills"
     }],
     deployed: {
         type: Boolean,

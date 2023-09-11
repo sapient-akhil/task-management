@@ -1,11 +1,10 @@
 const createError = require("http-errors")
-const { usersServices } = require("../../services/index")
+const { usersServices, roleServices } = require("../../services/index")
 const uploadProfilePhoto = require("../common/image")
 const bcrypt = require("bcrypt")
-const usersModel = require("../../services/users/users.model")
 
 module.exports = {
-    createUsersByOwner: async (req, res, next) => {
+    createUsersByAdmin: async (req, res, next) => {
         try {
             const req_data = req.body
 
@@ -47,7 +46,11 @@ module.exports = {
             const pageCount = Math.ceil(total / pageSize)
             const search = req.query.search
 
-            const users = await usersServices.findAllData(page, pageSize, search)
+            const employeeId = await roleServices.findRoleId("employee")
+            if (!employeeId) throw createError.NotFound("No any employeeId is found.")
+            console.log("employeeId", employeeId._id)
+
+            const users = await usersServices.findAllData(employeeId._id, page, pageSize, search)
             if (!users) throw createError.NotFound("No any userData is found.")
 
             res.status(201).send({
@@ -81,7 +84,7 @@ module.exports = {
             next(error)
         }
     },
-    updateUsersByOwner: async (req, res, next) => {
+    updateUsersByAdmin: async (req, res, next) => {
         try {
 
             const id = req.params.id
@@ -117,7 +120,7 @@ module.exports = {
             next(error);
         }
     },
-    deleteUsersByOwner: async (req, res, next) => {
+    deleteUsersByAdmin: async (req, res, next) => {
         try {
 
             const { id } = req.params

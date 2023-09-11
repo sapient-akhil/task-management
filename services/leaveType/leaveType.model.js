@@ -11,4 +11,4 @@ const leaveTypeModel = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model("leave type", leaveTypeModel)
+module.exports = mongoose.model("leaveType", leaveTypeModel)

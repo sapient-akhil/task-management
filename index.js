@@ -16,7 +16,7 @@ app.all("/", (req, res) => {
     res.send("task-management is strat successfully...")
 });
 
-app.use("/api/owner", require("./routes/owner.routes"));
+app.use("/api/admin", require("./routes/admin.routes"));
 app.use("/api/users", require("./routes/users.routes"));
 app.use("/api/auth", require("./routes/auth.routes")); //this is used only for login
 

@@ -1,8 +1,7 @@
-const daily_task_model = require("./daily_task.model")
-const projectionFields = { __v: 0 }
+const dailyTaskModel = require("./dailyTask.model")
 
 module.exports = {
-    find_all_daily_task: async (filter, page) => {
+    findAllDailyTask: async (filter, page) => {
         return new Promise(async (resolve) => {
             console.log("filter", filter)
             console.log("page", page)
@@ -11,12 +10,12 @@ module.exports = {
             // }
             // console.log("findQuery : ", findQuery)
             return resolve(
-                await daily_task_model.find(filter)
+                await dailyTaskModel.find({ filter, active: true })
                     .populate({
                         path: "project",
                         populate: {
                             path: "technology_skills",
-                            model: "technology_skills"
+                            model: "technologySkills"
                         }
                     })
                     .populate("user")
@@ -24,7 +23,7 @@ module.exports = {
                         path: "user",
                         populate: {
                             path: "technology_skills",
-                            model: "technology_skills"
+                            model: "technologySkills"
                         }
                     })
                     .populate({
@@ -43,22 +42,23 @@ module.exports = {
                     }).populate("project_category")
                     .limit(page.page_per * 1)
                     .skip((page.page_no - 1) * page.page_per)
+                    .sort({ createdAt: -1 })
             )
 
         });
     },
-    find_by_daily_task_id: async (_id) => {
+    findByDailyTaskId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await daily_task_model.findOne(
+                await dailyTaskModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
                     .populate({
                         path: "project",
                         populate: {
                             path: "technology_skills",
-                            model: "technology_skills"
+                            model: "technologySkills"
                         }
                     })
                     .populate("user")
@@ -66,7 +66,7 @@ module.exports = {
                         path: "user",
                         populate: {
                             path: "technology_skills",
-                            model: "technology_skills"
+                            model: "technologySkills"
                         }
                     })
                     .populate({
@@ -83,55 +83,56 @@ module.exports = {
                             model: "designation"
                         }
                     }).populate("project_category")
+                    .sort({ createdAt: -1 })
             );
         });
     },
-    count_daily_task: async () => {
+    countDailyTask: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await daily_task_model.countDocuments()
+                await dailyTaskModel.countDocuments()
             )
         });
     },
-    find_daily_task: async (daily_task) => {
+    findDailyTask: async (dailyTask) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await daily_task_model.findOne(
-                    { daily_task },
-                    projectionFields
+                await dailyTaskModel.findOne(
+                    { dailyTask },
+                    { __v: 0 }
                 )
             )
         });
     },
-    create_daily_task: async (req_data) => {
+    createDailyTask: async (req_data) => {
         return new Promise(async (resolve) => {
-            await daily_task_model.insertMany({ ...req_data });
+            await dailyTaskModel.insertMany({ ...req_data });
             return resolve(
-                await daily_task_model.find(
+                await dailyTaskModel.find(
                     { ...req_data },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
     },
-    update_daily_task: async (_id, req_data) => {
+    updateDailyTask: async (_id, req_data) => {
         return new Promise(async (resolve) => {
-            await daily_task_model.findByIdAndUpdate({ _id }, { ...req_data });
+            await dailyTaskModel.findByIdAndUpdate({ _id }, { ...req_data });
             return resolve(
-                await daily_task_model.find(
+                await dailyTaskModel.find(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
     },
-    delete_daily_task: async (_id) => {
+    deleteDailyTask: async (_id) => {
         return new Promise(async (resolve) => {
-            await daily_task_model.updateOne({ _id }, { active: false }, { new: true });
+            await dailyTaskModel.updateOne({ _id }, { active: false }, { new: true });
             return resolve(
-                await daily_task_model.findOne(
+                await dailyTaskModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -146,7 +147,7 @@ module.exports = {
 
 
 
-// find_all_daily_task: async (req_data, page, pageSize) => {
+// find_all_dailyTask: async (req_data, page, pageSize) => {
 //     try {
 //       // Construct the query based on the req_data
 //       const query = {};
@@ -169,11 +170,11 @@ module.exports = {
 
 //       // You can add more conditions based on the user input
 
-//       const total = await daily_task_model.countDocuments(query);
+//       const total = await dailyTaskModel.countDocuments(query);
 //       const pageCount = Math.ceil(total / pageSize);
 
-//       const daily_task = await daily_task_model
-//         .find(query, projectionFields)
+//       const dailyTask = await dailyTaskModel
+//         .find(query, { __v: 0 })
 //         .populate({
 //           path: "project",
 //           populate: {
@@ -210,7 +211,7 @@ module.exports = {
 //       return {
 //         success: true,
 //         message: "All daily tasks fetched successfully.",
-//         data: daily_task,
+//         data: dailyTask,
 //         meta: {
 //           pagination: {
 //             page,

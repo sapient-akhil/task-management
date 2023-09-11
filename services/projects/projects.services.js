@@ -1,5 +1,4 @@
 const projectsModel = require("./projects.model")
-const projectionFields = { __v: 0 }
 
 module.exports = {
     findAllProjects: async (page, pageSize, search) => {
@@ -13,10 +12,11 @@ module.exports = {
                                 { name: { $regex: search, $options: 'i' } },
                                 { description: { $regex: search, $options: 'i' } },
                             ]
-                    } : { active: true }, projectionFields)
-                    .populate("technology_skills", projectionFields)
+                    } : { active: true }, { __v: 0 })
+                    .populate("technology_skills", { __v: 0 })
                     .limit(pageSize * 1)
                     .skip((page - 1) * pageSize)
+                    .sort({ createdAt: -1 })
             )
         });
     },
@@ -25,9 +25,9 @@ module.exports = {
             return resolve(
                 await projectsModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
-                .populate("technology_skills", projectionFields)
+                    .populate("technology_skills", { __v: 0 })
 
             );
         });
@@ -45,7 +45,7 @@ module.exports = {
             return resolve(
                 await projectsModel.find(
                     { ...req_data },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -56,7 +56,7 @@ module.exports = {
             return resolve(
                 await projectsModel.find(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -67,7 +67,7 @@ module.exports = {
             return resolve(
                 await projectsModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });

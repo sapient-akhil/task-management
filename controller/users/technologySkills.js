@@ -1,11 +1,11 @@
 const createError = require("http-errors")
-const { technology_skills_services } = require("../../services/index")
+const { technologySkillsServices } = require("../../services/index")
 
 module.exports = {
-    all_technology_skills: async (req, res, next) => {
+    allTechnologySkills: async (req, res, next) => {
         try {
 
-            const alltechnology_skillsData = await technology_skills_services.find_all_technology_skills()
+            const alltechnology_skillsData = await technologySkillsServices.findAllTechnologySkills()
 
             res.status(201).send({
                 success: true,
@@ -16,12 +16,12 @@ module.exports = {
             next(error)
         }
     },
-    one_technology_skills: async (req, res, next) => {
+    oneTechnologySkills: async (req, res, next) => {
         try {
 
             const { id } = req.params
 
-            const technology_skillsData = await technology_skills_services.find_by_technology_skills_id(id)
+            const technology_skillsData = await technologySkillsServices.findByTechnologySkillsId(id)
             if (!technology_skillsData) throw createError.NotFound("The technology_skillsData with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({

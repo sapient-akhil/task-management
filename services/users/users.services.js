@@ -1,25 +1,26 @@
 const usersModel = require("./users.model")
-const projectionFields = { __v: 0 }
 
 module.exports = {
-    findAllData: async (page, pageSize, search) => {
+    findAllData: async (employeeId, page, pageSize, search) => {
         return new Promise(async (resolve) => {
             return resolve(
                 await usersModel.find(
                     search ? {
                         active: true,
+                        user_role: employeeId,
                         $or:
                             [
                                 { name: { $regex: search, $options: 'i' } },
                                 { email: { $regex: search, $options: 'i' } },
                                 { phoneNumber: { $regex: search, $options: 'i' } }
                             ]
-                    } : { active: true }, projectionFields)
-                    .populate("designation", projectionFields)
-                    .populate("user_role", projectionFields)
-                    .populate("technology_skills", projectionFields)
+                    } : { active: true, user_role: employeeId }, { __v: 0 })
+                    .populate("designation", { __v: 0 })
+                    .populate("user_role", { __v: 0 })
+                    .populate("technology_skills", { __v: 0 })
                     .limit(pageSize * 1)
                     .skip((page - 1) * pageSize)
+                    .sort({ createdAt: -1 })
             )
         });
     },
@@ -35,11 +36,11 @@ module.exports = {
             return resolve(
                 await usersModel.findOne(
                     { email },
-                    projectionFields
+                    { __v: 0 }
                 )
-                    .populate("designation", projectionFields)
-                    .populate("user_role", projectionFields)
-                    .populate("technology_skills", projectionFields)
+                    .populate("designation", { __v: 0 })
+                    .populate("user_role", { __v: 0 })
+                    .populate("technology_skills", { __v: 0 })
             )
         });
     },
@@ -48,7 +49,7 @@ module.exports = {
             return resolve(
                 await usersModel.findOne(
                     { phoneNumber },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -125,11 +126,11 @@ module.exports = {
             return resolve(
                 await usersModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
-                    .populate("designation", projectionFields)
-                    .populate("user_role", projectionFields)
-                    .populate("technology_skills", projectionFields)
+                    .populate("designation", { __v: 0 })
+                    .populate("user_role", { __v: 0 })
+                    .populate("technology_skills", { __v: 0 })
             );
         });
     },
@@ -139,7 +140,7 @@ module.exports = {
             return resolve(
                 await usersModel.find(
                     { ...req_data },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -150,7 +151,7 @@ module.exports = {
             return resolve(
                 await usersModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -161,7 +162,7 @@ module.exports = {
             return resolve(
                 await usersModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });

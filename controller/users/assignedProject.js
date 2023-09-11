@@ -1,18 +1,18 @@
 const createError = require("http-errors")
-const { assigned_project_services } = require("../../services/index")
+const { assignedProjectServices } = require("../../services/index")
 
 module.exports = {
-    all_assigned_project: async (req, res, next) => {
+    allAssignedProject: async (req, res, next) => {
         try {
 
             const page = parseInt(req.query.page || 1);
-            const pageSize = 2
-            const total = await assigned_project_services.count_assigned_project();
+            const pageSize = 10
+            const total = await assignedProjectServices.countAssignedProject();
             const pageCount = Math.ceil(total / pageSize)
             // const search = req.query.search
             const user = req.query.user
 
-            const all_assigned_project = await assigned_project_services.find_all_assigned_project(page, pageSize, user)
+            const all_assigned_project = await assignedProjectServices.findAllAssignedProject(page, pageSize, user)
             if (!all_assigned_project.length) throw createError.NotFound("No any user found with providede ID project is found.")
 
             res.status(201).send({
@@ -29,12 +29,12 @@ module.exports = {
             next(error)
         }
     },
-    one_assigned_project: async (req, res, next) => {
+    oneAssignedProject: async (req, res, next) => {
         try {
 
             const { id } = req.params
 
-            const assigned_project = await assigned_project_services.find_by_assigned_project_id(id)
+            const assigned_project = await assignedProjectServices.findByAssignedProjectId(id)
             if (!assigned_project) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({

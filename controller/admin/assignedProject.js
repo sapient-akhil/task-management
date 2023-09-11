@@ -1,41 +1,41 @@
 const createError = require("http-errors")
-const { assigned_project_services } = require("../../services/index")
+const { assignedProjectServices } = require("../../services/index")
 
 module.exports = {
-    create_assigned_project: async (req, res, next) => {
+    createAssignedProject: async (req, res, next) => {
         try {
             const req_data = req.body;
 
             req_data.project = await JSON.parse(req_data.project);
             req_data.project_category = await JSON.parse(req_data.project_category);
 
-            const assigned_project = await assigned_project_services.create_assigned_project(req_data)
+            const assignedProject = await assignedProjectServices.createAssignedProject(req_data)
 
             res.status(201).send({
                 success: true,
                 message: "Assigned project is created successfully.",
-                data: assigned_project
+                data: assignedProject
             })
         } catch (error) {
             next(error)
         }
     },
-    all_assigned_project: async (req, res, next) => {
+    allAssignedProject: async (req, res, next) => {
         try {
 
             const page = parseInt(req.query.page || 1);
-            const pageSize = 2
-            const total = await assigned_project_services.count_assigned_project();
+            const pageSize = 10
+            const total = await assignedProjectServices.countAssignedProject();
             const pageCount = Math.ceil(total / pageSize)
-            const search = req.query.search
+            const user = req.query.user
 
-            const all_assigned_project = await assigned_project_services.find_all_assigned_project(page, pageSize, search)
-            if (!all_assigned_project) throw createError.NotFound("No any assigned project is found.")
+            const all_assignedProject = await assignedProjectServices.findAllAssignedProject(page, pageSize, user)
+            if (!all_assignedProject) throw createError.NotFound("No any assigned project is found.")
 
             res.status(201).send({
                 success: true,
                 message: "All assigned project is fetch successfully.",
-                data: all_assigned_project,
+                data: all_assignedProject,
                 meta: {
                     pagination: {
                         page, pageSize, pageCount, total
@@ -46,24 +46,24 @@ module.exports = {
             next(error)
         }
     },
-    one_assigned_project: async (req, res, next) => {
+    oneAssignedProject: async (req, res, next) => {
         try {
 
             const { id } = req.params
 
-            const assigned_project = await assigned_project_services.find_by_assigned_project_id(id)
-            if (!assigned_project) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const assignedProject = await assignedProjectServices.findByAssignedProjectId(id)
+            if (!assignedProject) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
                 message: "One assigned project is fetch successfully.",
-                data: assigned_project
+                data: assignedProject
             })
         } catch (error) {
             next(error)
         }
     },
-    update_assigned_project: async (req, res, next) => {
+    updateAssignedProject: async (req, res, next) => {
         try {
             const req_data = req.body;
             const id = req.params.id
@@ -71,30 +71,30 @@ module.exports = {
             req_data.project = await JSON.parse(req_data.project);
             req_data.project_category = await JSON.parse(req_data.project_category);
 
-            const assigned_project = await assigned_project_services.update_assigned_project(id, req_data)
-            if (!assigned_project) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const assignedProject = await assignedProjectServices.updateAssignedProject(id, req_data)
+            if (!assignedProject) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
                 message: "Assigned project is update successfully.",
-                data: assigned_project
+                data: assignedProject
             })
         } catch (error) {
             next(error)
         }
     },
-    delete_assigned_project: async (req, res, next) => {
+    deleteAssignedProject: async (req, res, next) => {
         try {
 
             const { id } = req.params
 
-            const assigned_project = await assigned_project_services.delete_assigned_project(id)
-            if (!assigned_project) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const assignedProject = await assignedProjectServices.deleteAssignedProject(id)
+            if (!assignedProject) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
                 message: "Assigned project is delete successfully",
-                data: assigned_project
+                data: assignedProject
             })
         } catch (error) {
             next(error)

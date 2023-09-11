@@ -95,7 +95,7 @@ const usersModel = new mongoose.Schema({
     },
     technology_skills: [{
         type: mongoose.Types.ObjectId,
-        ref: "technology_skills"
+        ref: "technologySkills"
     }],
     confirmed: {
         type: String,

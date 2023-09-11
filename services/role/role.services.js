@@ -1,12 +1,20 @@
 const roleModel = require("./role.model")
-const projectionFields = { __v: 0 }
 
 module.exports = {
-
+    findRoleId: async (role) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await roleModel.findOne(
+                    { role },
+                    { _id: 1 }
+                )
+            );
+        });
+    },
     findAllRole: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await roleModel.find()
+                await roleModel.find({ active: true }, { __v: 0 }).sort({ createdAt: -1 })
             )
         });
     },
@@ -15,7 +23,7 @@ module.exports = {
             return resolve(
                 await roleModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -25,7 +33,7 @@ module.exports = {
             return resolve(
                 await roleModel.findOne(
                     { role },
-                    projectionFields
+                    { __v: 0 }
                 )
             )
         });
@@ -36,7 +44,7 @@ module.exports = {
             return resolve(
                 await roleModel.find(
                     { ...req_data },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -47,7 +55,7 @@ module.exports = {
             return resolve(
                 await roleModel.find(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });
@@ -58,7 +66,7 @@ module.exports = {
             return resolve(
                 await roleModel.findOne(
                     { _id },
-                    projectionFields
+                    { __v: 0 }
                 )
             );
         });

@@ -12,4 +12,4 @@ const leaveStatusModel = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model("leave status", leaveStatusModel)
+module.exports = mongoose.model("leaveStatus", leaveStatusModel)
