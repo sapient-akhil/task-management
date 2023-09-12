@@ -27,7 +27,7 @@ module.exports = {
     countUsers: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await usersModel.countDocuments()
+                await usersModel.countDocuments({ active: true })
             )
         });
     },

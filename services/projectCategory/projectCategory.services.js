@@ -25,7 +25,7 @@ module.exports = {
     countProjectCategory: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await projectCategoryModel.countDocuments()
+                await projectCategoryModel.countDocuments({ active: true })
             )
         });
     },

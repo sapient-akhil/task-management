@@ -35,7 +35,7 @@ module.exports = {
     countProjects: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await projectsModel.countDocuments()
+                await projectsModel.countDocuments({ active: true })
             )
         });
     },

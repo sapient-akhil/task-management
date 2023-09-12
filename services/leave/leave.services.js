@@ -64,7 +64,7 @@ module.exports = {
     countLeave: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await leaveModel.countDocuments()
+                await leaveModel.countDocuments({ active: true })
             )
         });
     },

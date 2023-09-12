@@ -77,7 +77,7 @@ module.exports = {
     countDailyTask: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await dailyTaskModel.countDocuments()
+                await dailyTaskModel.countDocuments({ active: true })
             )
         });
     },

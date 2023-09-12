@@ -70,7 +70,7 @@ module.exports = {
     countAssignedProject: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await assignedProjectModel.countDocuments()
+                await assignedProjectModel.countDocuments({ active: true })
             )
         });
     },
