@@ -13,7 +13,7 @@ const dailyTaskModel = new mongoose.Schema({
     },
     project_category: {
         type: mongoose.Types.ObjectId,
-        ref: "project_category"
+        ref: "projectCategory"
     },
     date: {
         type: Date,
