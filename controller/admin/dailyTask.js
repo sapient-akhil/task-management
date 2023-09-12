@@ -5,7 +5,7 @@ module.exports = {
     allDailyTask: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);
-            const pageSize = parseInt(req.query.pageSize || 5);
+            const pageSize = parseInt(req.query.pageSize || 10);
             const total = await dailyTaskServices.countDailyTask();
             const pageCount = Math.ceil(total / pageSize)
             // const user = req.query.user
@@ -15,6 +15,7 @@ module.exports = {
             req_data.project = req_data.project ? JSON.parse(req_data.project) : []
             req_data.project_category = req_data.project_category ? JSON.parse(req_data.project_category) : []
             req_data.date = req_data.date ? JSON.parse(req_data.date) : null
+
             let filter = { active: true }
             const pageObj = { page_per: pageSize, page_no: page }
             // req_data.date = req_data.date ? JSON.parse(req_data.date) : null

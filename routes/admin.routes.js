@@ -62,7 +62,7 @@ router.delete("/projects/:id", verifyAccessTokenforAdmin, Validators.forParams(S
 const assignedProjectController = require("../controller/admin/assignedProject")
 
 router.post("/assigned-projects", verifyAccessTokenforAdmin, Validators.forReqBody(Schema.assignedProjectSchema), assignedProjectController.createAssignedProject)
-router.get("/assigned-projects", verifyAccessTokenforUsersAdmin, assignedProjectController.allAssignedProject)
+router.post("/get-assigned-projects", verifyAccessTokenforUsersAdmin, assignedProjectController.allAssignedProject)
 router.get("/assigned-projects/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), assignedProjectController.oneAssignedProject)
 router.put("/assigned-projects/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.assignedProjectSchema), assignedProjectController.updateAssignedProject)
 router.delete("/assigned-projects/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), assignedProjectController.deleteAssignedProject)

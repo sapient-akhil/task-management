@@ -23,7 +23,7 @@ module.exports = {
     allProjectCategory: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);
-            const pageSize = 10
+            const pageSize = parseInt(req.query.pageSize || 10);
             const total = await projectCategoryServices.countProjectCategory();
             const pageCount = Math.ceil(total / pageSize)
             const search = req.query.search

@@ -6,13 +6,22 @@ module.exports = {
         try {
 
             const page = parseInt(req.query.page || 1);
-            const pageSize = 10
+            const pageSize = parseInt(req.query.pageSize || 10);
             const total = await assignedProjectServices.countAssignedProject();
             const pageCount = Math.ceil(total / pageSize)
             // const search = req.query.search
-            const user = req.query.user
+            let user = req.query?.user
+            if (!user) {
+                user = {}
+            }
 
-            const all_assigned_project = await assignedProjectServices.findAllAssignedProject(page, pageSize, user)
+            let filter = { active: true }
+            const pageObj = { page_per: pageSize, page_no: page }
+
+            if (user && user.length) {
+                filter.user = { $in: user }
+            }
+            const all_assigned_project = await assignedProjectServices.findAllAssignedProject(filter, pageObj, user)
             if (!all_assigned_project.length) throw createError.NotFound("No any user found with providede ID project is found.")
 
             res.status(201).send({

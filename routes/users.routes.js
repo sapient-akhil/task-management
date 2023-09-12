@@ -62,15 +62,15 @@ router.get("/leave-status/:id", verifyAccessTokenforUsersAdmin, Validators.forPa
 // leaveType routes
 const leaveTypeController = require("../controller/users/leaveType")
 
-router.get("/leave-type", verifyAccessTokenforUsersAdmin, leaveTypeController.allLeaveType)
-router.get("/leave-type/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveTypeController.oneLeaveType)
+router.get("/leave-type",verifyAccessTokenforUsersAdmin, verifyAccessTokenforUsersAdmin, leaveTypeController.allLeaveType)
+router.get("/leave-type/:id",verifyAccessTokenforUsersAdmin, verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveTypeController.oneLeaveType)
 
 // leave routes
 const leaveController = require("../controller/users/leave")
 
-router.post("/leave", Validators.forReqBody(Schema.leaveSchema), leaveController.createLeave)
-router.get("/get-leave", leaveController.allLeave)
-router.get("/leave/:id", Validators.forParams(Schema.params), leaveController.oneLeave)
+router.post("/leave",verifyAccessTokenforUser, Validators.forReqBody(Schema.leaveSchema), leaveController.createLeave)
+router.get("/get-leave",verifyAccessTokenforUsersAdmin, leaveController.allLeave)
+router.get("/leave/:id",verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveController.oneLeave)
 
 module.exports = router;
 

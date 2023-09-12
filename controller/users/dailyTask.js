@@ -20,7 +20,7 @@ module.exports = {
     allDailyTask: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);
-            const pageSize = parseInt(req.query.pageSize || 5);
+            const pageSize = parseInt(req.query.pageSize || 10);
             const total = await dailyTaskServices.countDailyTask();
             const pageCount = Math.ceil(total / pageSize)
             const user = req.query.user

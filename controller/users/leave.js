@@ -20,7 +20,7 @@ module.exports = {
     allLeave: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);
-            const pageSize = 10
+            const pageSize = parseInt(req.query.pageSize || 10);
             const total = await leaveServices.countLeave();
             const pageCount = Math.ceil(total / pageSize)
 

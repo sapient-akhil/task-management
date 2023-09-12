@@ -1,14 +1,14 @@
 const assignedProjectModel = require("./assignedProject.model")
 
 module.exports = {
-    findAllAssignedProject: async (page, pageSize, filter, user) => {
+    findAllAssignedProject: async (filter, page, user) => {
         user.active = true
-        console.log("filter", filter)
-        console.log("page", page)
-        console.log("user", user)
+        // console.log("filter", filter)
+        // console.log("page", page)
+        // console.log("user", user)
         return new Promise(async (resolve) => {
             return resolve(
-                await assignedProjectModel.find(filter, user)
+                await assignedProjectModel.find(filter)
                     .populate("project"
                         //{
                         //path: "project",
@@ -37,8 +37,8 @@ module.exports = {
                         select: "_id username email name phoneNumber designation user_role technology_skills active"
                     })
                     .populate("project_category")
-                    .limit(pageSize * 1)
-                    .skip((page - 1) * pageSize)
+                    .limit(page.page_per * 1)
+                    .skip((page.page_no - 1) * page.page_per)
                     .sort({ createdAt: -1 })
             )
         });
