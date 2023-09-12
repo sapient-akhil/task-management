@@ -15,19 +15,28 @@ module.exports = {
                 user = {}
             }
 
+            // let hh = 0;
+            // let mm = 0;
+            // daily_task.forEach((item) => {
+            //     hh += item?.hours;
+            //     mm += item?.minutes;
+            // });
+            // const totalTime = await calculateHourAndMinutes(hh, mm);
+            // console.log("data.totalTime", totalTime)
+
             let filter = { active: true }
             const pageObj = { page_per: pageSize, page_no: page }
 
             if (user && user.length) {
                 filter.user = { $in: user }
             }
-            const all_assigned_project = await assignedProjectServices.findAllAssignedProject(filter, pageObj, user)
-            if (!all_assigned_project.length) throw createError.NotFound("No any user found with providede ID project is found.")
+            const allAssignedProject = await assignedProjectServices.findAllAssignedProject(filter, pageObj, user)
+            if (!allAssignedProject.length) throw createError.NotFound("No any user found with providede ID project is found.")
 
             res.status(201).send({
                 success: true,
                 message: "All assigned project is fetch successfully.",
-                data: all_assigned_project,
+                data: allAssignedProject,
                 meta: {
                     pagination: {
                         page, pageSize, pageCount, total
@@ -43,13 +52,13 @@ module.exports = {
 
             const { id } = req.params
 
-            const assigned_project = await assignedProjectServices.findByAssignedProjectId(id)
-            if (!assigned_project) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const assignedProject = await assignedProjectServices.findByAssignedProjectId(id)
+            if (!assignedProject) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
                 message: "One assigned project is fetch successfully.",
-                data: assigned_project
+                data: assignedProject
             })
         } catch (error) {
             next(error)

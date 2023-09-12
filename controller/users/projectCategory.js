@@ -9,12 +9,12 @@ module.exports = {
             const total = await projectCategoryServices.countProjectCategory();
             const pageCount = Math.ceil(total / pageSize)
             const search = req.query.search
-            const project_category = await projectCategoryServices.findAllProjectCategory(page, pageSize, search)
+            const projectCategory = await projectCategoryServices.findAllProjectCategory(page, pageSize, search)
 
             res.status(201).send({
                 success: true,
-                message: "All project_category data is fetch successfully.",
-                data: project_category,
+                message: "All project category data is fetch successfully.",
+                data: projectCategory,
                 meta: {
                     pagination: {
                         page, pageSize, pageCount, total
@@ -30,13 +30,13 @@ module.exports = {
 
             const { id } = req.params
 
-            const project_category = await projectCategoryServices.findByProjectCategoryId(id)
-            if (!project_category) throw createError.NotFound("The project_categoryData with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const projectCategory = await projectCategoryServices.findByProjectCategoryId(id)
+            if (!projectCategory) throw createError.NotFound("The project category data with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "One project_category data is fetch successfully.",
-                data: project_category
+                message: "One project category data is fetch successfully.",
+                data: projectCategory
             })
         } catch (error) {
             next(error)

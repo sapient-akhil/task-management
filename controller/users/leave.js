@@ -61,11 +61,11 @@ module.exports = {
             const { id } = req.params
 
             const leave = await leaveServices.findByLeaveId(id)
-            if (!leave) throw createError.NotFound("The Leave Data with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leave) throw createError.NotFound("The leave data with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "One Leave data is fetch successfully.",
+                message: "One leave data is fetch successfully.",
                 data: leave
             })
         } catch (error) {

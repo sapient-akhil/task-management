@@ -7,7 +7,7 @@ module.exports = {
             const req_data = req.body;
 
             const role = await roleServices.findRole(req_data.role);
-            if (role) throw createError.Conflict("this role already define.")
+            if (role) throw createError.Conflict("This role already exist.")
 
             const roleData = await roleServices.createRole(req_data)
 
@@ -58,13 +58,13 @@ module.exports = {
             const req_data = req.body
 
             const role = await roleServices.findRole(req_data.role);
-            if (role) throw createError.Conflict("this role already define.")
+            if (role) throw createError.Conflict("This role already exist.")
 
             const roleData = await roleServices.updateRole(id, req_data)
 
             res.status(201).json({
                 success: true,
-                message: "role data is update successfully.",
+                message: "Role data is update successfully.",
                 data: roleData
             });
         } catch (error) {
@@ -81,7 +81,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "roleData is delete successfully",
+                message: "Role data is delete successfully",
                 data: roleData
             })
         } catch (error) {

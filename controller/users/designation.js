@@ -9,7 +9,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "get all designationData",
+                message: "All designation data is fetch successfully.",
                 data: alldesignationData
             })
         } catch (error) {
@@ -26,7 +26,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "get one designationData",
+                message: "One designation data is fetch successfully.",
                 data: designationData
             })
         } catch (error) {

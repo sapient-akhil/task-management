@@ -1,4 +1,5 @@
 const assignedProjectModel = require("./assignedProject.model")
+const dailyTaskModel = require("../dailyTask/dailyTask.model")
 
 module.exports = {
     findAllAssignedProject: async (filter, page, user) => {
@@ -73,6 +74,14 @@ module.exports = {
                 await assignedProjectModel.countDocuments({ active: true })
             )
         });
+    },
+    totalTime: async (project, date, user) => {
+        try {
+            const tasks = await dailyTaskModel.countDocuments({ project, date, user });
+            return tasks;
+        } catch (error) {
+            throw error;
+        }
     },
     createAssignedProject: async (req_data) => {
         return new Promise(async (resolve) => {

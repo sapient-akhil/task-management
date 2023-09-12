@@ -21,11 +21,11 @@ module.exports = {
             const { id } = req.params
 
             const leaveStatus = await leaveStatusServices.findByLeaveStatusId(id)
-            if (!leaveStatus) throw createError.NotFound("The LeaveStatus with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leaveStatus) throw createError.NotFound("The leave status with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "One LeaveStatus is fetch successfully.",
+                message: "One leave status is fetch successfully.",
                 data: leaveStatus
             })
         } catch (error) {

@@ -6,15 +6,15 @@ module.exports = {
         try {
             const req_data = req.body;
 
-            const project_category = await projectCategoryServices.findProjectCategory(req_data.name);
-            if (project_category) throw createError.Conflict("project_category already define.")
+            const projectCategory = await projectCategoryServices.findProjectCategory(req_data.name);
+            if (projectCategory) throw createError.Conflict("Project category already exist.")
 
-            const project_category_data = await projectCategoryServices.createProjectCategory(req_data)
+            const projectCategoryData = await projectCategoryServices.createProjectCategory(req_data)
 
             res.status(201).send({
                 success: true,
-                message: "project_category is successfully created.",
-                data: project_category_data
+                message: "Project category is successfully created.",
+                data: projectCategoryData
             })
         } catch (error) {
             next(error)
@@ -27,12 +27,12 @@ module.exports = {
             const total = await projectCategoryServices.countProjectCategory();
             const pageCount = Math.ceil(total / pageSize)
             const search = req.query.search
-            const project_category = await projectCategoryServices.findAllProjectCategory(page, pageSize, search)
+            const projectCategory = await projectCategoryServices.findAllProjectCategory(page, pageSize, search)
 
             res.status(201).send({
                 success: true,
-                message: "All project_category data is fetch successfully.",
-                data: project_category,
+                message: "All project category data is fetch successfully.",
+                data: projectCategory,
                 meta: {
                     pagination: {
                         page, pageSize, pageCount, total
@@ -48,13 +48,13 @@ module.exports = {
 
             const { id } = req.params
 
-            const project_category = await projectCategoryServices.findByProjectCategoryId(id)
-            if (!project_category) throw createError.NotFound("The project_categoryData with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const projectCategory = await projectCategoryServices.findByProjectCategoryId(id)
+            if (!projectCategory) throw createError.NotFound("The project category with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "One project_category data is fetch successfully.",
-                data: project_category
+                message: "One project category data is fetch successfully.",
+                data: projectCategory
             })
         } catch (error) {
             next(error)
@@ -65,15 +65,15 @@ module.exports = {
             const req_data = req.body;
             const id = req.params.id
 
-            const project_category = await projectCategoryServices.findProjectCategory(req_data.name);
-            if (project_category) throw createError.Conflict("project_category already define.")
+            const projectCategory = await projectCategoryServices.findProjectCategory(req_data.name);
+            if (projectCategory) throw createError.Conflict("Project category already exist.")
 
-            const project_category_data = await projectCategoryServices.updateProjectCategory(id, req_data)
+            const projectCategoryData = await projectCategoryServices.updateProjectCategory(id, req_data)
 
             res.status(201).send({
                 success: true,
-                message: "project_category is update successfully.",
-                data: project_category_data
+                message: "Project category is update successfully.",
+                data: projectCategoryData
             })
         } catch (error) {
             next(error)
@@ -84,13 +84,13 @@ module.exports = {
 
             const { id } = req.params
 
-            const project_category = await projectCategoryServices.deleteProjectCategory(id)
-            if (!project_category) throw createError.NotFound("The project_categoryData with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const projectCategory = await projectCategoryServices.deleteProjectCategory(id)
+            if (!projectCategory) throw createError.NotFound("The project category data with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "project_category delete successfully",
-                data: project_category
+                message: "Project category delete successfully",
+                data: projectCategory
             })
         } catch (error) {
             next(error)

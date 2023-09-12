@@ -13,7 +13,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "LeaveStatus is created successfully.",
+                message: "Leave status is created successfully.",
                 data: leaveStatusData
             })
         } catch (error) {
@@ -27,7 +27,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "All leaveStatus is fetch successfully.",
+                message: "All leave status is fetch successfully.",
                 data: leaveStatus
             })
         } catch (error) {
@@ -40,11 +40,11 @@ module.exports = {
             const { id } = req.params
 
             const leaveStatus = await leaveStatusServices.findByLeaveStatusId(id)
-            if (!leaveStatus) throw createError.NotFound("The LeaveStatus with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leaveStatus) throw createError.NotFound("The leave status with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "One LeaveStatus is fetch successfully.",
+                message: "One leave status is fetch successfully.",
                 data: leaveStatus
             })
         } catch (error) {
@@ -60,11 +60,11 @@ module.exports = {
             if (leaveStatus) throw createError.Conflict("This leave status is already exists.")
 
             const leaveStatusData = await leaveStatusServices.updateLeaveStatus(id, req_data)
-            if (!leaveStatusData.length) throw createError.NotFound("The LeaveStatus with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leaveStatusData.length) throw createError.NotFound("The leave status with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "LeaveStatus is update successfully.",
+                message: "Leave status is update successfully.",
                 data: leaveStatus
             })
         } catch (error) {
@@ -77,11 +77,11 @@ module.exports = {
             const { id } = req.params
 
             const leaveStatus = await leaveStatusServices.deleteLeaveStatus(id)
-            if (!leaveStatus) throw createError.NotFound("The LeaveStatus with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leaveStatus) throw createError.NotFound("The leave status with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "LeaveStatus is delete successfully",
+                message: "Leave status is delete successfully",
                 data: leaveStatus
             })
         } catch (error) {

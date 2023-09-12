@@ -47,15 +47,15 @@ module.exports = {
             const search = req.query.search
 
             const employeeId = await roleServices.findRoleId("employee")
-            if (!employeeId) throw createError.NotFound("No any employeeId is found.")
-            console.log("employeeId", employeeId._id)
+            if (!employeeId) throw createError.NotFound("No any employee id is found.")
+            // console.log("employeeId", employeeId._id)
 
             const users = await usersServices.findAllData(employeeId._id, page, pageSize, search)
-            if (!users) throw createError.NotFound("No any userData is found.")
+            if (!users) throw createError.NotFound("No any user is found.")
 
             res.status(201).send({
                 success: true,
-                message: "All userData is fetch successfully.",
+                message: "All user data is fetch successfully.",
                 data: users,
                 meta: {
                     pagination: {
@@ -77,7 +77,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "One userData is fetch successfully.",
+                message: "One user data is fetch successfully.",
                 data: usersData
             })
         } catch (error) {

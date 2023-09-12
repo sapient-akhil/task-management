@@ -27,7 +27,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "All designationData is fetch successfully.",
+                message: "All designation data is fetch successfully.",
                 data: alldesignationData
             })
         } catch (error) {
@@ -44,7 +44,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "One designationData is fetch successfully.",
+                message: "One designation data is fetch successfully.",
                 data: designationData
             })
         } catch (error) {
@@ -65,7 +65,7 @@ module.exports = {
 
             res.status(201).json({
                 success: true,
-                message: "DesignationData is update successfully.",
+                message: "Designation data is update successfully.",
                 data: designationData
             });
         } catch (error) {
@@ -82,7 +82,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "DesignationData is delete successfully.",
+                message: "Designation data is delete successfully.",
                 data: designationData
             })
         } catch (error) {

@@ -9,7 +9,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "All LeaveType is fetch successfully.",
+                message: "All leave type is fetch successfully.",
                 data: leaveType
             })
         } catch (error) {
@@ -18,15 +18,15 @@ module.exports = {
     },
     oneLeaveType: async (req, res, next) => {
         try {
- 
+
             const { id } = req.params
 
             const leaveType = await leaveTypeServices.findByLeaveTypeId(id)
-            if (!leaveType) throw createError.NotFound("The LeaveType with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leaveType) throw createError.NotFound("The leave type with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "One LeaveType is fetch successfully.",
+                message: "One leave type is fetch successfully.",
                 data: leaveType
             })
         } catch (error) {

@@ -7,13 +7,13 @@ module.exports = {
             const req_data = req.body;
 
             const technologySkill = await technologySkillsServices.findTechnologySkills(req_data.technology_skills);
-            if (technologySkill) throw createError.Conflict("Technology Skill Already Exists")
+            if (technologySkill) throw createError.Conflict("Technology skill already exist")
 
             const technologySkillsData = await technologySkillsServices.createTechnologySkills(req_data)
 
             res.status(201).send({
                 success: true,
-                message: "technology skill is created successfully.",
+                message: "Technology skill is created successfully.",
                 data: technologySkillsData
             })
         } catch (error) {
@@ -44,7 +44,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "One technology_skill is fetch successfully.",
+                message: "One technology skill is fetch successfully.",
                 data: technologySkills
             })
         } catch (error) {
@@ -57,14 +57,14 @@ module.exports = {
             const id = req.params.id
 
             const technology_skill = await technologySkillsServices.findTechnologySkills(req_data.technology_skills);
-            if (technology_skill) throw createError.Conflict("technologySkills already define.")
+            if (technology_skill) throw createError.Conflict("Technology skills already exist.")
 
             const technologySkills_data = await technologySkillsServices.updateTechnologySkills(id, req_data)
             if (!technology_skill.length) throw createError.NotFound("The technology skill with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "technology_skill is update successfully.",
+                message: "Technology skill is update successfully.",
                 data: technologySkills_data
             })
         } catch (error) {
@@ -81,7 +81,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "technology_skill is delete successfully",
+                message: "Technology skill is delete successfully",
                 data: technology_skill
             })
         } catch (error) {

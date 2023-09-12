@@ -47,14 +47,14 @@ module.exports = {
                 filter.project = { $in: req_data.project }
             }
 
-            const all_assignedProject = await assignedProjectServices.findAllAssignedProject(filter, pageObj, user)
-            if (!all_assignedProject) throw createError.NotFound("No any assigned project is found.")
-            console.log("all_assignedProject : ", all_assignedProject)
+            const allAssignedProject = await assignedProjectServices.findAllAssignedProject(filter, pageObj, user)
+            if (!allAssignedProject) throw createError.NotFound("No any assigned project is found.")
+            console.log("allAssignedProject : ", allAssignedProject)
 
             res.status(201).send({
                 success: true,
                 message: "All assigned project is fetch successfully.",
-                data: all_assignedProject,
+                data: allAssignedProject,
                 meta: {
                     pagination: {
                         page, pageSize, pageCount, total

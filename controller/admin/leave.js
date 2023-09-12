@@ -10,7 +10,7 @@ module.exports = {
             const pageCount = Math.ceil(total / pageSize)
 
             const req_data = req.body
-            
+
             req_data.user = req_data.user ? JSON.parse(req_data.user) : []
             req_data.leaveStatus = req_data.leaveStatus ? JSON.parse(req_data.leaveStatus) : []
             req_data.fromDate = req_data.fromDate ? JSON.parse(req_data.fromDate) : []
@@ -31,7 +31,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "All Leave data is fetch successfully.",
+                message: "All leave data is fetch successfully.",
                 data: leave,
                 meta: {
                     pagination: {
@@ -49,11 +49,11 @@ module.exports = {
             const { id } = req.params
 
             const leave = await leaveServices.findByLeaveId(id)
-            if (!leave) throw createError.NotFound("The Leave Data with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leave) throw createError.NotFound("The leave Data with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "One Leave data is fetch successfully.",
+                message: "One leave data is fetch successfully.",
                 data: leave
             })
         } catch (error) {
@@ -82,7 +82,7 @@ module.exports = {
             const { id } = req.params
 
             const leave = await leaveServices.deleteLeave(id)
-            if (!leave) throw createError.NotFound("The Leave data with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leave) throw createError.NotFound("The leave data with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,

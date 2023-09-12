@@ -1,5 +1,5 @@
 const createError = require("http-errors")
-const { usersServices } = require("../../services/index")
+const { usersServices, roleServices } = require("../../services/index")
 const Jwt = require("jsonwebtoken")
 const JWTSecretKey = process.env.JWT_SECRET_KEY;
 const bcrypt = require("bcrypt")
@@ -39,7 +39,10 @@ module.exports = {
             const pageCount = Math.ceil(total / pageSize)
             const search = req.query.search
 
-            const users = await usersServices.findAllData(page, pageSize, search)
+            const employeeId = await roleServices.findRoleId("employee")
+            if (!employeeId) throw createError.NotFound("No any employee id is found.")
+
+            const users = await usersServices.findAllData(employeeId._id, page, pageSize, search)
             if (!users) throw createError.NotFound("The users with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({

@@ -13,7 +13,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "LeaveType is created successfully.",
+                message: "Leave type is created successfully.",
                 data: leaveTypeData
             })
         } catch (error) {
@@ -27,7 +27,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "All LeaveType is fetch successfully.",
+                message: "All Leave type is fetch successfully.",
                 data: leaveType
             })
         } catch (error) {
@@ -40,11 +40,11 @@ module.exports = {
             const { id } = req.params
 
             const leaveType = await leaveTypeServices.findByLeaveTypeId(id)
-            if (!leaveType) throw createError.NotFound("The LeaveType with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leaveType) throw createError.NotFound("The leave type with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "One LeaveType is fetch successfully.",
+                message: "One leave type is fetch successfully.",
                 data: leaveType
             })
         } catch (error) {
@@ -60,11 +60,11 @@ module.exports = {
             if (leaveType) throw createError.Conflict("This leave type is already exists.")
 
             const leaveTypeData = await leaveTypeServices.updateLeaveType(id, req_data)
-            if (!leaveTypeData.length) throw createError.NotFound("The LeaveType with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leaveTypeData.length) throw createError.NotFound("The leave type with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "LeaveType is update successfully.",
+                message: "Leave type is update successfully.",
                 data: leaveTypeData
             })
         } catch (error) {
@@ -77,11 +77,11 @@ module.exports = {
             const { id } = req.params
 
             const leaveType = await leaveTypeServices.deleteLeaveType(id)
-            if (!leaveType) throw createError.NotFound("The LeaveType with the provided ID could not be found. Please ensure the ID is correct and try again")
+            if (!leaveType) throw createError.NotFound("The leave type with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "LeaveType is delete successfully",
+                message: "Leave type is delete successfully",
                 data: leaveType
             })
         } catch (error) {
