@@ -31,8 +31,22 @@ module.exports = {
             if (!user) {
                 user = {}
             }
+            const req_data = req.body
 
-            const all_assignedProject = await assignedProjectServices.findAllAssignedProject(page, pageSize, user)
+            req_data.user = req_data.user ? JSON.parse(req_data.user) : []
+            req_data.project = req_data.project ? JSON.parse(req_data.project) : []
+
+            let filter = { active: true }
+            // const pageObj = { page_per: pageSize, page_no: page }
+
+            if (req_data.user && req_data.user.length) {
+                filter.user = { $in: req_data.user }
+            }
+            if (req_data.project && req_data.project.length) {
+                filter.project = { $in: req_data.project }
+            }
+
+            const all_assignedProject = await assignedProjectServices.findAllAssignedProject(page, pageSize, filter, user)
             if (!all_assignedProject) throw createError.NotFound("No any assigned project is found.")
 
             res.status(201).send({

@@ -1,12 +1,14 @@
 const assignedProjectModel = require("./assignedProject.model")
 
 module.exports = {
-    findAllAssignedProject: async (page, pageSize, user) => {
+    findAllAssignedProject: async (page, pageSize, filter, user) => {
         user.active = true
+        console.log("filter", filter)
+        console.log("page", page)
         console.log("user", user)
         return new Promise(async (resolve) => {
             return resolve(
-                await assignedProjectModel.find(user)
+                await assignedProjectModel.find(filter, user)
                     .populate("project"
                         //{
                         //path: "project",

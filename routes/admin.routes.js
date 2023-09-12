@@ -70,7 +70,7 @@ router.delete("/assigned-projects/:id", verifyAccessTokenforAdmin, Validators.fo
 // daily_task routes
 const dailyTaskController = require("../controller/admin/dailyTask")
 
-router.post("/daily-tasks", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.dailyTaskSchema), dailyTaskController.allDailyTask)
+router.post("/daily-tasks", verifyAccessTokenforUsersAdmin, dailyTaskController.allDailyTask)
 router.get("/daily-tasks/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), dailyTaskController.oneDailyTask)
 router.put("/daily-tasks/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.dailyTaskSchema), dailyTaskController.updateDailyTask)
 router.delete("/daily-tasks/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), dailyTaskController.deleteDailyTask)
