@@ -24,10 +24,10 @@ module.exports = {
             )
         });
     },
-    countUsers: async () => {
+    countUsers: async (employeeId) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await usersModel.countDocuments({ active: true })
+                await usersModel.countDocuments({ user_role: employeeId, active: true })
             )
         });
     },

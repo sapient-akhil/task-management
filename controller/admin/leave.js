@@ -68,6 +68,7 @@ module.exports = {
             const id = req.params.id
 
             const leave = await leaveServices.updateLeave(id, req_data)
+            if (!leave) throw createError.NotFound("The leave data with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,

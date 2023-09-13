@@ -98,7 +98,7 @@ const leaveController = require("../controller/admin/leave")
 
 router.post("/leave", leaveController.allLeave)
 router.get("/leave/:id", Validators.forParams(Schema.params), leaveController.oneLeave)
-router.put("/leave/:id", Validators.forParams(Schema.params), Validators.forReqBody(Schema.leaveSchema), Validators.forReqBody(Schema.leaveSchema), leaveController.updateLeave)
+router.patch("/leave/:id", Validators.forParams(Schema.params), leaveController.updateLeave)
 router.delete("/leave/:id", Validators.forParams(Schema.params), leaveController.deleteLeave)
 
 module.exports = router;
