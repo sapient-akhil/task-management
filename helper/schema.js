@@ -84,7 +84,7 @@ module.exports = {
         fromDate: validate.reqDate,
         toDate: validate.reqDate,
         leaveType: validate.reqId,
-        leaveStatus: validate.reqId,
+        leaveStatus: validate.string,
         user: validate.reqId
     })
 }

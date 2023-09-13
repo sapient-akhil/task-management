@@ -6,8 +6,7 @@ module.exports = {
         try {
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
-            const total = await dailyTaskServices.countDailyTask();
-            const pageCount = Math.ceil(total / pageSize)
+            
             // const user = req.query.user
             const req_data = req.body
 
@@ -31,6 +30,10 @@ module.exports = {
             if (req_data.date && req_data.date.length === 2) {
                 filter.date = { $gte: new Date(req_data.date[0]), $lte: new Date(req_data.date[1]) }
             }
+
+            const total = await dailyTaskServices.countDailyTask(filter);
+            const pageCount = Math.ceil(total / pageSize)
+
             const dailyTask = await dailyTaskServices.findAllDailyTask(filter, pageObj)
             console.log("dailyTask : ", dailyTask)
 

@@ -23,9 +23,10 @@ const leaveModel = new mongoose.Schema({
         ref: "leaveType"
     },
     leaveStatus: {
-        type: mongoose.Types.ObjectId,
-        required: [true, "leaveStatus are require"],
-        ref: "leaveStatus"
+        type: String,
+        default: "pending"
+        // required: [true, "leaveStatus are require"],
+        // ref: "leaveStatus"
     },
     user: {
         type: mongoose.Types.ObjectId,

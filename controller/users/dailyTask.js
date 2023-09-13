@@ -32,8 +32,7 @@ module.exports = {
         try {
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
-            const total = await dailyTaskServices.countDailyTask();
-            const pageCount = Math.ceil(total / pageSize)
+           
             const user = req.query.user
             const req_data = req.body
 
@@ -63,6 +62,10 @@ module.exports = {
                 hh += item?.hours;
                 mm += item?.minutes;
             });
+
+            const total = await dailyTaskServices.countDailyTask(filter);
+            const pageCount = Math.ceil(total / pageSize)
+
             const totalTime = await calculateHourAndMinutes(hh, mm);
             console.log("data.totalTime", totalTime)
 

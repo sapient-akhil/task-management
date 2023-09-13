@@ -4,12 +4,12 @@ module.exports = {
     findAllLeave: async (filter, page) => {
         return new Promise(async (resolve) => {
             // console.log("filter", filter)
-            // console.log("page", page)
+            // console.log("user", user)
 
             return resolve(
                 await leaveModel.find(filter)
                     .populate("leaveType", { __v: 0 })
-                    .populate("leaveStatus", { __v: 0 })
+                    // .populate("leaveStatus", { __v: 0 })
                     .populate({
                         path: "user",
                         populate: [
@@ -36,7 +36,7 @@ module.exports = {
             return resolve(
                 await leaveModel.findOne({ _id }, { __v: 0 })
                     .populate("leaveType", { __v: 0 })
-                    .populate("leaveStatus", { __v: 0 })
+                    // .populate("leaveStatus", { __v: 0 })
                     .populate({
                         path: "user",
                         populate: {
@@ -61,10 +61,11 @@ module.exports = {
             );
         });
     },
-    countLeave: async () => {
+    countLeave: async (filter) => {
         return new Promise(async (resolve) => {
+            // console.log("countLeave", filter)
             return resolve(
-                await leaveModel.countDocuments({ active: true })
+                await leaveModel.countDocuments(filter)
             )
         });
     },

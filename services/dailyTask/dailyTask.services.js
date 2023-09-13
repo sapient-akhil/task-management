@@ -11,22 +11,22 @@ module.exports = {
             // console.log("findQuery : ", findQuery)
             return resolve(
                 await dailyTaskModel.find(filter)
-                    // .populate("project")
-                    // .populate({
-                    //     path: "user",
-                    //     populate: [
-                    //         {
-                    //             path: "technology_skills",
-                    //         },
-                    //         {
-                    //             path: "user_role",
-                    //         },
-                    //         {
-                    //             path: "designation",
-                    //         }
-                    //     ],
-                    //     select: "_id username email name phoneNumber designation user_role technology_skills active"
-                    // }).populate("project_category")
+                    .populate("project")
+                    .populate({
+                        path: "user",
+                        populate: [
+                            {
+                                path: "technology_skills",
+                            },
+                            {
+                                path: "user_role",
+                            },
+                            {
+                                path: "designation",
+                            }
+                        ],
+                        select: "_id username email name phoneNumber designation user_role technology_skills active"
+                    }).populate("project_category")
                     .limit(page.page_per * 1)
                     .skip((page.page_no - 1) * page.page_per)
                     .sort({ createdAt: -1 })
@@ -74,10 +74,10 @@ module.exports = {
             );
         });
     },
-    countDailyTask: async () => {
+    countDailyTask: async (filter) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await dailyTaskModel.countDocuments({ active: true })
+                await dailyTaskModel.countDocuments(filter)
             )
         });
     },

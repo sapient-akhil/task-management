@@ -6,13 +6,11 @@ module.exports = {
         try {
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
-            const total = await leaveServices.countLeave();
-            const pageCount = Math.ceil(total / pageSize)
 
             const req_data = req.body
 
             req_data.user = req_data.user ? JSON.parse(req_data.user) : []
-            req_data.leaveStatus = req_data.leaveStatus ? JSON.parse(req_data.leaveStatus) : []
+            // req_data.leaveStatus = req_data.leaveStatus ? JSON.parse(req_data.leaveStatus) : []
             req_data.fromDate = req_data.fromDate ? JSON.parse(req_data.fromDate) : []
 
             let filter = { active: true }
@@ -26,8 +24,12 @@ module.exports = {
             if (req_data.fromDate && req_data.fromDate.length === 2) {
                 filter.fromDate = { $gte: new Date(req_data.fromDate[0]), $lte: new Date(req_data.fromDate[1]) }
             }
+
+            const total = await leaveServices.countLeave(filter);
+            const pageCount = Math.ceil(total / pageSize)
+
             const leave = await leaveServices.findAllLeave(filter, pageObj)
-            console.log("leave : ", leave)
+            // console.log("leave : ", leave)
 
             res.status(201).send({
                 success: true,

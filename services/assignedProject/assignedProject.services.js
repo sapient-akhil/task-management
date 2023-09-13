@@ -10,15 +10,14 @@ module.exports = {
         return new Promise(async (resolve) => {
             return resolve(
                 await assignedProjectModel.find(filter)
-                    .populate("project"
-                        //{
-                        //path: "project",
-                        // populate: {
-                        //     path: "technology_skills",
-                        //     model: "technologySkills"
-                        // }
-                        //  }
-                    )
+                    .populate("project")
+                    //{
+                    //path: "project",
+                    // populate: {
+                    //     path: "technology_skills",
+                    //     model: "technologySkills"
+                    // }
+                    //  }
                     .populate({
                         path: "user",
                         populate: [
@@ -68,10 +67,10 @@ module.exports = {
             )
         });
     },
-    countAssignedProject: async () => {
+    countAssignedProject: async (filter) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await assignedProjectModel.countDocuments({ active: true })
+                await assignedProjectModel.countDocuments(filter)
             )
         });
     },

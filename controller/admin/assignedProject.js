@@ -25,8 +25,7 @@ module.exports = {
 
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
-            const total = await assignedProjectServices.countAssignedProject();
-            const pageCount = Math.ceil(total / pageSize)
+
             const req_data = req.body
 
             let user = req.body?.user
@@ -46,10 +45,15 @@ module.exports = {
             if (req_data.project && req_data.project.length) {
                 filter.project = { $in: req_data.project }
             }
+            
+            const total = await assignedProjectServices.countAssignedProject(filter);
+            const pageCount = Math.ceil(total / pageSize)
 
             const allAssignedProject = await assignedProjectServices.findAllAssignedProject(filter, pageObj, user)
             if (!allAssignedProject) throw createError.NotFound("No any assigned project is found.")
             console.log("allAssignedProject : ", allAssignedProject)
+
+           
 
             res.status(201).send({
                 success: true,
