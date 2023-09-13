@@ -10,7 +10,7 @@ module.exports = {
             const req_data = req.body
 
             req_data.user = req_data.user ? JSON.parse(req_data.user) : []
-            // req_data.leaveStatus = req_data.leaveStatus ? JSON.parse(req_data.leaveStatus) : []
+            req_data.leaveStatus = req_data.leaveStatus ? JSON.parse(req_data.leaveStatus) : []
             req_data.fromDate = req_data.fromDate ? JSON.parse(req_data.fromDate) : []
 
             let filter = { active: true }
