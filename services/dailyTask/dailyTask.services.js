@@ -27,9 +27,9 @@ module.exports = {
                         ],
                         select: "_id username email name phoneNumber designation user_role technology_skills active"
                     }).populate("project_category")
-                    .limit(page.page_per * 1)
+                    .sort({ date: -1 })
                     .skip((page.page_no - 1) * page.page_per)
-                    .sort({ createdAt: -1 })
+                    .limit(page.page_per * 1)
             )
 
         });

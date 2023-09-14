@@ -6,9 +6,10 @@ module.exports = {
             return resolve(
                 await projectCategoryModel.find(
                     search ? { active: true, name: { $regex: search, $options: 'i' } } : { active: true }, { __v: 0 })
-                    .limit(pageSize * 1)
-                    .skip((page - 1) * pageSize)
                     .sort({ createdAt: -1 })
+                    .skip((page - 1) * pageSize)
+                    .limit(pageSize * 1)
+
             )
         });
     },

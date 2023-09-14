@@ -25,9 +25,9 @@ module.exports = {
                         ],
                         select: "_id username email name phoneNumber designation user_role technology_skills active"
                     })
-                    .limit(page.page_per * 1)
+                    .sort({ fromDate: -1 })
                     .skip((page.page_no - 1) * page.page_per)
-                    .sort({ createdAt: -1 })
+                    .limit(page.page_per * 1)
             )
         });
     },
@@ -103,3 +103,22 @@ module.exports = {
         });
     }
 }
+
+
+
+// db.getCollection("assignedprojects").aggregate([{ $unwind: "$project" }, { $group: { _id: { projcetId: "$project", user: "$user" }, startDate: { $first: "$startDate" }, endDate: { $first: "$endDate" } } },
+// {
+//     $lookup: {
+//         from: "dailytasks",
+//         let: { projectId: "$_id.projectId", userId: "$_id.user" },
+//         pipeline: [
+//             { $match: { $expr: { $and: [{ $eq: ["$project", "$$projectId"] }, { $eq: ["$user", "$$userId"] }] } } },
+//             { $group: { _id: { project: "$project", user: "$user" }, total: { $sum: "$hours" }, totalMinutes: { $sum: "$minutes" } } },
+//         ],
+//         as: "data"
+//     }
+// }
+// ])
+
+
+

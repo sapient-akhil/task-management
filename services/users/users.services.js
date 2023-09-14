@@ -18,14 +18,16 @@ module.exports = {
                     .populate("designation", { __v: 0 })
                     .populate("user_role", { __v: 0 })
                     .populate("technology_skills", { __v: 0 })
-                    .limit(pageSize * 1)
+                    .sort({ joinDate: -1 })
                     .skip((page - 1) * pageSize)
-                    .sort({ createdAt: -1 })
+                    .limit(pageSize * 1)
+
             )
         });
     },
     countUsers: async (employeeId) => {
         return new Promise(async (resolve) => {
+            console.log("employeeId", employeeId)
             return resolve(
                 await usersModel.countDocuments({ user_role: employeeId, active: true })
             )

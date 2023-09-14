@@ -35,12 +35,14 @@ module.exports = {
         try {
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
-            const total = await usersModel.countDocuments();
-            const pageCount = Math.ceil(total / pageSize)
+
             const search = req.query.search
 
             const employeeId = await roleServices.findRoleId("employee")
             if (!employeeId) throw createError.NotFound("No any employee id is found.")
+
+            const total = await usersServices.countUsers(employeeId);
+            const pageCount = Math.ceil(total / pageSize)
 
             const users = await usersServices.findAllData(employeeId._id, page, pageSize, search)
             if (!users) throw createError.NotFound("The users with the provided ID could not be found. Please ensure the ID is correct and try again")

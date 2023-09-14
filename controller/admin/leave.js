@@ -4,7 +4,7 @@ const { leaveServices } = require("../../services/index")
 module.exports = {
     allLeave: async (req, res, next) => {
         try {
-            const page = parseInt(req.query.page || 1);
+            const page = parseInt(req.query.page);
             const pageSize = parseInt(req.query.pageSize || 10);
 
             const req_data = req.body
