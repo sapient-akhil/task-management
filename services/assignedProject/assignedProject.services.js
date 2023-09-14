@@ -67,9 +67,10 @@ module.exports = {
     //         )
     //     });
     // },
-    findAllAssignedProject: async (filter) => {
+    findAllAssignedProject: async (filter, user) => {
         // user.active = true
         // console.log("user", user)
+        console.log("queryUser", user)
         return new Promise(async (resolve) => {
             return resolve(
                 await assignedProjectModel.aggregate(
@@ -79,7 +80,7 @@ module.exports = {
                         },
                         { $match: { $expr: { $and: filter } } },
                         {
-                            $group: {    
+                            $group: {
                                 _id: {
                                     projectId: "$project",
                                     user: "$user",
@@ -88,6 +89,7 @@ module.exports = {
                                 endDate: { $first: "$endDate" },
                             },
                         },
+                        { $match: { $expr: { $and: "$_id.user" } } },
                         {
                             $lookup: {
                                 from: "dailytasks",
@@ -120,16 +122,16 @@ module.exports = {
                                         $addFields: {
                                             totalHour: {
                                                 $add: [
-                                                    "$totalHour", // Existing total hours
+                                                    "$totalHour",
                                                     {
                                                         $floor: {
-                                                            $divide: ["$totalMinutes", 60] // Convert total minutes to hours
+                                                            $divide: ["$totalMinutes", 60]
                                                         }
                                                     }
                                                 ]
                                             },
                                             totalMinutes: {
-                                                $mod: ["$totalMinutes", 60] // Calculate remaining minutes
+                                                $mod: ["$totalMinutes", 60]
                                             }
                                         }
                                     }
@@ -153,10 +155,45 @@ module.exports = {
                                 as: "userName",
                             },
                         },
+                        {
+                            $unwind: "$data",
+                        },
+                        {
+                            $unwind: "$projectName",
+                        },
+                        {
+                            $unwind: "$userName",
+                        },
+                        {
+                            $project: {
+                                "startDate": 1,
+                                "endDate": 1,
+                                "data.totalHour": 1,
+                                "data.totalMinutes": 1,
+                                "projectName.name": 1,
+                                "userName.name": 1,
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: { userId: "$_id.user" },
+                                assignedProjects: {
+                                    $push: {
+                                        projectId: "$_id.projectId",
+                                        name: "$projectName.name", // Include the project name
+                                        totalHour: "$data.totalHour", // Use the renamed fields
+                                        totalMinutes: "$data.totalMinutes",
+                                        startDate: "$startDate",
+                                        endDate: "$endDate" // Use the renamed fields
+                                    }
+                                },
+                            }
+                        }
+
                     ])
                     .sort({ startDate: -1 })
-                    // .skip((page.page_no - 1) * page.page_per)
-                    // .limit(page.page_per * 1)
+                // .skip((page.page_no - 1) * page.page_per)
+                // .limit(page.page_per * 1)
             )
         });
     },

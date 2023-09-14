@@ -9,15 +9,15 @@ module.exports = {
 
             const daily_task = await dailyTaskServices.createDailyTask(req_data)
 
-            const data = await assignedProjectServices.totalTime(req_data?.project, req_data?.user)
-            let hh = 0;
-            let mm = 0;
-            data.forEach((item) => {
-                hh += item?.hours;
-                mm += item?.minutes;
-            });
-            const totalTime = calculateHourAndMinutes(hh, mm);
-            console.log("totalTime", totalTime)
+            // const data = await assignedProjectServices.totalTime(req_data?.project, req_data?.user)
+            // let hh = 0;
+            // let mm = 0;
+            // data.forEach((item) => {
+            //     hh += item?.hours;
+            //     mm += item?.minutes;
+            // });
+            // const totalTime = calculateHourAndMinutes(hh, mm);
+            // console.log("totalTime", totalTime)
             res.status(201).send({
                 success: true,
                 message: "Daily task is created successfully.",
