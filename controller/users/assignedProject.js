@@ -1,5 +1,7 @@
 const createError = require("http-errors")
 const { assignedProjectServices } = require("../../services/index")
+const { default: mongoose } = require("mongoose")
+const ObjectId = mongoose.Types.ObjectId
 
 module.exports = {
     allAssignedProject: async (req, res, next) => {
@@ -8,38 +10,14 @@ module.exports = {
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
 
-            const user = req.query?.user 
-            if (!user) {
-                user = {}
-            }
+            let user = req.query?.user
+            user = new ObjectId(user);
+
             console.log("user", user)
-            // let hh = 0;
-            // let mm = 0;
-            // daily_task.forEach((item) => {
-            //     hh += item?.hours;
-            //     mm += item?.minutes;
-            // });
-            // const totalTime = await calculateHourAndMinutes(hh, mm);
-            // console.log("data.totalTime", totalTime)
 
-            let filter = { active: true }
-            const pageObj = { page_per: pageSize, page_no: page }
+            let filter = {};
 
-            // if (user && user.length) {
-            //     filter.user = { $in: user }
-            //     console.log("filter.user",filter.user)
-            // }
-            if (user && Array.isArray(user) && user.length) {
-                user = await user.map((item) => {
-                    item = new ObjectId(item);
-                    return item;
-                })
-                console.log("userrrrrrr", user);
-            
-                filter.push({ $in: ["$user", user] });
-            }
-
-            const allAssignedProject = await assignedProjectServices.findAllAssignedProjectForUSer(filter, pageObj, user)
+            const allAssignedProject = await assignedProjectServices.findAllAssignedProjectForUser(user, page, pageSize)
             if (!allAssignedProject.length) throw createError.NotFound("No any user found with providede ID project is found.")
 
             const total = await assignedProjectServices.countAssignedProject(filter);
@@ -51,7 +29,7 @@ module.exports = {
                 data: allAssignedProject,
                 meta: {
                     pagination: {
-                        page, pageSize, pageCount, total
+                        page, pageSize, pageCount, total: allAssignedProject.length
                     }
                 }
             })

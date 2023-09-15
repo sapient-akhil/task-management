@@ -153,12 +153,12 @@ module.exports = {
             //     },
             // ];
 
-            const list = await assignedProjectServices.findAllAssignedProject(filter);
+            const list = await assignedProjectServices.findAllAssignedProject(filter, page, pageSize);
 
             const total = await assignedProjectServices.countAssignedProject(filter);
             const pageCount = Math.ceil(total / pageSize);
 
-            res.status(201).send({  
+            res.status(201).send({
                 success: true,
                 message: "All assigned projects fetched successfully.",
                 data: list,
