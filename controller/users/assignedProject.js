@@ -15,7 +15,7 @@ module.exports = {
 
             console.log("user", user)
 
-            let filter = {};
+            let filter = { active: true };
 
             const allAssignedProject = await assignedProjectServices.findAllAssignedProjectForUser(user, page, pageSize)
             if (!allAssignedProject.length) throw createError.NotFound("No any user found with providede ID project is found.")

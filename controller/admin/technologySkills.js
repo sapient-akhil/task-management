@@ -56,16 +56,16 @@ module.exports = {
             const req_data = req.body;
             const id = req.params.id
 
-            const technology_skill = await technologySkillsServices.findTechnologySkills(req_data.technology_skills);
-            if (technology_skill) throw createError.Conflict("Technology skills already exist.")
+            const technologySkill = await technologySkillsServices.findTechnologySkills(req_data.technology_skills);
+            if (technologySkill) throw createError.Conflict("Technology skills already exist.")
 
-            const technologySkills_data = await technologySkillsServices.updateTechnologySkills(id, req_data)
-            if (!technology_skill.length) throw createError.NotFound("The technology skill with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const technologySkillsData = await technologySkillsServices.updateTechnologySkills(id, req_data)
+            if (!technologySkillsData.length) throw createError.NotFound("The technology skill with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
                 message: "Technology skill is update successfully.",
-                data: technologySkills_data
+                data: technologySkillsData
             })
         } catch (error) {
             next(error)
@@ -76,13 +76,13 @@ module.exports = {
 
             const { id } = req.params
 
-            const technology_skill = await technologySkillsServices.deleteTechnologySkills(id)
-            if (!technology_skill) throw createError.NotFound("The technology skill with the provided ID could not be found. Please ensure the ID is correct and try again")
+            const technologySkill = await technologySkillsServices.deleteTechnologySkills(id)
+            if (!technologySkill) throw createError.NotFound("The technology skill with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
                 message: "Technology skill is delete successfully",
-                data: technology_skill
+                data: technologySkill
             })
         } catch (error) {
             next(error)

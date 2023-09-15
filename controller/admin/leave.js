@@ -29,7 +29,6 @@ module.exports = {
             const pageCount = Math.ceil(total / pageSize)
 
             const leave = await leaveServices.findAllLeave(filter, pageObj)
-            // console.log("leave : ", leave)
 
             res.status(201).send({
                 success: true,

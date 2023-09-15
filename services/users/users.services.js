@@ -14,14 +14,13 @@ module.exports = {
                                 { email: { $regex: search, $options: 'i' } },
                                 { phoneNumber: { $regex: search, $options: 'i' } }
                             ]
-                    } : { active: true, user_role: employeeId }, { __v: 0 })
+                    } : { active: true, user_role: employeeId }, { _id: 1, username: 1, email: 1, name: 1, phoneNumber: 1, designation: 1, user_role: 1, technology_skills: 1, active: 1 })
                     .populate("designation", { __v: 0 })
                     .populate("user_role", { __v: 0 })
                     .populate("technology_skills", { __v: 0 })
                     .sort({ joinDate: -1 })
                     .skip((page - 1) * pageSize)
                     .limit(pageSize * 1)
-
             )
         });
     },
@@ -129,6 +128,19 @@ module.exports = {
                 await usersModel.findOne(
                     { _id },
                     { __v: 0 }
+                )
+                    .populate("designation", { __v: 0 })
+                    .populate("user_role", { __v: 0 })
+                    .populate("technology_skills", { __v: 0 })
+            );
+        });
+    },
+    findByUsersIdByuser: async (_id) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await usersModel.findOne(
+                    { _id },
+                    { _id: 1, username: 1, email: 1, name: 1, phoneNumber: 1, designation: 1, user_role: 1, technology_skills: 1, active: 1 }
                 )
                     .populate("designation", { __v: 0 })
                     .populate("user_role", { __v: 0 })

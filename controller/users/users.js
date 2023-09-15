@@ -11,10 +11,10 @@ module.exports = {
             const req_data = req.body;
 
             const users = await usersServices.findbyEmail(req_data.email);
-            if (!users) throw createError.Conflict("email or password is wrong")
+            if (!users) throw createError.Conflict("Email or password is wrong")
 
             const passwordMatch = await bcrypt.compare(req_data.password, users.password);
-            if (!passwordMatch) throw createError.NotFound("email or password is wrong");
+            if (!passwordMatch) throw createError.NotFound("Email or password is wrong");
 
             const payload = {
                 user_role: users.user_role,
@@ -49,7 +49,7 @@ module.exports = {
 
             res.status(201).send({
                 success: true,
-                message: "get all users",
+                message: "All users is fetch successfully.",
                 data: users,
                 meta: {
                     pagination: {
@@ -66,12 +66,12 @@ module.exports = {
 
             const id = req.params.id
 
-            const usersData = await usersServices.findByUsersId(id)
+            const usersData = await usersServices.findByUsersIdByuser(id)
             if (!usersData) throw createError.NotFound("The users with the provided ID could not be found. Please ensure the ID is correct and try again")
 
             res.status(201).send({
                 success: true,
-                message: "get one users",
+                message: "One user is fetch successfully.",
                 data: usersData
             })
         } catch (error) {

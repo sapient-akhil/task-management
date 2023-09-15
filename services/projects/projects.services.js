@@ -13,7 +13,7 @@ module.exports = {
                                 { description: { $regex: search, $options: 'i' } },
                             ]
                     } : { active: true }, { __v: 0 })
-                    // .populate("technology_skills", { __v: 0 })
+                    .select({ active: true })
                     .sort({ joinDate: -1 })
                     .skip((page - 1) * pageSize)
                     .limit(pageSize * 1)

@@ -2,73 +2,8 @@ const assignedProjectModel = require("./assignedProject.model")
 const dailyTaskModel = require("../dailyTask/dailyTask.model")
 
 module.exports = {
-    // findAllAssignedProject: async (filter, page, user) => {
-    //     user.active = true
-    //     // console.log("filter", filter)
-    //     // console.log("page", page)
-    //     // console.log("user", user)
-    //     return new Promise(async (resolve) => {
-    //         return resolve(
-    //             await assignedProjectModel.aggregate(filter)
-    //                 // .populate("project")
-    //                 // //{
-    //                 // //path: "project",
-    //                 // // populate: {
-    //                 // //     path: "technology_skills",
-    //                 // //     model: "technologySkills"
-    //                 // // }
-    //                 // //  }
-    //                 // .populate({
-    //                 //     path: "user",
-    //                 //     populate: [
-    //                 //         {
-    //                 //             path: "technology_skills",
-    //                 //             // select: "technology_skills "
-    //                 //         },
-    //                 //         {
-    //                 //             path: "user_role",
-    //                 //             // select: "role"
-    //                 //         },
-    //                 //         {
-    //                 //             path: "designation",
-    //                 //             // select: "designation"
-    //                 //         }
-    //                 //     ],
-    //                 //     select: "_id username email name phoneNumber designation user_role technology_skills active"
-    //                 // })
-    //                 // .populate("project_category")
-    //                 .sort({ startDate: -1 })
-    //                 .skip((page.page_no - 1) * page.page_per)
-    //                 .limit(page.page_per * 1)
-    //         )
-    //     });
-    // },
-    // findByAssignedProjectId: async (_id) => {
-    //     return new Promise(async (resolve) => {
-    //         return resolve(
-    //             await assignedProjectModel.findOne({ _id }, { __v: 0 })
-    //                 .populate("project")
-    //                 .populate({
-    //                     path: "user",
-    //                     populate: [
-    //                         {
-    //                             path: "technology_skills",
-    //                         },
-    //                         {
-    //                             path: "user_role",
-    //                         },
-    //                         {
-    //                             path: "designation",
-    //                         }
-    //                     ],
-    //                     select: "_id username email name phoneNumber designation user_role technology_skills active"
-    //                 })
-    //                 .populate("project_category", { __v: 0 })
-    //         )
-    //     });
-    // },
     findAllAssignedProject: async (filter, page, pageSize) => {
-        // console.log("queryUser", user)
+
         return new Promise(async (resolve) => {
             return resolve(
                 await assignedProjectModel.aggregate(
@@ -81,11 +16,12 @@ module.exports = {
                             $group: {
                                 _id: {
                                     projectId: "$project",
-                                    user: "$user",
+                                    user: "$user"
                                 },
                                 startDate: { $first: "$startDate" },
                                 endDate: { $first: "$endDate" },
                                 project_category: { $first: "$project_category" },
+                                assigProject_id: { $first: "$_id" },
                             },
                         },
                         { $match: { $expr: { $and: "$_id.user" } } },
@@ -171,19 +107,30 @@ module.exports = {
                         {
                             $unwind: "$userName",
                         },
-                        {
-                            $unwind: "$projectCategoryName",
-                        },
+                        // {
+                        //     $unwind: "$projectCategoryName",
+                        // },
                         {
                             $project: {
                                 "startDate": 1,
                                 "endDate": 1,
+                                "assigProject_id": 1,
+                                "_id": 1,
                                 "data.totalHour": 1,
                                 "data.totalMinutes": 1,
                                 "projectName.name": 1,
                                 "userName.name": 1,
                                 "projectCategoryName.name": 1,
-                                "projectCategoryName._id": 1
+                                "projectCategoryName._id": 1,
+                                // "projectCategoryName.name": 1,
+                                // "projectCategoryName._id": 1
+                                // "project_category": 1
+
+                            }
+                        },
+                        {
+                            $sort: {
+                                "userName.name": 1 // Sort users by name in ascending order
                             }
                         },
                         {
@@ -197,14 +144,50 @@ module.exports = {
                                         totalMinutes: "$data.totalMinutes",
                                         startDate: "$startDate",
                                         endDate: "$endDate",
-                                        project_category_id: "$projectCategoryName._id",
-                                        project_category: "$projectCategoryName.name", // Include the project name
+                                        projectCategoryName: "$projectCategoryName",
+                                        assigProject_id: "$assigProject_id",
+                                        // project_category_id: "$projectCategoryName._id",
+                                        // project_category: "$project_category", // Include the project name
                                     }
                                 },
+                                totalHour: {
+                                    $sum: "$data.totalHour"
+                                },
+                                totalMinutes: {
+                                    $sum: "$data.totalMinutes"
+                                },
                             }
-                        }
+                        },
+                        {
+                            $addFields: {
+                                totalHour: {
+                                    $add: [
+                                        "$totalHour",
+                                        {
+                                            $floor: {
+                                                $divide: ["$totalMinutes", 60]
+                                            }
+                                        }
+                                    ]
+                                },
+                                totalMinutes: {
+                                    $mod: ["$totalMinutes", 60]
+                                }
+                            }
+                        },
+                        {
+                            $sort: {
+                                "_id.name": 1,
+                                "assignedProjects.name": 1
+                            }
+                        },
+                        // {
+                        //     $sort: {
+                        //         "assignedProjects.project_category": 1
+                        //     }
+                        // },
                     ])
-                    .sort({ startDate: -1 })
+                    // .sort({ user: 1 })
                     .skip((page - 1) * pageSize)
                     .limit(pageSize * 1)
             )
@@ -347,7 +330,7 @@ module.exports = {
                             }
                         }
                     ])
-                    .sort({ startDate: -1 })
+                    .sort({ user: -1 })
                     .skip((page - 1) * pageSize)
                     .limit(pageSize * 1)
             )
@@ -450,3 +433,172 @@ module.exports = {
         });
     }
 }
+
+
+// findAllAssignedProject: async (filter, page, pageSize) => {
+//     return new Promise(async (resolve) => {
+//         return resolve(
+//             await assignedProjectModel.aggregate([
+//                 {
+//                     $unwind: "$project",
+//                 },
+//                 { $match: { $expr: { $and: filter } } },
+//                 {
+//                     $group: {
+//                         _id: {
+//                             projectId: "$project",
+//                             user: "$user"
+//                         },
+//                         startDate: { $first: "$startDate" },
+//                         endDate: { $first: "$endDate" },
+//                         assigProject_id: { $first: "$_id" },
+//                         projectCategories: { $addToSet: "$project_category" } // Collect all project categories in an array
+//                     },
+//                 },
+//                 { $match: { $expr: { $and: "$_id.user" } } },
+//                 {
+//                     $lookup: {
+//                         from: "dailytasks",
+//                         let: {
+//                             projectId: "$_id.projectId",
+//                             userId: "$_id.user",
+//                         },
+//                         pipeline: [
+//                             {
+//                                 $match: {
+//                                     $expr: {
+//                                         $and: [
+//                                             { $eq: ["$project", "$$projectId"] },
+//                                             { $eq: ["$user", "$$userId"] },
+//                                         ],
+//                                     },
+//                                 },
+//                             },
+//                             {
+//                                 $group: {
+//                                     _id: {
+//                                         project: "$project",
+//                                         user: "$user",
+//                                     },
+//                                     totalHour: { $sum: "$hours" },
+//                                     totalMinutes: { $sum: "$minutes" },
+//                                 },
+//                             },
+//                             {
+//                                 $addFields: {
+//                                     totalHour: {
+//                                         $add: [
+//                                             "$totalHour",
+//                                             {
+//                                                 $floor: {
+//                                                     $divide: ["$totalMinutes", 60]
+//                                                 }
+//                                             }
+//                                         ]
+//                                     },
+//                                     totalMinutes: {
+//                                         $mod: ["$totalMinutes", 60]
+//                                     }
+//                                 }
+//                             }
+//                         ],
+//                         as: "data",
+//                     },
+//                 },
+//                 {
+//                     $lookup: {
+//                         from: "projects",
+//                         localField: "data._id.project",
+//                         foreignField: "_id",
+//                         as: "projectName",
+//                     },
+//                 },
+//                 {
+//                     $lookup: {
+//                         from: "users",
+//                         localField: "data._id.user",
+//                         foreignField: "_id",
+//                         as: "userName",
+//                     },
+//                 },
+//                 {
+//                     $unwind: "$data",
+//                 },
+//                 {
+//                     $unwind: "$projectName",
+//                 },
+//                 {
+//                     $unwind: "$userName",
+//                 },
+//                 {
+//                     $project: {
+//                         "startDate": 1,
+//                         "endDate": 1,
+//                         "assigProject_id": 1,
+//                         "_id": 1,
+//                         "data.totalHour": 1,
+//                         "data.totalMinutes": 1,
+//                         "projectName.name": 1,
+//                         "userName.name": 1,
+//                         "projectCategories": 1, // Include the projectCategories field
+//                     }
+//                 },
+//                 {
+//                     $sort: {
+//                         "userName.name": 1 // Sort users by name in ascending order
+//                     }
+//                 },
+//                 {
+//                     $group: {
+//                         _id: { userId: "$_id.user", name: "$userName.name" },
+//                         assignedProjects: {
+//                             $push: {
+//                                 projectId: "$_id.projectId",
+//                                 name: "$projectName.name",
+//                                 totalHour: "$data.totalHour",
+//                                 totalMinutes: "$data.totalMinutes",
+//                                 startDate: "$startDate",
+//                                 endDate: "$endDate",
+//                                 assigProject_id: "$assigProject_id",
+//                                 projectCategories: "$projectCategories", // Include the projectCategories field
+//                             }
+//                         },
+//                         totalHour: {
+//                             $sum: "$data.totalHour"
+//                         },
+//                         totalMinutes: {
+//                             $sum: "$data.totalMinutes"
+//                         },
+//                     }
+//                 },
+//                 {
+//                     $addFields: {
+//                         totalHour: {
+//                             $add: [
+//                                 "$totalHour",
+//                                 {
+//                                     $floor: {
+//                                         $divide: ["$totalMinutes", 60]
+//                                     }
+//                                 }
+//                             ]
+//                         },
+//                         totalMinutes: {
+//                             $mod: ["$totalMinutes", 60]
+//                         }
+//                     }
+//                 },
+//                 {
+//                     $sort: {
+//                         "_id.name": 1,
+//                         "assignedProjects.name": 1,
+//                         "assignedProjects.name": 1,
+//                     }
+//                 },
+//             ])
+//             // .sort({ user: 1 })
+//             .skip((page - 1) * pageSize)
+//             .limit(pageSize * 1)
+//         )
+//     });
+// },
