@@ -21,6 +21,8 @@ module.exports = {
                                 startDate: { $first: "$startDate" },
                                 endDate: { $first: "$endDate" },
                                 project_category: { $first: "$project_category" },
+                                user: { $first: "$user" },
+                                project: { $first: "$project" },
                                 assigProject_id: { $first: "$_id" },
                             },
                         },
@@ -77,7 +79,7 @@ module.exports = {
                         {
                             $lookup: {
                                 from: "projects",
-                                localField: "data._id.project",
+                                localField: "project",
                                 foreignField: "_id",
                                 as: "projectName",
                             },
@@ -85,7 +87,7 @@ module.exports = {
                         {
                             $lookup: {
                                 from: "users",
-                                localField: "data._id.user",
+                                localField: "user",
                                 foreignField: "_id",
                                 as: "userName",
                             },
@@ -99,18 +101,6 @@ module.exports = {
                             },
                         },
                         {
-                            $unwind: "$data",
-                        },
-                        {
-                            $unwind: "$projectName",
-                        },
-                        {
-                            $unwind: "$userName",
-                        },
-                        // {
-                        //     $unwind: "$projectCategoryName",
-                        // },
-                        {
                             $project: {
                                 "startDate": 1,
                                 "endDate": 1,
@@ -120,12 +110,12 @@ module.exports = {
                                 "data.totalMinutes": 1,
                                 "projectName.name": 1,
                                 "userName.name": 1,
+                                "projectName.name": 1,
+                                "projectName._id": 1,
+                                "userName.name": 1,
+                                "userName._id": 1,
                                 "projectCategoryName.name": 1,
                                 "projectCategoryName._id": 1,
-                                // "projectCategoryName.name": 1,
-                                // "projectCategoryName._id": 1
-                                // "project_category": 1
-
                             }
                         },
                         {
@@ -135,26 +125,26 @@ module.exports = {
                         },
                         {
                             $group: {
-                                _id: { userId: "$_id.user", name: "$userName.name" },
+                                _id: { userId: "$_id.user", name: { $arrayElemAt: ["$userName.name", 0] } },
                                 assignedProjects: {
                                     $push: {
-                                        projectId: "$_id.projectId",
-                                        name: "$projectName.name", // Include the project name
-                                        totalHour: "$data.totalHour", // Use the renamed fields
-                                        totalMinutes: "$data.totalMinutes",
+                                        // projectId: "$_id.projectId",
+                                        // name: "$projectName.name", // Include the project name
+                                        totalHour: { $arrayElemAt: ["$data.totalHour", 0] }, // Use the renamed fields
+                                        totalMinutes: { $arrayElemAt: ["$data.totalMinutes", 0] },
                                         startDate: "$startDate",
                                         endDate: "$endDate",
+                                        projectName: { $arrayElemAt: ["$projectName", 0] },
+                                        // userName:"$userName",
                                         projectCategoryName: "$projectCategoryName",
                                         assigProject_id: "$assigProject_id",
-                                        // project_category_id: "$projectCategoryName._id",
-                                        // project_category: "$project_category", // Include the project name
                                     }
                                 },
                                 totalHour: {
-                                    $sum: "$data.totalHour"
+                                    $sum: { $arrayElemAt: ["$data.totalHour", 0] }
                                 },
                                 totalMinutes: {
-                                    $sum: "$data.totalMinutes"
+                                    $sum: { $arrayElemAt: ["$data.totalMinutes", 0] }
                                 },
                             }
                         },
@@ -175,17 +165,7 @@ module.exports = {
                                 }
                             }
                         },
-                        {
-                            $sort: {
-                                "_id.name": 1,
-                                "assignedProjects.name": 1
-                            }
-                        },
-                        // {
-                        //     $sort: {
-                        //         "assignedProjects.project_category": 1
-                        //     }
-                        // },
+
                     ])
                     // .sort({ user: 1 })
                     .skip((page - 1) * pageSize)
