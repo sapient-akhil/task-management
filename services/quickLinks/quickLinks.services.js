@@ -8,6 +8,24 @@ module.exports = {
             )
         });
     },
+    findbyName: async (name) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await quickLinksModel.findOne(
+                    { name, active: true },
+                )
+            )
+        });
+    },
+    findbyLink: async (link) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await quickLinksModel.findOne(
+                    { link, active: true },
+                )
+            );
+        });
+    },
     findByQuickLinksId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -18,11 +36,20 @@ module.exports = {
             );
         });
     },
+    // nameLink: async (name, link) => {
+    //     return new Promise(async (resolve) => {
+    //         return resolve(
+    //             await quickLinksModel.findOne(
+    //                 { name, link, active: true },
+    //             )
+    //         );
+    //     });
+    // },
     findQuickLinks: async (link, name) => {
         return new Promise(async (resolve) => {
             return resolve(
                 await quickLinksModel.findOne(
-                    { link,name },
+                    { link, name },
                     { __v: 0 }
                 )
             )

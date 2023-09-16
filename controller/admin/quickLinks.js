@@ -6,8 +6,15 @@ module.exports = {
         try {
             const req_data = req.body;
 
-            const quickLinks = await quickLinksServices.findQuickLinks(req_data.link, req_data.name);
-            if (quickLinks) throw createError.Conflict("This link and name is already exists.")
+            const existName = await quickLinksServices.findbyLink(req_data.link);
+            if (existName) {
+                throw createError.Conflict("Link already exists");
+            }
+
+            const existLink = await quickLinksServices.findbyName(req_data.name);
+            if (existLink) {
+                throw createError.Conflict("Name already exists");
+            }
 
             const quickLinksData = await quickLinksServices.createQuickLinks(req_data)
 
@@ -56,8 +63,15 @@ module.exports = {
             const req_data = req.body;
             const id = req.params.id
 
-            const quickLinks = await quickLinksServices.findQuickLinks(req_data.link);
-            if (quickLinks) throw createError.Conflict("This link is already exists.")
+            const existName = await quickLinksServices.findbyLink(req_data.link);
+            if (existName) {
+                throw createError.Conflict("Link already exists");
+            }
+
+            const existLink = await quickLinksServices.findbyName(req_data.name);
+            if (existLink) {
+                throw createError.Conflict("Name already exists");
+            }
 
             const quickLinksData = await quickLinksServices.updateQuickLinks(id, req_data)
             if (!quickLinksData.length) throw createError.NotFound("The quick link with the provided ID could not be found. Please ensure the ID is correct and try again")
