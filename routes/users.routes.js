@@ -72,5 +72,11 @@ router.post("/leave", verifyAccessTokenforUser, Validators.forReqBody(Schema.lea
 router.post("/get-leave", verifyAccessTokenforUsersAdmin, leaveController.allLeave)
 router.get("/leave/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveController.oneLeave)
 
+// quickLink routes
+const quickLinkController = require("../controller/users/quickLinks")
+
+router.post("/quick-link", Validators.forReqBody(Schema.quickLinksSchema), quickLinkController.allQuickLinks)
+router.get("/quick-link", quickLinkController.allQuickLinks)
+
 module.exports = router;
 

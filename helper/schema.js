@@ -50,7 +50,7 @@ module.exports = {
         startDate: validate.reqDate,
         description: validate.reqstring,
         // technology_skills: validate.reqstring,
-        deployed:validate.boolean
+        deployed: validate.boolean
     }),
     assignedProjectSchema: joi.object().keys({
         project: validate.reqstring,
@@ -86,5 +86,9 @@ module.exports = {
         leaveType: validate.reqId,
         leaveStatus: validate.leaveStatus,
         user: validate.reqId
+    }),
+    quickLinksSchema: joi.object().keys({
+        name: validate.reqstring,
+        link: validate.reqstring,
     })
 }

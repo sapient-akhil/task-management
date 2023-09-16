@@ -101,4 +101,13 @@ router.get("/leave/:id", Validators.forParams(Schema.params), leaveController.on
 router.patch("/leave/:id", Validators.forParams(Schema.params), leaveController.updateLeave)
 router.delete("/leave/:id", Validators.forParams(Schema.params), leaveController.deleteLeave)
 
+// quickLink routes
+const quickLinkController = require("../controller/admin/quickLinks")
+
+router.post("/quick-link", Validators.forReqBody(Schema.quickLinksSchema), quickLinkController.createQuickLinks)
+router.get("/quick-link", quickLinkController.allQuickLinks)
+router.get("/quick-link/:id", Validators.forParams(Schema.params), Validators.forParams(Schema.params), quickLinkController.oneQuickLinks)
+router.put("/quick-link/:id", Validators.forParams(Schema.params), Validators.forReqBody(Schema.quickLinksSchema), Validators.forParams(Schema.params), quickLinkController.updateQuickLinks)
+router.delete("/quick-link/:id", Validators.forParams(Schema.params), Validators.forParams(Schema.params), quickLinkController.deleteQuickLinks)
+
 module.exports = router;
