@@ -21,8 +21,9 @@ function uploadProfilePhoto(req, res, profilePhoto) {
         }
         const files = Array.isArray(req.files.profilePhoto) ? req.files.profilePhoto : [req.files.profilePhoto];
         files.forEach(file => {
-            const filePath = path.join(__dirname, "../../uploads", `${Date.now() + '_' + file.name}`);
-
+            // const filePath = path.join(__dirname, "../../uploads", `${Date.now() + '_' + file.name}`);
+            const fileName = `${Date.now()}_${file.name}`;
+            const filePath = path.join("uploads", fileName);
             if (!filePath) {
                 throw createError.NotFound("Check the path when an image is uploaded.");
             }

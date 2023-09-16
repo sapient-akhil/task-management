@@ -43,7 +43,7 @@ module.exports = {
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
 
-            const search = req.query.search
+            // const search = req.query.search
 
             const employeeId = await roleServices.findRoleId("employee")
             if (!employeeId) throw createError.NotFound("No any employee id is found.")
@@ -52,7 +52,7 @@ module.exports = {
             const total = await usersServices.countUsers(employeeId);
             const pageCount = Math.ceil(total / pageSize)
         
-            const users = await usersServices.findAllData(employeeId._id, page, pageSize, search)
+            const users = await usersServices.findAllData(employeeId._id, page, pageSize)
             if (!users) throw createError.NotFound("No any user is found.")
 
             res.status(201).send({
