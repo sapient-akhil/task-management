@@ -9,6 +9,9 @@ module.exports = {
                 await assignedProjectModel.aggregate(
                     [
                         {
+                            $match: { active: true }
+                        },
+                        {
                             $unwind: "$project",
                         },
                         { $match: { $expr: { $and: filter } } },
@@ -93,6 +96,9 @@ module.exports = {
                             },
                         },
                         {
+                            $match:{"userName.active":true}
+                        },
+                        {
                             $lookup: {
                                 from: "projectcategories",
                                 localField: "project_category",
@@ -165,7 +171,6 @@ module.exports = {
                                 }
                             }
                         },
-
                     ])
                     // .sort({ user: 1 })
                     .skip((page - 1) * pageSize)
