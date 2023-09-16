@@ -11,7 +11,7 @@ router.post("/users", verifyAccessTokenforAdmin, Validators.forReqBody(Schema.us
 router.get("/users", verifyAccessTokenforUsersAdmin, usersController.allUsers)
 router.get("/users/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), usersController.oneUsers)
 router.delete("/users/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), usersController.deleteUsersByAdmin)
-router.put("/users/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.usersSchema), usersController.updateUsersByAdmin)
+router.put("/users/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.updateUsersSchema), usersController.updateUsersByAdmin)
 
 //roledata routes
 const roleController = require("../controller/admin/role")

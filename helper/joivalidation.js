@@ -9,11 +9,11 @@ module.exports = {
     string: joi.string(),
     leaveStatus: joi.string().valid(...leaveStatus),
     email: joi.string().email().required(),
-    password: joi.string().min(5).max(10).required(),
     reqDate: joi.date().required(),
     date: joi.date(),
     number: joi.number(),
     reqNumber: joi.number().required(),
-    password: joi.string().min(5).message("password lenght more than 5 characters").required(),
+    reqPassword: joi.string().min(5).message("password lenght more than 5 characters").required(),
+    password: joi.string().min(5).message("password lenght more than 5 characters"),
     boolean: joi.boolean()
 }

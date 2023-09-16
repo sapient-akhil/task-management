@@ -27,6 +27,34 @@ module.exports = {
         designation: validate.id,
         user_role: validate.id,
         technology_skills: validate.string,
+        password: validate.reqPassword,
+        profilePhoto: validate.string
+    }),
+    updateUsersSchema: joi.object().keys({
+        username: validate.reqstring,
+        email: validate.email,
+        name: validate.reqstring,
+        address: validate.reqstring,
+        birthDate: validate.reqDate,
+        joinDate: validate.reqDate,
+        probationDate: validate.reqDate,
+        appraisalDate: validate.reqDate,
+        phoneNumber: validate.reqNumber,
+        emergencyContact: validate.reqNumber,
+        aadharCard: validate.number,
+        panCard: validate.reqstring,
+        bankName: validate.reqstring,
+        bankAccountNumber: validate.number,
+        ifscCode: validate.reqstring,
+        nameAsPerBank: validate.reqstring,
+        pastExperience: validate.reqNumber,
+        experienceWithUS: validate.number,
+        totalExperience: validate.number,
+        ctc: validate.number,
+        profilePhoto: validate.string,
+        designation: validate.id,
+        user_role: validate.id,
+        technology_skills: validate.string,
         password: validate.password,
         profilePhoto: validate.string
     }),
@@ -60,7 +88,7 @@ module.exports = {
         project_category: validate.reqstring,
     }),
     loginSchema: joi.object().keys({
-        password: validate.password,
+        password: validate.reqPassword,
         email: validate.email
     }),
     dailyTaskSchema: joi.object().keys({
