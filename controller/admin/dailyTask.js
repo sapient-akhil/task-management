@@ -29,7 +29,7 @@ module.exports = {
             // if (req_data.user && req_data.user.length) {
             //     filter.user = { $in: req_data.user }
             // }
-            if (req_data.user && req_data.user.length) {
+            if (user && user.length) {
                 user = await user.map((item) => {
                     item = new ObjectId(item);
                     return item;
@@ -38,7 +38,7 @@ module.exports = {
 
                 filter.push({ $in: ["$user", user] });
             }
-            if (req_data.project && req_data.project.length) {
+            if (project && project.length) {
                 project = await project.map((item) => {
                     item = new ObjectId(item);
                     return item;
@@ -46,7 +46,7 @@ module.exports = {
                 filter.push({ $in: ["$project", project] });
             }
 
-            if (req_data.project_category && req_data.project_category.length) {
+            if (project_category && project_category.length) {
                 project_category = await project_category.map((item) => {
                     item = new ObjectId(item);
                     return item;
@@ -80,7 +80,7 @@ module.exports = {
             const pageCount = Math.ceil(total / pageSize)
 
             const dailyTask = await dailyTaskServices.findAllDailyTask(filter, pageObj)
-            console.log("dailyTask : ", dailyTask)
+            // console.log("dailyTask : ", dailyTask)
 
             const totalTime = await dailyTaskServices.totalTime(filter)
 

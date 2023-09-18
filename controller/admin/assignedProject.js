@@ -31,7 +31,7 @@ module.exports = {
 
             const req_data = req.body;
             // console.log("req_data", req_data)
-            
+
             // Parse user and project as arrays
             let users = req_data.user ? JSON.parse(req_data.user) : [];
             // console.log(users)
