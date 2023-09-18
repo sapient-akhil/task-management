@@ -82,13 +82,15 @@ module.exports = {
             const dailyTask = await dailyTaskServices.findAllDailyTask(filter, pageObj)
             console.log("dailyTask : ", dailyTask)
 
+            const totalTime = await dailyTaskServices.totalTime(filter)
+
             res.status(201).send({
                 success: true,
                 message: "All daily task is fetch successfully.",
                 data: dailyTask,
                 meta: {
                     pagination: {
-                        page, pageSize, pageCount, total:dailyTask.length
+                        page, pageSize, pageCount, total: dailyTask.length
                     }
                 },
                 totalTime
