@@ -261,7 +261,6 @@ module.exports = {
                         {
                             $lookup: {
                                 from: "projects",
-                                // localField: "project",
                                 localField: "_id.projectId",
                                 foreignField: "_id",
                                 as: "projectName",
@@ -435,86 +434,85 @@ module.exports = {
 
 
 
-    // {
-    //     "_id" : {
-    //         "project" : ObjectId("64f6ab206c206d2cfba319ed")
-    //     },
-    //     "user" : ObjectId("64f59a6a95246c71d6333f04"),
-    //     "project" : ObjectId("64f6ab206c206d2cfba319ed"),
-    //     "project_category" : ObjectId("64f69f2f1bf64fb348e2537a"),
-    //     "totalHour" : 25.0,
-    //     "totalMinutes" : NumberInt(30),
-    //     "description" : "done all update routes",
-    //     "hours" : NumberInt(8),
-    //     "minutes" : NumberInt(30),
-    //     "date" : ISODate("2023-09-03T00:00:00.000+0000"),
-    //     "userData" : [
-    //         {
-    //             "_id" : ObjectId("64f59a6a95246c71d6333f04"),
-    //             "username" : "abhi",
-    //             "email" : "abhisavaliya@sapientcodelabs.com",
-    //             "name" : "abhi savaliya",
-    //             "password" : "$2b$10$.9J15dcyV2ND/hQmyuvLCul5erik7O3plVVn2w9LpP43VRHMuTPry",
-    //             "address" : "punagam,surat",
-    //             "birthDate" : ISODate("2002-02-21T00:00:00.000+0000"),
-    //             "joinDate" : ISODate("2019-12-22T00:00:00.000+0000"),
-    //             "probationDate" : ISODate("2019-11-11T00:00:00.000+0000"),
-    //             "appraisalDate" : ISODate("2019-11-10T00:00:00.000+0000"),
-    //             "phoneNumber" : 5555555555.0,
-    //             "emergencyContact" : 6666666666.0,
-    //             "aadharCard" : 789478947894.0,
-    //             "panCard" : "ABC789",
-    //             "bankName" : "HDFC",
-    //             "bankAccountNumber" : 789456789456.0,
-    //             "ifscCode" : "AXIS123",
-    //             "nameAsPerBank" : "abhi savaliya",
-    //             "pastExperience" : NumberInt(2),
-    //             "experienceWithUS" : NumberInt(1),
-    //             "totalExperience" : NumberInt(5),
-    //             "ctc" : NumberInt(1),
-    //             "profilePhoto" : [
-    //                 "C:\\Users\\Sapient-dev-04\\Desktop\\akhil\\task-management\\uploads\\1693817513112_maxresdefault.jpg"
-    //             ],
-    //             "designation" : ObjectId("64f30e72dc126f58dec52307"),
-    //             "user_role" : ObjectId("64f2ea95dc126f58de96a564"),
-    //             "technology_skills" : [
-    //                 ObjectId("64f31dac56bcdb9a8c914c36"),
-    //                 ObjectId("64f31dbe56bcdb9a8c915fc9")
-    //             ],
-    //             "confirmed" : "false",
-    //             "blocked" : "false",
-    //             "active" : false,
-    //             "__v" : NumberInt(0),
-    //             "createdAt" : ISODate("2023-09-04T08:50:50.683+0000"),
-    //             "updatedAt" : ISODate("2023-09-18T03:18:58.623+0000")
-    //         }
-    //     ],
-    //     "projectData" : [
-    //         {
-    //             "_id" : ObjectId("64f6ab206c206d2cfba319ed"),
-    //             "name" : "Evify",
-    //             "startDate" : ISODate("2023-02-22T00:00:00.000+0000"),
-    //             "description" : "<p>this is a blog site.</p>",
-    //             "technology_skills" : [
-    //                 "64f31dac56bcdb9a8c914c36",
-    //                 "64f31dbe56bcdb9a8c915fc9"
-    //             ],
-    //             "deployed" : false,
-    //             "active" : true,
-    //             "__v" : NumberInt(0),
-    //             "createdAt" : ISODate("2023-09-05T04:14:24.019+0000"),
-    //             "updatedAt" : ISODate("2023-09-16T09:07:47.084+0000")
-    //         }
-    //     ],
-    //     "projectCategoryData" : [
-    //         {
-    //             "_id" : ObjectId("64f69f2f1bf64fb348e2537a"),
-    //             "name" : "Android App",
-    //             "active" : true,
-    //             "__v" : NumberInt(0),
-    //             "createdAt" : ISODate("2023-09-05T03:23:28.003+0000"),
-    //             "updatedAt" : ISODate("2023-09-05T03:23:28.003+0000")
-    //         }
-    //     ]
-    // }
-    
+// {
+//     "_id" : {
+//         "project" : ObjectId("64f6ab206c206d2cfba319ed")
+//     },
+//     "user" : ObjectId("64f59a6a95246c71d6333f04"),
+//     "project" : ObjectId("64f6ab206c206d2cfba319ed"),
+//     "project_category" : ObjectId("64f69f2f1bf64fb348e2537a"),
+//     "totalHour" : 25.0,
+//     "totalMinutes" : NumberInt(30),
+//     "description" : "done all update routes",
+//     "hours" : NumberInt(8),
+//     "minutes" : NumberInt(30),
+//     "date" : ISODate("2023-09-03T00:00:00.000+0000"),
+//     "userData" : [
+//         {
+//             "_id" : ObjectId("64f59a6a95246c71d6333f04"),
+//             "username" : "abhi",
+//             "email" : "abhisavaliya@sapientcodelabs.com",
+//             "name" : "abhi savaliya",
+//             "password" : "$2b$10$.9J15dcyV2ND/hQmyuvLCul5erik7O3plVVn2w9LpP43VRHMuTPry",
+//             "address" : "punagam,surat",
+//             "birthDate" : ISODate("2002-02-21T00:00:00.000+0000"),
+//             "joinDate" : ISODate("2019-12-22T00:00:00.000+0000"),
+//             "probationDate" : ISODate("2019-11-11T00:00:00.000+0000"),
+//             "appraisalDate" : ISODate("2019-11-10T00:00:00.000+0000"),
+//             "phoneNumber" : 5555555555.0,
+//             "emergencyContact" : 6666666666.0,
+//             "aadharCard" : 789478947894.0,
+//             "panCard" : "ABC789",
+//             "bankName" : "HDFC",
+//             "bankAccountNumber" : 789456789456.0,
+//             "ifscCode" : "AXIS123",
+//             "nameAsPerBank" : "abhi savaliya",
+//             "pastExperience" : NumberInt(2),
+//             "experienceWithUS" : NumberInt(1),
+//             "totalExperience" : NumberInt(5),
+//             "ctc" : NumberInt(1),
+//             "profilePhoto" : [
+//                 "C:\\Users\\Sapient-dev-04\\Desktop\\akhil\\task-management\\uploads\\1693817513112_maxresdefault.jpg"
+//             ],
+//             "designation" : ObjectId("64f30e72dc126f58dec52307"),
+//             "user_role" : ObjectId("64f2ea95dc126f58de96a564"),
+//             "technology_skills" : [
+//                 ObjectId("64f31dac56bcdb9a8c914c36"),
+//                 ObjectId("64f31dbe56bcdb9a8c915fc9")
+//             ],
+//             "confirmed" : "false",
+//             "blocked" : "false",
+//             "active" : false,
+//             "__v" : NumberInt(0),
+//             "createdAt" : ISODate("2023-09-04T08:50:50.683+0000"),
+//             "updatedAt" : ISODate("2023-09-18T03:18:58.623+0000")
+//         }
+//     ],
+//     "projectData" : [
+//         {
+//             "_id" : ObjectId("64f6ab206c206d2cfba319ed"),
+//             "name" : "Evify",
+//             "startDate" : ISODate("2023-02-22T00:00:00.000+0000"),
+//             "description" : "<p>this is a blog site.</p>",
+//             "technology_skills" : [
+//                 "64f31dac56bcdb9a8c914c36",
+//                 "64f31dbe56bcdb9a8c915fc9"
+//             ],
+//             "deployed" : false,
+//             "active" : true,
+//             "__v" : NumberInt(0),
+//             "createdAt" : ISODate("2023-09-05T04:14:24.019+0000"),
+//             "updatedAt" : ISODate("2023-09-16T09:07:47.084+0000")
+//         }
+//     ],
+//     "projectCategoryData" : [
+//         {
+//             "_id" : ObjectId("64f69f2f1bf64fb348e2537a"),
+//             "name" : "Android App",
+//             "active" : true,
+//             "__v" : NumberInt(0),
+//             "createdAt" : ISODate("2023-09-05T03:23:28.003+0000"),
+//             "updatedAt" : ISODate("2023-09-05T03:23:28.003+0000")
+//         }
+//     ]
+// }

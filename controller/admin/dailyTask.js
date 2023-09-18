@@ -80,8 +80,7 @@ module.exports = {
             const pageCount = Math.ceil(total / pageSize)
 
             const dailyTask = await dailyTaskServices.findAllDailyTask(filter, pageObj)
-
-            const totalTime = await dailyTaskServices.totalTime(filter)
+            // console.log("dailyTask : ", dailyTask)
 
             res.status(201).send({
                 success: true,
