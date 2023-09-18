@@ -3,36 +3,110 @@ const dailyTaskModel = require("./dailyTask.model")
 module.exports = {
     findAllDailyTask: async (filter, page) => {
         return new Promise(async (resolve) => {
-            console.log("filter", filter)
-            console.log("page", page)
 
-            // const findQuery = {
-            // }
-            // console.log("findQuery : ", findQuery)
+            // console.log("filter", JSON.stringify(filter))
+            // console.log("page", page)
+
             return resolve(
-                await dailyTaskModel.find(filter)
-                    .populate("project")
-                    .populate({
-                        path: "user",
-                        populate: [
-                            {
-                                path: "technology_skills",
-                            },
-                            {
-                                path: "user_role",
-                            },
-                            {
-                                path: "designation",
-                            }
-                        ],
-                        select: "_id username email name phoneNumber designation user_role technology_skills active"
-                    }).populate("project_category")
+                await dailyTaskModel.aggregate([
+                    { $match: { $expr: { $and: filter } } },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "user",
+                            foreignField: "_id",
+                            as: "userData",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "projects",
+                            localField: "project",
+                            foreignField: "_id",
+                            as: "projectData",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "projectcategories",
+                            localField: "project_category",
+                            foreignField: "_id",
+                            as: "projectCategoryData",
+                        },
+                    },
+                    {
+                        $project: {
+                            "date": 1,
+                            "description": 1,
+                            "hours": 1,
+                            "minutes": 1,
+                            "totalHour": 1,
+                            "totalMinutes": 1,
+                            "projectData": { $arrayElemAt: ["$projectData", 0] },
+                            "projectCategoryData": { $arrayElemAt: ["$projectCategoryData", 0] }, // Extract the first element
+                            "userData": { $arrayElemAt: ["$userData", 0] }, // Extract the first element
+                        }
+                    },
+                    {
+                        $project: {
+                            "date": 1,
+                            "projectData._id": 1,
+                            "projectData.name": 1,
+                            "projectCategoryData._id": 1,
+                            "projectCategoryData.name": 1,
+                            "description": 1,
+                            "hours": 1,
+                            "minutes": 1,
+                            "totalHour": 1,
+                            "totalMinutes": 1,
+                            "userData._id": 1,
+                            "userData.name": 1,
+                        }
+                    },
+                ])
                     .sort({ date: -1 })
                     .skip((page.page_no - 1) * page.page_per)
                     .limit(page.page_per * 1)
             )
-
         });
+    },
+    totalTime: async (filter) => {
+        return new Promise(async (resolve) => {
+
+            return resolve(
+                await dailyTaskModel.aggregate([
+                    { $match: { $expr: { $and: filter } } },
+                    {
+                        $group: {
+                            _id: null,
+                            totalHour: { $sum: "$hours" },
+                            totalMinutes: { $sum: "$minutes" },
+                        },
+                    },
+                    {
+                        $addFields: {
+                            totalHour: {
+                                $add: [
+                                    "$totalHour",
+                                    {
+                                        $floor: {
+                                            $divide: ["$totalMinutes", 60]
+                                        }
+                                    }
+                                ]
+                            },
+                            totalMinutes: {
+                                $mod: ["$totalMinutes", 60]
+                            }
+                        }
+                    },
+                    {
+                        $project: {
+                            "_id": 0
+                        }
+                    }
+                ]))
+        })
     },
     findByDailyTaskId: async (_id) => {
         return new Promise(async (resolve) => {
@@ -74,10 +148,10 @@ module.exports = {
             );
         });
     },
-    countDailyTask: async (filter) => {
+    countDailyTask: async () => {
         return new Promise(async (resolve) => {
             return resolve(
-                await dailyTaskModel.countDocuments(filter)
+                await dailyTaskModel.countDocuments({ active: true })
             )
         });
     },
@@ -212,3 +286,83 @@ module.exports = {
 //       throw error;
 //     }
 //   },
+
+
+
+
+
+// db.getCollection("dailytasks").aggregate([{
+//     $match: { user: ObjectId("64f59a6a95246c71d6333f04") }
+// },
+//{
+//    $lookup: {
+//        from: "users",
+//        localField: "user",
+//        foreignField: "_id",
+//        as: "userData",
+//    },
+//},
+//{
+//    $lookup: {
+//        from: "projects",
+//        localField: "project",
+//        foreignField: "_id",
+//        as: "projectData",
+//    },
+//},
+//{
+//    $lookup: {
+//        from: "projectcategories",
+//        localField: "project_category",
+//        foreignField: "_id",
+//        as: "projectCategoryData",
+//    },
+//},
+//{
+//    $group: {
+//        _id: {
+//            project: "$project",
+//        },
+//        userData: { $first: "$userData" },
+//        projectData: { $first: "$projectData" },
+//        projectCategoryData: { $first: "$projectCategoryData" },
+//        totalHour: { $sum: "$hours" },
+//        totalMinutes: { $sum: "$minutes" },
+//    },
+//},
+//{
+//    $addFields: {
+//        totalHour: {
+//            $add: [
+//                "$totalHour",
+//                {
+//                    $floor: {
+//                        $divide: ["$totalMinutes", 60]
+//                    }
+//                }
+//            ]
+//        },
+//        totalMinutes: {
+//            $mod: ["$totalMinutes", 60]
+//        }
+//    }
+//},
+//{
+//                            $project: {
+//                                "startDate": 1,
+//                                "endDate": 1,
+//                                "assigProject_id": 1,
+//                                "_id": 1,
+//                                "data.totalHour": 1,
+//                                "data.totalMinutes": 1,
+//                                "projectName.name": 1,
+//                                "userName.name": 1,
+//                                "projectName.name": 1,
+//                                "projectName._id": 1,
+//                                "userName.name": 1,
+//                                "userName._id": 1,
+//                                "projectCategoryName.name": 1,
+//                                "projectCategoryName._id": 1,
+//                            }
+//                        },
+// ])
