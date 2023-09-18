@@ -1,7 +1,8 @@
-const createError = require("http-errors")
-const { assignedProjectServices } = require("../../services/index")
-const { default: mongoose } = require("mongoose")
-const ObjectId = mongoose.Types.ObjectId
+
+const createError = require("http-errors");
+const { assignedProjectServices } = require("../../services/index");
+const { default: mongoose } = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 module.exports = {
     allAssignedProject: async (req, res, next) => {
