@@ -1,6 +1,6 @@
 const createError = require("http-errors")
 const { usersServices, roleServices } = require("../../services/index")
-const uploadProfilePhoto = require("../common/image")
+const { uploadProfilePhoto, deleteOldProfileImages } = require("../common/image")
 const bcrypt = require("bcrypt")
 
 module.exports = {
@@ -51,7 +51,7 @@ module.exports = {
 
             const total = await usersServices.countUsers(employeeId);
             const pageCount = Math.ceil(total / pageSize)
-        
+
             const users = await usersServices.findAllData(employeeId._id, page, pageSize)
             if (!users) throw createError.NotFound("No any user is found.")
 
@@ -103,8 +103,11 @@ module.exports = {
             const existData = await usersServices.existData(id, req_data.email, req_data.phoneNumber, req_data.emergencyContact, req_data.aadharCard, req_data.bankAccountNumber, req_data.ifscCode, req_data.panCard, req_data.username)
 
             // IMAGE UPLOAD AND WHEN IMAGE IS UPDATE OLD IMAGE DELETE FUNCTION
-            const upload = uploadProfilePhoto(req, res, req_data.profilePhoto);
-            req_data.profilePhoto = upload
+
+            await deleteOldProfileImages(req_data.profilePhoto);
+
+            const upload = uploadProfilePhoto(req, res);
+            req_data.profilePhoto = upload[0]
 
             if (existData.status) {
                 const usersData = await usersServices.updateUsersData(id, req_data)
