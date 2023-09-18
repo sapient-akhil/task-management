@@ -261,7 +261,7 @@ module.exports = {
                         {
                             $lookup: {
                                 from: "projects",
-                                localField: "project",
+                                localField: "_id.projectId",
                                 foreignField: "_id",
                                 as: "projectName",
                             },
@@ -274,9 +274,9 @@ module.exports = {
                                 as: "userName",
                             },
                         },
-                        {
-                            $match: { "userName.active": true }
-                        },
+                        // {
+                        //     $match: { "userName.active": true }
+                        // },
                         {
                             $lookup: {
                                 from: "projectcategories",

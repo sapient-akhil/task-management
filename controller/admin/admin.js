@@ -93,9 +93,12 @@ module.exports = {
             const req_data = req.body
 
             req_data.technology_skills = await JSON.parse(req_data.technology_skills);
-
-            const hash = await bcrypt.hash(req_data.password, 10);
-            req_data.password = hash
+            let hash;
+            if(req_data.password){
+                hash = await bcrypt.hash(req_data.password, 10);
+                req_data.password = hash
+            }
+            
 
             const existData = await usersServices.existData(id, req_data.email, req_data.phoneNumber, req_data.emergencyContact, req_data.aadharCard, req_data.bankAccountNumber, req_data.ifscCode, req_data.panCard, req_data.username)
 

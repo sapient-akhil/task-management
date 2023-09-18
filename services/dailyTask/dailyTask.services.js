@@ -1,138 +1,110 @@
-const dailyTaskModel = require("./dailyTask.model")
+const dailyTaskModel = require("./dailyTask.model");
 
 module.exports = {
-    findAllDailyTask: async (filter, page) => {
-        return new Promise(async (resolve) => {
-            console.log("filter", filter)
-            console.log("page", page)
+  findAllDailyTask: async (filter, page) => {
+    return new Promise(async (resolve) => {
+      console.log("filter", filter);
+      console.log("page", page);
 
-            // const findQuery = {
-            // }
-            // console.log("findQuery : ", findQuery)
-            return resolve(
-                await dailyTaskModel.find(filter)
-                    .populate("project")
-                    .populate({
-                        path: "user",
-                        populate: [
-                            {
-                                path: "technology_skills",
-                            },
-                            {
-                                path: "user_role",
-                            },
-                            {
-                                path: "designation",
-                            }
-                        ],
-                        select: "_id username email name phoneNumber designation user_role technology_skills active"
-                    }).populate("project_category")
-                    .sort({ date: -1 })
-                    .skip((page.page_no - 1) * page.page_per)
-                    .limit(page.page_per * 1)
-            )
-
-        });
-    },
-    findByDailyTaskId: async (_id) => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await dailyTaskModel.findOne(
-                    { _id },
-                    { __v: 0 }
-                )
-                    .populate({
-                        path: "project",
-                        populate: {
-                            path: "technology_skills",
-                            model: "technologySkills"
-                        }
-                    })
-                    .populate("user")
-                    .populate({
-                        path: "user",
-                        populate: {
-                            path: "technology_skills",
-                            model: "technologySkills"
-                        }
-                    })
-                    .populate({
-                        path: "user",
-                        populate: {
-                            path: "user_role",
-                            model: "role"
-                        }
-                    })
-                    .populate({
-                        path: "user",
-                        populate: {
-                            path: "designation",
-                            model: "designation"
-                        }
-                    }).populate("project_category")
-                    .sort({ createdAt: -1 })
-            );
-        });
-    },
-    countDailyTask: async (filter) => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await dailyTaskModel.countDocuments(filter)
-            )
-        });
-    },
-    findDailyTask: async (dailyTask) => {
-        return new Promise(async (resolve) => {
-            return resolve(
-                await dailyTaskModel.findOne(
-                    { dailyTask },
-                    { __v: 0 }
-                )
-            )
-        });
-    },
-    createDailyTask: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await dailyTaskModel.insertMany({ ...req_data });
-            return resolve(
-                await dailyTaskModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
-        });
-    },
-    updateDailyTask: async (_id, req_data) => {
-        return new Promise(async (resolve) => {
-            await dailyTaskModel.findByIdAndUpdate({ _id }, { ...req_data });
-            return resolve(
-                await dailyTaskModel.find(
-                    { _id },
-                    { __v: 0 }
-                )
-            );
-        });
-    },
-    deleteDailyTask: async (_id) => {
-        return new Promise(async (resolve) => {
-            await dailyTaskModel.updateOne({ _id }, { active: false }, { new: true });
-            return resolve(
-                await dailyTaskModel.findOne(
-                    { _id },
-                    { __v: 0 }
-                )
-            );
-        });
-    }
-}
-
-
-
-
-
-
-
-
+      // const findQuery = {
+      // }
+      // console.log("findQuery : ", findQuery)
+      return resolve(
+        await dailyTaskModel
+          .find(filter)
+          .populate("project")
+          .populate({
+            path: "user",
+            // match: { active: true },
+            populate: [
+              {
+                path: "technology_skills",
+              },
+              {
+                path: "user_role",
+              },
+              {
+                path: "designation",
+              },
+            ],
+            select:
+              "_id username email name phoneNumber designation user_role technology_skills active",
+          })
+          .populate("project_category")
+          .sort({ date: -1 })
+          .skip((page.page_no - 1) * page.page_per)
+          .limit(page.page_per * 1)
+      );
+    });
+  },
+  findByDailyTaskId: async (_id) => {
+    return new Promise(async (resolve) => {
+      return resolve(
+        await dailyTaskModel
+          .findOne({ _id }, { __v: 0 })
+          .populate({
+            path: "project",
+            populate: {
+              path: "technology_skills",
+              model: "technologySkills",
+            },
+          })
+          .populate("user")
+          .populate({
+            path: "user",
+            populate: {
+              path: "technology_skills",
+              model: "technologySkills",
+            },
+          })
+          .populate({
+            path: "user",
+            populate: {
+              path: "user_role",
+              model: "role",
+            },
+          })
+          .populate({
+            path: "user",
+            populate: {
+              path: "designation",
+              model: "designation",
+            },
+          })
+          .populate("project_category")
+          .sort({ createdAt: -1 })
+      );
+    });
+  },
+  countDailyTask: async (filter) => {
+    return new Promise(async (resolve) => {
+      return resolve(await dailyTaskModel.countDocuments(filter));
+    });
+  },
+  findDailyTask: async (dailyTask) => {
+    return new Promise(async (resolve) => {
+      return resolve(await dailyTaskModel.findOne({ dailyTask }, { __v: 0 }));
+    });
+  },
+  createDailyTask: async (req_data) => {
+    return new Promise(async (resolve) => {
+      await dailyTaskModel.insertMany({ ...req_data });
+      return resolve(await dailyTaskModel.find({ ...req_data }, { __v: 0 }));
+    });
+  },
+  updateDailyTask: async (_id, req_data) => {
+    return new Promise(async (resolve) => {
+      await dailyTaskModel.findByIdAndUpdate({ _id }, { ...req_data });
+      return resolve(await dailyTaskModel.find({ _id }, { __v: 0 }));
+    });
+  },
+  deleteDailyTask: async (_id) => {
+    return new Promise(async (resolve) => {
+      await dailyTaskModel.updateOne({ _id }, { active: false }, { new: true });
+      return resolve(await dailyTaskModel.findOne({ _id }, { __v: 0 }));
+    });
+  },
+};
 
 // find_all_dailyTask: async (req_data, page, pageSize) => {
 //     try {
