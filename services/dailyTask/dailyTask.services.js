@@ -40,8 +40,8 @@ module.exports = {
                             "description": 1,
                             "hours": 1,
                             "minutes": 1,
-                            "totalHour": 1,
-                            "totalMinutes": 1,
+                            // "totalHour": 1,
+                            // "totalMinutes": 1,
                             "projectData": { $arrayElemAt: ["$projectData", 0] },
                             "projectCategoryData": { $arrayElemAt: ["$projectCategoryData", 0] }, // Extract the first element
                             "userData": { $arrayElemAt: ["$userData", 0] }, // Extract the first element
@@ -57,8 +57,87 @@ module.exports = {
                             "description": 1,
                             "hours": 1,
                             "minutes": 1,
-                            "totalHour": 1,
-                            "totalMinutes": 1,
+                            // "totalHour": 1,
+                            // "totalMinutes": 1,
+                            "userData._id": 1,
+                            "userData.name": 1,
+                        }
+                    },
+                ])
+                    .sort({ date: -1 })
+                    .skip((page.page_no - 1) * page.page_per)
+                    .limit(page.page_per * 1)
+            )
+        });
+    },
+    findAllDailyTaskForUser: async (id, filter, page) => {
+        return new Promise(async (resolve) => {
+
+            // console.log("filter", JSON.stringify(filter))
+            // console.log("page", page)
+
+            return resolve(
+                await dailyTaskModel.aggregate([
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$user", id] }, // Existing condition
+                                    { $eq: ["$active", true] },
+                                ]
+                            }
+                        }
+                    },
+                    { $match: { $expr: { $and: filter } } }, // New condition
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "user",
+                            foreignField: "_id",
+                            as: "userData",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "projects",
+                            localField: "project",
+                            foreignField: "_id",
+                            as: "projectData",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "projectcategories",
+                            localField: "project_category",
+                            foreignField: "_id",
+                            as: "projectCategoryData",
+                        },
+                    },
+                    {
+                        $project: {
+                            "date": 1,
+                            "description": 1,
+                            "hours": 1,
+                            "minutes": 1,
+                            // "totalHour": 1,
+                            // "totalMinutes": 1,
+                            "projectData": { $arrayElemAt: ["$projectData", 0] },
+                            "projectCategoryData": { $arrayElemAt: ["$projectCategoryData", 0] }, // Extract the first element
+                            "userData": { $arrayElemAt: ["$userData", 0] }, // Extract the first element
+                        }
+                    },
+                    {
+                        $project: {
+                            "date": 1,
+                            "projectData._id": 1,
+                            "projectData.name": 1,
+                            "projectCategoryData._id": 1,
+                            "projectCategoryData.name": 1,
+                            "description": 1,
+                            "hours": 1,
+                            "minutes": 1,
+                            // "totalHour": 1,
+                            // "totalMinutes": 1,
                             "userData._id": 1,
                             "userData.name": 1,
                         }
@@ -102,7 +181,9 @@ module.exports = {
                     },
                     {
                         $project: {
-                            "_id": 0
+                            "_id": 0,
+                            "totalHour": { $toString: "$totalHour" },
+                            "totalMinutes": { $toString: "$totalMinutes" }
                         }
                     }
                 ]))

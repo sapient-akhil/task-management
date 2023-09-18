@@ -1,6 +1,9 @@
 const createError = require("http-errors")
 const { dailyTaskServices, assignedProjectServices } = require("../../services/index")
 const { calculateHourAndMinutes } = require("../../helper/function")
+const { default: mongoose } = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+
 module.exports = {
     createDailyTask: async (req, res, next) => {
         try {
@@ -9,15 +12,6 @@ module.exports = {
 
             const daily_task = await dailyTaskServices.createDailyTask(req_data)
 
-            // const data = await assignedProjectServices.totalTime(req_data?.project, req_data?.user)
-            // let hh = 0;
-            // let mm = 0;
-            // data.forEach((item) => {
-            //     hh += item?.hours;
-            //     mm += item?.minutes;
-            // });
-            // const totalTime = calculateHourAndMinutes(hh, mm);
-            // console.log("totalTime", totalTime)
             res.status(201).send({
                 success: true,
                 message: "Daily task is created successfully.",
@@ -32,53 +26,86 @@ module.exports = {
         try {
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
-           
-            const user = req.query.user
-            const req_data = req.body
 
-            req_data.project = req_data.project ? JSON.parse(req_data.project) : []
-            req_data.project_category = req_data.project_category ? JSON.parse(req_data.project_category) : []
-            req_data.date = req_data.date ? JSON.parse(req_data.date) : null
-            let filter = { active: true }
+            const req_data = req.body
+            let user = req.query?.user;
+            user = new ObjectId(user);
+
+            console.log("req_data", req_data)
+
+            // let user = req_data.user ? JSON.parse(req_data.user) : [];
+
+            let project = req_data.project ? JSON.parse(req_data.project) : [];
+
+            let project_category = req_data.project_category ? JSON.parse(req_data.project_category) : []
+
+            req_data.date = req_data.date ? JSON.parse(req_data.date) : []
+
+            let filter = []
             const pageObj = { page_per: pageSize, page_no: page }
 
+            // if (user && user.length) {
+            //     user = await user.map((item) => {
+            //         item = new ObjectId(item);
+            //         return item;
+            //     })
+            //     console.log("user", user);
+
+            //     filter.push({ $in: ["$user", user] });
+            // }
             if (user) {
                 filter.user = [user]
             }
-            if (req_data.project && req_data.project.length) {
-                filter.project = { $in: req_data.project }
+            if (project && project.length) {
+                project = await project.map((item) => {
+                    item = new ObjectId(item);
+                    return item;
+                })
+                filter.push({ $in: ["$project", project] });
             }
-            if (req_data.project_category && req_data.project_category.length) {
-                filter.project_category = { $in: req_data.project_category }
-            }
-            if (req_data.date && req_data.date.length === 2) {
-                filter.date = { $gte: new Date(req_data.date[0]), $lte: new Date(req_data.date[1]) }
-            }
-            const daily_task = await dailyTaskServices.findAllDailyTask(filter, pageObj)
-            // console.log("daily_task : ", daily_task)
-            let hh = 0;
-            let mm = 0;
-            daily_task.forEach((item) => {
-                hh += item?.hours;
-                mm += item?.minutes;
-            });
 
-            const total = await dailyTaskServices.countDailyTask(filter);
+            if (project_category && project_category.length) {
+                project_category = await project_category.map((item) => {
+                    item = new ObjectId(item);
+                    return item;
+                })
+                filter.push({ $in: ["$project_category", project_category] });
+            }
+
+
+            let dateFilter;
+            if (req_data.date && req_data.date.length === 2) {
+                dateFilter = {
+                    $and: [{
+                        $gte: ["$date", new Date(req_data.date[0])]
+                    },
+                    {
+                        $lte: ["$date", new Date(req_data.date[1])]
+                    }]
+                }
+
+                filter.push(dateFilter)
+            }
+
+            const total = await dailyTaskServices.countDailyTask();
             const pageCount = Math.ceil(total / pageSize)
 
-            const totalTime = await calculateHourAndMinutes(hh, mm);
-            console.log("data.totalTime", totalTime)
+            const dailyTask = await dailyTaskServices.findAllDailyTaskForUser(user, filter, pageObj)
+
+            const totalTime = await dailyTaskServices.totalTime(filter)
+            console.log("totalTime : ", totalTime)
+
 
             res.status(201).send({
                 success: true,
                 message: "All daily task is fetch successfully.",
-                data: daily_task,
+                data: dailyTask,
                 meta: {
                     pagination: {
-                        page, pageSize, pageCount, total
+                        page, pageSize, pageCount, total: dailyTask.length
                     }
                 },
-                totalTime: totalTime
+                totalTime
             })
         } catch (error) {
             next(error)
