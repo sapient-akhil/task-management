@@ -79,6 +79,53 @@ module.exports = {
             )
         });
     },
+    findActiveTaskForAdmin: async (filter) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await dailyTaskModel.aggregate([
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$active", true] }, // Include this line for active: true condition
+                                    { $and: filter } // Include your existing filter conditions here
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        $count: "total"
+                    },
+                ])
+                    .sort({ date: -1 })
+
+            )
+        });
+    },
+    findActiveTaskForUser: async (user, filter) => {
+        return new Promise(async (resolve) => {
+            return resolve(
+                await dailyTaskModel.aggregate([
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$active", true] },
+                                    { $eq: ["$user", user] }, // Existing condition
+                                    { $and: filter } // Include your existing filter conditions here
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        $count: "total"
+                    },
+                ])
+                    .sort({ date: -1 })
+
+            )
+        });
+    },
     findAllDailyTaskForUser: async (id, filter, page) => {
         return new Promise(async (resolve) => {
 

@@ -140,8 +140,8 @@ module.exports = {
             //     filter.push(dateFilter)
             // }
 
-            const total = await dailyTaskServices.countDailyTask();
-            const pageCount = Math.ceil(total / pageSize)
+            const total = await dailyTaskServices.findActiveTaskForUser(user, filter);
+            const pageCount = Math.ceil(total[0].total / pageSize)
 
             const dailyTask = await dailyTaskServices.findAllDailyTaskForUser(user, filter, pageObj)
 
@@ -155,7 +155,7 @@ module.exports = {
                 data: dailyTask,
                 meta: {
                     pagination: {
-                        page, pageSize, pageCount, total: dailyTask.length
+                        page, pageSize, pageCount, total: total[0].total
                     }
                 },
                 totalTime

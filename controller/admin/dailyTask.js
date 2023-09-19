@@ -10,25 +10,17 @@ module.exports = {
             const page = parseInt(req.query.page || 1);
             const pageSize = parseInt(req.query.pageSize || 10);
 
-            // const user = req.query.user
             const req_data = req.body
             console.log("req_data", req_data)
 
-            // req_data.user = req_data.user ? JSON.parse(req_data.user) : []
             let user = req_data.user ? JSON.parse(req_data.user) : [];
-
             let project = req_data.project ? JSON.parse(req_data.project) : [];
-
             let project_category = req_data.project_category ? JSON.parse(req_data.project_category) : []
-
             req_data.date = req_data.date ? JSON.parse(req_data.date) : []
 
             let filter = []
             const pageObj = { page_per: pageSize, page_no: page }
 
-            // if (req_data.user && req_data.user.length) {
-            //     filter.user = { $in: req_data.user }
-            // }
             if (user && user.length) {
                 user = await user.map((item) => {
                     item = new ObjectId(item);
@@ -87,30 +79,9 @@ module.exports = {
                 }
             }
 
-            // if (req_data.date && req_data.date.length === 2) {
-            //     date = await date.map((item) => {
-            //         item = new ObjectId(item);
-            //         return item;
-            //     })
-            //     filter.push({ $gte: new Date(req_data.date[0]), $lte: new Date(req_data.date[1]) });
-            // }
-            // let dateFilter;
-            // if (req_data.date && req_data.date.length === 2) {
-            //     dateFilter = {
-            //         $and: [{
-            //             $gte: ["$date", new Date(req_data.date[0])]
-            //         },
-            //         {
-            //             $lte: ["$date", new Date(req_data.date[1])]
-            //         }]
-            //     }
-
-            //     // console.log("filter.date", filter.date)
-            //     filter.push(dateFilter)
-            // }
-
-            const total = await dailyTaskServices.countDailyTask();
-            const pageCount = Math.ceil(total / pageSize)
+            const total = await dailyTaskServices.findActiveTaskForAdmin(filter)
+            console.log("total", total)
+            const pageCount = Math.ceil(total[0].total / pageSize)
 
             const dailyTask = await dailyTaskServices.findAllDailyTask(filter, pageObj)
             // console.log("dailyTask : ", dailyTask)
@@ -124,7 +95,7 @@ module.exports = {
                 data: dailyTask,
                 meta: {
                     pagination: {
-                        page, pageSize, pageCount, total
+                        page, pageSize, pageCount, total: total[0].total
                     }
                 },
                 totalTime
