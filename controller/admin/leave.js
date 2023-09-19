@@ -25,36 +25,28 @@ module.exports = {
             //     filter.fromDate = { $gte: new Date(req_data.fromDate[0]), $lte: new Date(req_data.fromDate[1]) }
             // }
 
-            let dateFilter;
-
             if (req_data.startDate && !req_data.endDate) {
-                dateFilter = {
-                    $gte: ["$fromDate", new Date(req_data.startDate)]
+                filter.fromDate = {
+                    $gte: new Date(req_data.startDate)
                 };
-                filter.push(dateFilter)
-
             }
+
             if (!req_data.startDate && req_data.endDate) {
-                dateFilter = {
-                    $lte: ["$fromDate", new Date(req_data.endDate)]
+                filter.fromDate = {
+                    $lte: new Date(req_data.endDate)
                 };
-                filter.push(dateFilter)
-
             }
+            
             if (req_data.startDate && req_data.endDate) {
                 if (req_data.startDate === req_data.endDate) {
-                    dateFilter = {
-                        $eq: ["$fromDate", new Date(req_data.startDate)]
+                    filter.fromDate = {
+                        $eq: new Date(req_data.startDate)
                     };
-                    filter.push(dateFilter);
                 } else {
-                    dateFilter = {
-                        $and: [
-                            { $gte: ["$fromDate", new Date(req_data.startDate)] },
-                            { $lte: ["$fromDate", new Date(req_data.endDate)] }
-                        ]
+                    filter.fromDate = {
+                        $gte: new Date(req_data.startDate),
+                        $lte: new Date(req_data.endDate)
                     };
-                    filter.push(dateFilter);
                 }
             }
 

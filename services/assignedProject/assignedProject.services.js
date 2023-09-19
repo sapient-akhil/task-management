@@ -124,11 +124,11 @@ module.exports = {
                                 "projectCategoryName._id": 1,
                             }
                         },
-                        {
-                            $sort: {
-                                "userName.name": 1 // Sort users by name in ascending order
-                            }
-                        },
+                        // {
+                        //     $sort: {
+                        //         "userName.name": 1 // Sort users by name in ascending order
+                        //     }
+                        // },
                         {
                             $group: {
                                 _id: { userId: "$_id.user", name: { $arrayElemAt: ["$userName.name", 0] } },
@@ -171,6 +171,9 @@ module.exports = {
                                 }
                             }
                         },
+                        {
+                            $sort: { "_id.name": 1 }
+                        }
                     ])
                     // .sort({ user: 1 })
                     .skip((page - 1) * pageSize)
@@ -303,11 +306,11 @@ module.exports = {
                                 "projectCategoryName._id": 1,
                             }
                         },
-                        {
-                            $sort: {
-                                "userName.name": 1 // Sort users by name in ascending order
-                            }
-                        },
+                        // {
+                        //     $sort: {
+                        //         "userName.name": 1 // Sort users by name in ascending order
+                        //     }
+                        // },
                         {
                             $group: {
                                 _id: { userId: "$_id.user", name: { $arrayElemAt: ["$userName.name", 0] } },
@@ -350,8 +353,19 @@ module.exports = {
                                 }
                             }
                         },
+                        {
+                            $project: {
+                                _id: 1,
+                                assignedProjects:
+                                {
+                                    $sortArray: { input: "$assignedProjects", sortBy: { "projectName.name": 1 } }
+                                },
+                                totalHour: 1,
+                                totalMinutes: 1
+                            }
+                        }
                     ])
-                    .sort({ user: -1 })
+                    // .sort({ user: -1 })
                     .skip((page - 1) * pageSize)
                     .limit(pageSize * 1)
             )
