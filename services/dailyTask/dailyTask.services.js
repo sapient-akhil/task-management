@@ -9,7 +9,16 @@ module.exports = {
 
             return resolve(
                 await dailyTaskModel.aggregate([
-                    { $match: { $expr: { $and: filter } } },
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$active", true] }, // Include this line for active: true condition
+                                    { $and: filter } // Include your existing filter conditions here
+                                ]
+                            }
+                        }
+                    },
                     {
                         $lookup: {
                             from: "users",
