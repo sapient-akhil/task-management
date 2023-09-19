@@ -189,6 +189,56 @@ module.exports = {
                 ]))
         })
     },
+    totalTimeForUser: async (id, filter) => {
+        return new Promise(async (resolve) => {
+
+            return resolve(
+                await dailyTaskModel.aggregate([
+                    {
+                        $match: {
+                            $expr: {
+                                $and: [
+                                    { $eq: ["$user", id] }, // Existing condition
+                                    { $eq: ["$active", true] },
+                                ]
+                            }
+                        }
+                    },
+                    { $match: { $expr: { $and: filter } } },
+                    {
+                        $group: {
+                            _id: null,
+                            totalHour: { $sum: "$hours" },
+                            totalMinutes: { $sum: "$minutes" },
+                        },
+                    },
+                    {
+                        $addFields: {
+                            totalHour: {
+                                $add: [
+                                    "$totalHour",
+                                    {
+                                        $floor: {
+                                            $divide: ["$totalMinutes", 60]
+                                        }
+                                    }
+                                ]
+                            },
+                            totalMinutes: {
+                                $mod: ["$totalMinutes", 60]
+                            }
+                        }
+                    },
+                    {
+                        $project: {
+                            "_id": 0,
+                            "totalHour": { $toString: "$totalHour" },
+                            "totalMinutes": { $toString: "$totalMinutes" }
+                        }
+                    }
+                ]))
+        })
+    },
     findByDailyTaskId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(

@@ -54,7 +54,7 @@ module.exports = {
             //     filter.push({ $in: ["$user", user] });
             // }
             if (user) {
-                filter.user = [user]
+                filter.user = user
             }
             if (project && project.length) {
                 project = await project.map((item) => {
@@ -72,27 +72,73 @@ module.exports = {
                 filter.push({ $in: ["$project_category", project_category] });
             }
 
+            //     if (fromDate && !toDate) {
+            //         filter.push[{ "$date", { date: { $gte: startDate, $lt: endDate } }
+            //     }]
+            // }
 
             let dateFilter;
-            if (req_data.date && req_data.date.length === 2) {
-                dateFilter = {
-                    $and: [{
-                        $gte: ["$date", new Date(req_data.date[0])]
-                    },
-                    {
-                        $lte: ["$date", new Date(req_data.date[1])]
-                    }]
-                }
 
+            if (req_data.startDate && !req_data.endDate) {
+                dateFilter = {
+                    $gte: ["$date", new Date(req_data.startDate)]
+                };
                 filter.push(dateFilter)
+
             }
+            if (req_data.startDate && req_data.endDate) {
+                if (req_data.startDate === req_data.endDate) {
+                    dateFilter = {
+                        $eq: ["$date", new Date(req_data.startDate)]
+                    };
+                    filter.push(dateFilter);
+                } else {
+                    dateFilter = {
+                        date: {
+                            $gte: new Date(req_data.startDate),
+                            $lte: new Date(req_data.endDate)
+                        }
+                    };
+                    filter.push(dateFilter);
+                }
+            }
+
+            // if (req_data.startDate && !req_data.endDate) {
+            //     filter.push({ $gte: ["$date", req_data.startDate] });
+            // }
+            // if (!req_data.startDate && req_data.endDate) {
+            //     filter.push({ $lte: ["$date", req_data.endDate] });
+            // }
+            // if (req_data.startDate && req_data.endDate) {
+            //     // console.log("date", fromDate, toDate);
+            //     filter.push({
+            //         $and: [
+            //             { $gte: ["$date", req_data.startDate] },
+            //             { $lt: ["$date", req_data.endDate] },
+            //         ],
+            //     });
+            // }
+
+            // let dateFilter;
+            // if (req_data.date && req_data.date.length === 2) {
+            //     dateFilter = {
+            //         $and: [{
+            //             $gte: ["$date", new Date(req_data.date[0])]
+            //         },
+            //         {
+            //             $lte: ["$date", new Date(req_data.date[1])]
+            //         }]
+            //     }
+
+            //     filter.push(dateFilter)
+            // }
 
             const total = await dailyTaskServices.countDailyTask();
             const pageCount = Math.ceil(total / pageSize)
 
             const dailyTask = await dailyTaskServices.findAllDailyTaskForUser(user, filter, pageObj)
 
-            const totalTime = await dailyTaskServices.totalTime(filter)
+            const totalTime = await dailyTaskServices.totalTimeForUser(user, filter)
             console.log("totalTime : ", totalTime)
 
 
