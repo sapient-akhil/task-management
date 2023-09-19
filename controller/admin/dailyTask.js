@@ -84,10 +84,13 @@ module.exports = {
             const pageCount = Math.ceil(total[0].total / pageSize)
 
             const dailyTask = await dailyTaskServices.findAllDailyTask(filter, pageObj)
-            // console.log("dailyTask : ", dailyTask)
 
             const totalTime = await dailyTaskServices.totalTime(filter)
-            // console.log("totalTime : ", dailyTask)
+
+            const totalTimeFormated = {
+                hours: totalTime[0].totalHour < 10 ? `0${totalTime[0].totalHour}` : totalTime[0].totalHour,
+                minutes: totalTime[0].totalMinutes < 10 ? `0${totalTime[0].totalMinutes}` : totalTime[0].totalMinutes,
+            } 
 
             res.status(201).send({
                 success: true,
@@ -98,7 +101,7 @@ module.exports = {
                         page, pageSize, pageCount, total: total[0].total
                     }
                 },
-                totalTime
+                totalTime: totalTimeFormated
             })
         } catch (error) {
             next(error)
