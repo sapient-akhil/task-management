@@ -54,6 +54,39 @@ module.exports = {
                 filter.push({ $in: ["$project_category", project_category] });
             }
 
+            let dateFilter;
+
+            if (req_data.startDate && !req_data.endDate) {
+                dateFilter = {
+                    $gte: ["$date", new Date(req_data.startDate)]
+                };
+                filter.push(dateFilter)
+
+            }
+            if (!req_data.startDate && req_data.endDate) {
+                dateFilter = {
+                    $lte: ["$date", new Date(req_data.endDate)]
+                };
+                filter.push(dateFilter)
+
+            }
+            if (req_data.startDate && req_data.endDate) {
+                if (req_data.startDate === req_data.endDate) {
+                    dateFilter = {
+                        $eq: ["$date", new Date(req_data.startDate)]
+                    };
+                    filter.push(dateFilter);
+                } else {
+                    dateFilter = {
+                        $and: [
+                            { $gte: ["$date", new Date(req_data.startDate)] },
+                            { $lte: ["$date", new Date(req_data.endDate)] }
+                        ]
+                    };
+                    filter.push(dateFilter);
+                }
+            }
+
             // if (req_data.date && req_data.date.length === 2) {
             //     date = await date.map((item) => {
             //         item = new ObjectId(item);
@@ -61,20 +94,20 @@ module.exports = {
             //     })
             //     filter.push({ $gte: new Date(req_data.date[0]), $lte: new Date(req_data.date[1]) });
             // }
-            let dateFilter;
-            if (req_data.date && req_data.date.length === 2) {
-                dateFilter = {
-                    $and: [{
-                        $gte: ["$date", new Date(req_data.date[0])]
-                    },
-                    {
-                        $lte: ["$date", new Date(req_data.date[1])]
-                    }]
-                }
+            // let dateFilter;
+            // if (req_data.date && req_data.date.length === 2) {
+            //     dateFilter = {
+            //         $and: [{
+            //             $gte: ["$date", new Date(req_data.date[0])]
+            //         },
+            //         {
+            //             $lte: ["$date", new Date(req_data.date[1])]
+            //         }]
+            //     }
 
-                // console.log("filter.date", filter.date)
-                filter.push(dateFilter)
-            }
+            //     // console.log("filter.date", filter.date)
+            //     filter.push(dateFilter)
+            // }
 
             const total = await dailyTaskServices.countDailyTask();
             const pageCount = Math.ceil(total / pageSize)

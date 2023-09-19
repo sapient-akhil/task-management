@@ -86,6 +86,13 @@ module.exports = {
                 filter.push(dateFilter)
 
             }
+            if (!req_data.startDate && req_data.endDate) {
+                dateFilter = {
+                    $lte: ["$date", new Date(req_data.endDate)]
+                };
+                filter.push(dateFilter)
+
+            }
             if (req_data.startDate && req_data.endDate) {
                 if (req_data.startDate === req_data.endDate) {
                     dateFilter = {
@@ -94,10 +101,10 @@ module.exports = {
                     filter.push(dateFilter);
                 } else {
                     dateFilter = {
-                        date: {
-                            $gte: new Date(req_data.startDate),
-                            $lte: new Date(req_data.endDate)
-                        }
+                        $and: [
+                            { $gte: ["$date", new Date(req_data.startDate)] },
+                            { $lte: ["$date", new Date(req_data.endDate)] }
+                        ]
                     };
                     filter.push(dateFilter);
                 }
