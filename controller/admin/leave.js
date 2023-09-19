@@ -21,8 +21,33 @@ module.exports = {
             if (req_data.leaveStatus && req_data.leaveStatus.length) {
                 filter.leaveStatus = { $in: req_data.leaveStatus }
             }
-            if (req_data.fromDate && req_data.fromDate.length === 2) {
-                filter.fromDate = { $gte: new Date(req_data.fromDate[0]), $lte: new Date(req_data.fromDate[1]) }
+            // if (req_data.fromDate && req_data.fromDate.length === 2) {
+            //     filter.fromDate = { $gte: new Date(req_data.fromDate[0]), $lte: new Date(req_data.fromDate[1]) }
+            // }
+
+            if (req_data.startDate && !req_data.endDate) {
+                filter.fromDate = {
+                    $gte: new Date(req_data.startDate)
+                };
+            }
+
+            if (!req_data.startDate && req_data.endDate) {
+                filter.fromDate = {
+                    $lte: new Date(req_data.endDate)
+                };
+            }
+            
+            if (req_data.startDate && req_data.endDate) {
+                if (req_data.startDate === req_data.endDate) {
+                    filter.fromDate = {
+                        $eq: new Date(req_data.startDate)
+                    };
+                } else {
+                    filter.fromDate = {
+                        $gte: new Date(req_data.startDate),
+                        $lte: new Date(req_data.endDate)
+                    };
+                }
             }
 
             const total = await leaveServices.countLeave(filter);
