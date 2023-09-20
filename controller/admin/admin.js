@@ -22,8 +22,10 @@ module.exports = {
             const existData = await usersServices.existData(null, req_data.email, req_data.phoneNumber, req_data.emergencyContact, req_data.aadharCard, req_data.bankAccountNumber, req_data.ifscCode, req_data.panCard, req_data.username)
 
             // IMAGE UPLOAD AND WHEN IMAGE IS UPDATE OLD IMAGE DELETE FUNCTION
-            const upload = uploadProfilePhoto(req, res, req_data.profilePhoto);
-            req_data.profilePhoto = upload[0]
+            if (req_data?.profilePhoto) {
+                const upload = uploadProfilePhoto(req, res, req_data.profilePhoto);
+                req_data.profilePhoto = upload[0]
+            }
 
             if (existData.status) {
                 const usersData = await usersServices.createUsersData(req_data);
@@ -99,11 +101,10 @@ module.exports = {
 
             req_data.technology_skills = await JSON.parse(req_data.technology_skills);
             let hash;
-            if(req_data.password){
+            if (req_data.password) {
                 hash = await bcrypt.hash(req_data.password, 10);
                 req_data.password = hash
             }
-            
 
             const existData = await usersServices.existData(id, req_data.email, req_data.phoneNumber, req_data.emergencyContact, req_data.aadharCard, req_data.bankAccountNumber, req_data.ifscCode, req_data.panCard, req_data.username)
 
@@ -111,8 +112,10 @@ module.exports = {
 
             await deleteOldProfileImages(req_data.profilePhoto);
 
-            const upload = uploadProfilePhoto(req, res);
-            req_data.profilePhoto = upload[0]
+            if (req_data?.profilePhoto) {
+                const upload = uploadProfilePhoto(req, res, req_data.profilePhoto);
+                req_data.profilePhoto = upload[0]
+            }
 
             if (existData.status) {
                 const usersData = await usersServices.updateUsersData(id, req_data)

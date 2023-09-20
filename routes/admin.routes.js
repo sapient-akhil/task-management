@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Schema = require("../helper/schema")
+const model = require("../services")
 const Validators = require("../helper/validation")
 const { verifyAccessTokenforAdmin, verifyAccessTokenforUsersAdmin } = require("../helper/verify.token")
 
@@ -96,18 +97,36 @@ router.delete("/leave-type/:id", verifyAccessTokenforAdmin, Validators.forParams
 // leave routes
 const leaveController = require("../controller/admin/leave")
 
-router.post("/leave", leaveController.allLeave)
-router.get("/leave/:id", Validators.forParams(Schema.params), leaveController.oneLeave)
-router.patch("/leave/:id", Validators.forParams(Schema.params), leaveController.updateLeave)
-router.delete("/leave/:id", Validators.forParams(Schema.params), leaveController.deleteLeave)
+router.post("/leave", verifyAccessTokenforAdmin, leaveController.allLeave)
+router.get("/leave/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveController.oneLeave)
+router.patch("/leave/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveController.updateLeave)
+router.delete("/leave/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveController.deleteLeave)
 
 // quickLink routes
 const quickLinkController = require("../controller/admin/quickLinks")
 
-router.post("/quick-link", Validators.forReqBody(Schema.quickLinksSchema), quickLinkController.createQuickLinks)
-router.get("/quick-link", quickLinkController.allQuickLinks)
-router.get("/quick-link/:id", Validators.forParams(Schema.params), Validators.forParams(Schema.params), quickLinkController.oneQuickLinks)
-router.put("/quick-link/:id", Validators.forParams(Schema.params), Validators.forReqBody(Schema.quickLinksSchema), Validators.forParams(Schema.params), quickLinkController.updateQuickLinks)
-router.delete("/quick-link/:id", Validators.forParams(Schema.params), Validators.forParams(Schema.params), quickLinkController.deleteQuickLinks)
+router.post("/quick-link", verifyAccessTokenforAdmin, Validators.forReqBody(Schema.quickLinksSchema), quickLinkController.createQuickLinks)
+router.get("/quick-link", verifyAccessTokenforAdmin, quickLinkController.allQuickLinks)
+router.get("/quick-link/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forParams(Schema.params), quickLinkController.oneQuickLinks)
+router.put("/quick-link/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.quickLinksSchema), Validators.forParams(Schema.params), quickLinkController.updateQuickLinks)
+router.delete("/quick-link/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forParams(Schema.params), quickLinkController.deleteQuickLinks)
+
+// router.post("/data-insert", async (req, res, next) => {
+//     try {
+//         const req_data = JSON.parse(req.body.data);
+//         await model.leaveServices.addManycreateLeave(req_data)
+
+
+//         res.status(201).send({
+//             success: true,
+//             message: " Quick link is created successfully.",
+//             data: req_data
+//         })
+//     } catch (error) {
+//         next(error)
+//     }
+// })
+
+
 
 module.exports = router;

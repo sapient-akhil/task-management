@@ -35,7 +35,7 @@ const leaveModel = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        default: "true"
+        default: true
     }
 }, { timestamps: true })
 

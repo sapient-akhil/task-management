@@ -371,6 +371,17 @@ module.exports = {
             )
         });
     },
+    createAssignedProject: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await assignedProjectModel.insertMany({ ...req_data });
+            return resolve(
+                await assignedProjectModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findByAssignedProjectId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -395,10 +406,10 @@ module.exports = {
             )
         });
     },
-    countAssignedProject: async (filter) => {
+    countAssignedProject: async (id) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await assignedProjectModel.countDocuments(filter)
+                await assignedProjectModel.countDocuments({ user: id })
             )
         });
     },
@@ -410,17 +421,18 @@ module.exports = {
             throw error;
         }
     },
-    createAssignedProject: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await assignedProjectModel.insertMany({ ...req_data });
-            return resolve(
-                await assignedProjectModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
-        });
-    },
+
+    // addManyAssignedProject: async (req_data) => {
+    //     return new Promise(async (resolve) => {
+    //         await assignedProjectModel.insertMany(req_data);
+    //         return resolve(
+    //             await assignedProjectModel.find(
+    //                 {},
+    //                 { __v: 0 }
+    //             )
+    //         );
+    //     });
+    // },
     updateAssignedProject: async (_id, req_data) => {
         return new Promise(async (resolve) => {
             await assignedProjectModel.findByIdAndUpdate({ _id }, { ...req_data }, { new: true });

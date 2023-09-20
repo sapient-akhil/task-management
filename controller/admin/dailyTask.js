@@ -81,28 +81,47 @@ module.exports = {
 
             const total = await dailyTaskServices.findActiveTaskForAdmin(filter)
             console.log("total", total)
-            const pageCount = Math.ceil(total[0].total / pageSize)
+            let pageCount = 0;
+            let dailyTask = [];
+            let totalTimeFormated = `00:00`;
 
-            const dailyTask = await dailyTaskServices.findAllDailyTask(filter, pageObj)
+            if (total.length > 0) {
+                pageCount = Math.ceil(total[0]?.total / pageSize)
 
-            const totalTime = await dailyTaskServices.totalTime(filter)
+                dailyTask = await dailyTaskServices.findAllDailyTask(filter, pageObj)
 
-            const totalTimeFormated = {
-                hours: totalTime[0].totalHour < 10 ? `0${totalTime[0].totalHour}` : totalTime[0].totalHour,
-                minutes: totalTime[0].totalMinutes < 10 ? `0${totalTime[0].totalMinutes}` : totalTime[0].totalMinutes,
-            } 
+                const totalTime = await dailyTaskServices.totalTime(filter)
 
-            res.status(201).send({
-                success: true,
-                message: "All daily task is fetch successfully.",
-                data: dailyTask,
-                meta: {
-                    pagination: {
-                        page, pageSize, pageCount, total: total[0].total
-                    }
-                },
-                totalTime: totalTimeFormated
-            })
+                totalTimeFormated = {
+                    hours: totalTime[0]?.totalHour < 10 ? `0${totalTime[0]?.totalHour}` : totalTime[0]?.totalHour,
+                    minutes: totalTime[0]?.totalMinutes < 10 ? `0${totalTime[0]?.totalMinutes}` : totalTime[0]?.totalMinutes,
+                }
+                res.status(201).send({
+                    success: true,
+                    message: "All daily task is fetch successfully.",
+                    data: dailyTask,
+                    meta: {
+                        pagination: {
+                            page, pageSize, pageCount, total: total[0].total
+                        }
+                    },
+                    totalTime: totalTimeFormated
+                })
+            } else {
+                res.status(201).send({
+                    success: true,
+                    message: "All daily task is fetch successfully.",
+                    data: [],
+                    meta: {
+                        pagination: {
+                            page, pageSize, pageCount, total: 0
+                        }
+                    },
+                    totalTime: totalTimeFormated
+                })
+            }
+
+
         } catch (error) {
             next(error)
         }

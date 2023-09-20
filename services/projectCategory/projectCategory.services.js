@@ -13,6 +13,17 @@ module.exports = {
             )
         });
     },
+    createProjectCategory: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await projectCategoryModel.insertMany({ ...req_data });
+            return resolve(
+                await projectCategoryModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findByProjectCategoryId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -38,17 +49,6 @@ module.exports = {
                     { __v: 0 }
                 )
             )
-        });
-    },
-    createProjectCategory: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await projectCategoryModel.insertMany({ ...req_data });
-            return resolve(
-                await projectCategoryModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
         });
     },
     updateProjectCategory: async (_id, req_data) => {

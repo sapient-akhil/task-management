@@ -31,6 +31,17 @@ module.exports = {
             )
         });
     },
+    createLeave: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await leaveModel.insertMany({ ...req_data });
+            return resolve(
+                await leaveModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findByLeaveId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -69,17 +80,17 @@ module.exports = {
             )
         });
     },
-    createLeave: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await leaveModel.insertMany({ ...req_data });
-            return resolve(
-                await leaveModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
-        });
-    },
+    // addManycreateLeave: async (req_data) => {
+    //     return new Promise(async (resolve) => {
+    //         await leaveModel.insertMany(req_data);
+    //         return resolve(
+    //             await leaveModel.find(
+    //                 {},
+    //                 { __v: 0 }
+    //             )
+    //         );
+    //     });
+    // },
     updateLeave: async (_id, req_data) => {
         return new Promise(async (resolve) => {
             await leaveModel.findByIdAndUpdate({ _id }, { ...req_data });
@@ -103,22 +114,5 @@ module.exports = {
         });
     }
 }
-
-
-
-// db.getCollection("assignedprojects").aggregate([{ $unwind: "$project" }, { $group: { _id: { projcetId: "$project", user: "$user" }, startDate: { $first: "$startDate" }, endDate: { $first: "$endDate" } } },
-// {
-//     $lookup: {
-//         from: "dailytasks",
-//         let: { projectId: "$_id.projectId", userId: "$_id.user" },
-//         pipeline: [
-//             { $match: { $expr: { $and: [{ $eq: ["$project", "$$projectId"] }, { $eq: ["$user", "$$userId"] }] } } },
-//             { $group: { _id: { project: "$project", user: "$user" }, total: { $sum: "$hours" }, totalMinutes: { $sum: "$minutes" } } },
-//         ],
-//         as: "data"
-//     }
-// }
-// ])
-
 
 

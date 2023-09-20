@@ -75,8 +75,8 @@ module.exports = {
     }),
     projectsSchema: joi.object().keys({
         name: validate.reqstring,
-        startDate: validate.reqDate,
-        description: validate.reqstring,
+        startDate: validate.date,
+        description: validate.string,
         // technology_skills: validate.reqstring,
         deployed: validate.boolean
     }),
@@ -85,7 +85,7 @@ module.exports = {
         user: validate.reqstring,
         startDate: validate.date,
         endDate: validate.date,
-        project_category: validate.reqstring,
+        project_category: validate.string,
     }),
     loginSchema: joi.object().keys({
         password: validate.reqPassword,

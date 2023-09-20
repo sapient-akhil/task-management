@@ -8,7 +8,7 @@ const leaveStatusModel = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        default: "true"
+        default: true
     }
 }, { timestamps: true })
 

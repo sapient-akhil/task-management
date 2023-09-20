@@ -7,11 +7,10 @@ const projectModel = new mongoose.Schema({
     },
     startDate: {
         type: Date,
-        required: [true, "startDate are require"]
+        // required: [true, "startDate are require"]
     },
     description: {
         type: String,
-        required: [true, "description are require"]
     },
     // technology_skills: [{
     //     type: mongoose.Types.ObjectId,
@@ -24,7 +23,7 @@ const projectModel = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        default: "true"
+        default: true
     }
 }, { timestamps: true })
 

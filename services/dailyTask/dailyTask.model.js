@@ -25,7 +25,7 @@ const dailyTaskModel = new mongoose.Schema({
     },
     minutes: {
         type: Number,
-        default: false
+        default:  [true, "minutes are require"]
     },
     description: {
         type: String,
@@ -33,7 +33,7 @@ const dailyTaskModel = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        default: "true"
+        default: true
     }
 }, { timestamps: true })
 

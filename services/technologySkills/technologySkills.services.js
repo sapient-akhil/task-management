@@ -8,6 +8,17 @@ module.exports = {
             )
         });
     },
+    createTechnologySkills: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await technologySkillsModel.insertMany({ ...req_data });
+            return resolve(
+                await technologySkillsModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findByTechnologySkillsId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -26,17 +37,6 @@ module.exports = {
                     { __v: 0 }
                 )
             )
-        });
-    },
-    createTechnologySkills: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await technologySkillsModel.insertMany({ ...req_data });
-            return resolve(
-                await technologySkillsModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
         });
     },
     updateTechnologySkills: async (_id, req_data) => {

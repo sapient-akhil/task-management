@@ -79,6 +79,17 @@ module.exports = {
             )
         });
     },
+    createDailyTask: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await dailyTaskModel.insertMany({ ...req_data });
+            return resolve(
+                await dailyTaskModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findActiveTaskForAdmin: async (filter) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -352,17 +363,17 @@ module.exports = {
             )
         });
     },
-    createDailyTask: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await dailyTaskModel.insertMany({ ...req_data });
-            return resolve(
-                await dailyTaskModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
-        });
-    },
+    // addManyDailyTask: async (req_data) => {
+    //     return new Promise(async (resolve) => {
+    //         await dailyTaskModel.insertMany(req_data);
+    //         return resolve(
+    //             await dailyTaskModel.find(
+    //                 { },
+    //                 { __v: 0 }
+    //             )
+    //         );
+    //     });
+    // },
     updateDailyTask: async (_id, req_data) => {
         return new Promise(async (resolve) => {
             await dailyTaskModel.findByIdAndUpdate({ _id }, { ...req_data });

@@ -1,29 +1,6 @@
 const usersModel = require("./users.model")
 
 module.exports = {
-    // findAllData: async (employeeId, page, pageSize, search) => {
-    //     return new Promise(async (resolve) => {
-    //         return resolve(
-    //             await usersModel.find(
-    //                 search ? {
-    //                     active: true,
-    //                     user_role: employeeId,
-    //                     $or:
-    //                         [
-    //                             { name: { $regex: search, $options: 'i' } },
-    //                             { email: { $regex: search, $options: 'i' } },
-    //                             { phoneNumber: { $regex: search, $options: 'i' } }
-    //                         ]
-    //                 } : { active: true, user_role: employeeId }, { _id: 1, username: 1, email: 1, name: 1, phoneNumber: 1, designation: 1, user_role: 1, technology_skills: 1, active: 1 })
-    //                 .populate("designation", { __v: 0 })
-    //                 .populate("user_role", { __v: 0 })
-    //                 .populate("technology_skills", { __v: 0 })
-    //                 .sort({ joinDate: -1 })
-    //                 .skip((page - 1) * pageSize)
-    //                 .limit(pageSize * 1)
-    //         )
-    //     });
-    // },
     findAllData: async (employeeId, page, pageSize) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -71,6 +48,17 @@ module.exports = {
                     .skip((page - 1) * pageSize)
                     .limit(pageSize * 1)
             )
+        });
+    },
+    createUsersData: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await usersModel.insertMany({ ...req_data });
+            return resolve(
+                await usersModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
         });
     },
     countUsers: async (employeeId) => {
@@ -197,17 +185,6 @@ module.exports = {
             );
         });
     },
-    createUsersData: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await usersModel.insertMany({ ...req_data });
-            return resolve(
-                await usersModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
-        });
-    },
     updateUsersData: async (_id, req_data) => {
         return new Promise(async (resolve) => {
             await usersModel.findByIdAndUpdate({ _id }, { ...req_data }, { new: true });
@@ -230,4 +207,39 @@ module.exports = {
             );
         });
     },
+    // addManyUsersData: async (req_data) => {
+    //     return new Promise(async (resolve) => {
+    //         await usersModel.insertMany(req_data);
+    //         return resolve(
+    //             await usersModel.find(
+    //                 {},
+    //                 { __v: 0 }
+    //             )
+    //         );
+    //     });
+    // },
+
+    // findAllData: async (employeeId, page, pageSize, search) => {
+    //     return new Promise(async (resolve) => {
+    //         return resolve(
+    //             await usersModel.find(
+    //                 search ? {
+    //                     active: true,
+    //                     user_role: employeeId,
+    //                     $or:
+    //                         [
+    //                             { name: { $regex: search, $options: 'i' } },
+    //                             { email: { $regex: search, $options: 'i' } },
+    //                             { phoneNumber: { $regex: search, $options: 'i' } }
+    //                         ]
+    //                 } : { active: true, user_role: employeeId }, { _id: 1, username: 1, email: 1, name: 1, phoneNumber: 1, designation: 1, user_role: 1, technology_skills: 1, active: 1 })
+    //                 .populate("designation", { __v: 0 })
+    //                 .populate("user_role", { __v: 0 })
+    //                 .populate("technology_skills", { __v: 0 })
+    //                 .sort({ joinDate: -1 })
+    //                 .skip((page - 1) * pageSize)
+    //                 .limit(pageSize * 1)
+    //         )
+    //     });
+    // },
 }

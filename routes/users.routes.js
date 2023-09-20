@@ -62,8 +62,8 @@ router.get("/leave-status/:id", verifyAccessTokenforUsersAdmin, Validators.forPa
 // leaveType routes
 const leaveTypeController = require("../controller/users/leaveType")
 
-router.get("/leave-type", verifyAccessTokenforUsersAdmin, verifyAccessTokenforUsersAdmin, leaveTypeController.allLeaveType)
-router.get("/leave-type/:id", verifyAccessTokenforUsersAdmin, verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveTypeController.oneLeaveType)
+router.get("/leave-type", verifyAccessTokenforUsersAdmin, leaveTypeController.allLeaveType)
+router.get("/leave-type/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), leaveTypeController.oneLeaveType)
 
 // leave routes
 const leaveController = require("../controller/users/leave")
@@ -75,8 +75,8 @@ router.get("/leave/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Sc
 // quickLink routes
 const quickLinkController = require("../controller/users/quickLinks")
 
-router.post("/quick-link", Validators.forReqBody(Schema.quickLinksSchema), quickLinkController.allQuickLinks)
-router.get("/quick-link", quickLinkController.allQuickLinks)
+router.post("/quick-link", verifyAccessTokenforUsersAdmin, Validators.forReqBody(Schema.quickLinksSchema), quickLinkController.allQuickLinks)
+router.get("/quick-link", verifyAccessTokenforUsersAdmin, quickLinkController.allQuickLinks)
 
 module.exports = router;
 

@@ -98,16 +98,16 @@ const usersModel = new mongoose.Schema({
         ref: "technologySkills"
     }],
     confirmed: {
-        type: String,
-        default: "false"
+        type: Boolean,
+        default: false
     },
     blocked: {
-        type: String,
-        default: "false"
+        type: Boolean,
+        default: false
     },
     active: {
         type: Boolean,
-        default: "true"
+        default: true
     }
 }, { timestamps: true })
 

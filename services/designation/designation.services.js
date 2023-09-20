@@ -8,6 +8,17 @@ module.exports = {
             )
         });
     },
+    createDesignationData: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await designationModel.insertMany({ ...req_data });
+            return resolve(
+                await designationModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findByDesignationId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -27,18 +38,18 @@ module.exports = {
                 )
             )
         });
-    },
-    createDesignationData: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await designationModel.insertMany({ ...req_data });
-            return resolve(
-                await designationModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
-        });
-    },
+    }, 
+    // addManyDesignationData: async (req_data) => {
+    //     return new Promise(async (resolve) => {
+    //         await designationModel.insertMany(req_data);
+    //         return resolve(
+    //             await designationModel.find(
+    //                 {},
+    //                 { __v: 0 }
+    //             )
+    //         );
+    //     });
+    // },
     updateDesignation: async (_id, req_data) => {
         return new Promise(async (resolve) => {
             await designationModel.findByIdAndUpdate({ _id }, { ...req_data });

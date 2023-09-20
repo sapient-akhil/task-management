@@ -11,6 +11,17 @@ module.exports = {
             );
         });
     },
+    createRole: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await roleModel.insertMany({ ...req_data });
+            return resolve(
+                await roleModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findAllRole: async () => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -36,17 +47,6 @@ module.exports = {
                     { __v: 0 }
                 )
             )
-        });
-    },
-    createRole: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await roleModel.insertMany({ ...req_data });
-            return resolve(
-                await roleModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
         });
     },
     updateRole: async (_id, req_data) => {

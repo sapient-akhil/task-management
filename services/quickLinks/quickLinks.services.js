@@ -8,6 +8,17 @@ module.exports = {
             )
         });
     },
+    createQuickLinks: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await quickLinksModel.insertMany({ ...req_data });
+            return resolve(
+                await quickLinksModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findbyName: async (name) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -36,15 +47,6 @@ module.exports = {
             );
         });
     },
-    // nameLink: async (name, link) => {
-    //     return new Promise(async (resolve) => {
-    //         return resolve(
-    //             await quickLinksModel.findOne(
-    //                 { name, link, active: true },
-    //             )
-    //         );
-    //     });
-    // },
     findQuickLinks: async (link, name) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -53,17 +55,6 @@ module.exports = {
                     { __v: 0 }
                 )
             )
-        });
-    },
-    createQuickLinks: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await quickLinksModel.insertMany({ ...req_data });
-            return resolve(
-                await quickLinksModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
         });
     },
     updateQuickLinks: async (_id, req_data) => {

@@ -13,7 +13,7 @@ const assignedProjectModel = new mongoose.Schema({
     },
     project_category: [{
         type: mongoose.Types.ObjectId,
-        required: [true, "project_category are require"],
+        // required: [true, "project_category are require"],
         ref: "projectCategory"
     }],
     startDate: {
@@ -24,7 +24,7 @@ const assignedProjectModel = new mongoose.Schema({
     },
     active: {
         type: Boolean,
-        default: "true"
+        default: true
     }
 }, { timestamps: true })
 

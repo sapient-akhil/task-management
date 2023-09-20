@@ -20,6 +20,17 @@ module.exports = {
             )
         });
     },
+    createProjects: async (req_data) => {
+        return new Promise(async (resolve) => {
+            await projectsModel.insertMany({ ...req_data });
+            return resolve(
+                await projectsModel.find(
+                    { ...req_data },
+                    { __v: 0 }
+                )
+            );
+        });
+    },
     findByProjectsId: async (_id) => {
         return new Promise(async (resolve) => {
             return resolve(
@@ -39,17 +50,17 @@ module.exports = {
             )
         });
     },
-    createProjects: async (req_data) => {
-        return new Promise(async (resolve) => {
-            await projectsModel.insertMany({ ...req_data });
-            return resolve(
-                await projectsModel.find(
-                    { ...req_data },
-                    { __v: 0 }
-                )
-            );
-        });
-    },
+    // addManyProjects: async (req_data) => {
+    //     return new Promise(async (resolve) => {
+    //         await projectsModel.insertMany(req_data);
+    //         return resolve(
+    //             await projectsModel.find(
+    //                 {},
+    //                 { __v: 0 }
+    //             )
+    //         );
+    //     });
+    // },
     updateProjects: async (_id, req_data) => {
         return new Promise(async (resolve) => {
             await projectsModel.findByIdAndUpdate({ _id }, { ...req_data });
