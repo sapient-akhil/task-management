@@ -56,7 +56,7 @@ module.exports = {
         user_role: validate.id,
         technology_skills: validate.string,
         password: validate.password,
-        profilePhoto: validate.string
+        // profilePhoto: validate.string
     }),
     roleSchema: joi.object().keys({
         role: validate.reqstring

@@ -25,7 +25,7 @@ const dailyTaskModel = new mongoose.Schema({
     },
     minutes: {
         type: Number,
-        default:  [true, "minutes are require"]
+        required:  [true, "minutes are require"]
     },
     description: {
         type: String,

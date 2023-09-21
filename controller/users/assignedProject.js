@@ -7,7 +7,7 @@ module.exports = {
   allAssignedProject: async (req, res, next) => {
     try {
       const page = parseInt(req.query.page || 1);
-      const pageSize = parseInt(req.query.pageSize || 3);
+      const pageSize = parseInt(req.query.pageSize || 10);
 
       let user = req.query?.user;
       user = new ObjectId(user);
@@ -18,16 +18,23 @@ module.exports = {
       const allAssignedProject =
         await assignedProjectServices.findAllAssignedProjectForUser(
           user,
-          page, 
+          page,
           pageSize
         );
 
       console.log("allAssignedProject", allAssignedProject);
+
       if (!allAssignedProject.length)
         throw createError.NotFound("Projects Not Assigned Yet");
 
-      const total = await assignedProjectServices.countAssignedProject(user);
-      const pageCount = Math.ceil(total / pageSize);
+      const totalAssignedProjects = await assignedProjectServices.countAssignedProjectForUser(user);
+      console.log("totalAssignedProjects", totalAssignedProjects)
+
+      if (totalAssignedProjects === 0) {
+        throw createError.NotFound("Projects Not Assigned Yet");
+      }
+
+      const pageCount = Math.ceil(totalAssignedProjects / pageSize);
 
       res.status(201).send({
         success: true,
@@ -36,9 +43,9 @@ module.exports = {
         meta: {
           pagination: {
             page,
-            pageSize, 
+            pageSize,
             pageCount,
-            total : allAssignedProject[0]?.assignedProjects?.length
+            total: totalAssignedProjects
           },
         },
       });

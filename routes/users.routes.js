@@ -49,7 +49,7 @@ router.get("/assigned-projects/:id", verifyAccessTokenforUsersAdmin, Validators.
 // daily_task routes
 const dailyTaskController = require("../controller/users/dailyTask")
 
-router.post("/daily-tasks", Validators.forReqBody(Schema.dailyTaskSchema), dailyTaskController.createDailyTask)
+router.post("/daily-tasks", verifyAccessTokenforUser, Validators.forReqBody(Schema.dailyTaskSchema), dailyTaskController.createDailyTask)
 router.post("/get-daily-tasks", verifyAccessTokenforUsersAdmin, dailyTaskController.allDailyTask)
 router.get("/daily-tasks/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), dailyTaskController.oneDailyTask)
 

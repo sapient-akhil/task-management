@@ -124,11 +124,6 @@ module.exports = {
                                 "projectCategoryName._id": 1,
                             }
                         },
-                        // {
-                        //     $sort: {
-                        //         "userName.name": 1 // Sort users by name in ascending order
-                        //     }
-                        // },
                         {
                             $group: {
                                 _id: { userId: "$_id.user", name: { $arrayElemAt: ["$userName.name", 0] } },
@@ -172,7 +167,15 @@ module.exports = {
                             }
                         },
                         {
-                            $sort: { "_id.name": 1 }
+                            $project: {
+                                _id: 1,
+                                assignedProjects: {
+                                    $sortArray: { input: "$assignedProjects", sortBy: { "projectName.name": 1 } }
+                                },
+                            }
+                        },
+                        {
+                            $sort: { "_id.name": 1, }
                         }
                     ])
                     // .sort({ user: 1 })
@@ -191,8 +194,8 @@ module.exports = {
                             $match: {
                                 $expr: {
                                     $and: [
-                                        { $eq: ["$user", id] }, // Existing condition
-                                        { $eq: ["$active", true] } // New condition
+                                        { $eq: ["$user", id] },
+                                        { $eq: ["$active", true] }
                                     ]
                                 }
                             }
@@ -277,9 +280,6 @@ module.exports = {
                                 as: "userName",
                             },
                         },
-                        // {
-                        //     $match: { "userName.active": true }
-                        // },
                         {
                             $lookup: {
                                 from: "projectcategories",
@@ -306,63 +306,31 @@ module.exports = {
                                 "projectCategoryName._id": 1,
                             }
                         },
-                        // {
-                        //     $sort: {
-                        //         "userName.name": 1 // Sort users by name in ascending order
-                        //     }
-                        // },
                         {
                             $group: {
-                                _id: { userId: "$_id.user", name: { $arrayElemAt: ["$userName.name", 0] } },
-                                assignedProjects: {
-                                    $push: {
-                                        // projectId: "$_id.projectId",
-                                        // name: "$projectName.name", // Include the project name
-                                        totalHour: { $arrayElemAt: ["$data.totalHour", 0] }, // Use the renamed fields
-                                        totalMinutes: { $arrayElemAt: ["$data.totalMinutes", 0] },
-                                        startDate: "$startDate",
-                                        endDate: "$endDate",
-                                        projectName: { $arrayElemAt: ["$projectName", 0] },
-                                        // userName:"$userName",
-                                        projectCategoryName: "$projectCategoryName",
-                                        assigProject_id: "$assigProject_id",
-                                    }
-                                },
-                                totalHour: {
-                                    $sum: { $arrayElemAt: ["$data.totalHour", 0] }
-                                },
-                                totalMinutes: {
-                                    $sum: { $arrayElemAt: ["$data.totalMinutes", 0] }
-                                },
-                            }
-                        },
-                        {
-                            $addFields: {
-                                totalHour: {
-                                    $add: [
-                                        "$totalHour",
-                                        {
-                                            $floor: {
-                                                $divide: ["$totalMinutes", 60]
-                                            }
-                                        }
-                                    ]
-                                },
-                                totalMinutes: {
-                                    $mod: ["$totalMinutes", 60]
-                                }
+                                _id: { userId: "$_id.user", projectId: "$_id.projectId", name: { $arrayElemAt: ["$userName.name", 0] } },
+                                totalHour: { $first: { $arrayElemAt: ["$data.totalHour", 0] } }, // Use the renamed fields
+                                totalMinutes: { $first: { $arrayElemAt: ["$data.totalMinutes", 0] } },
+                                startDate: { $first: "$startDate" },
+                                endDate: { $first: "$endDate" },
+                                projectName: { $first: { $arrayElemAt: ["$projectName", 0] } },
+                                projectCategoryName: { $first: "$projectCategoryName" },
+                                assigProject_id: { $first: "$assigProject_id" },
                             }
                         },
                         {
                             $project: {
-                                _id: 1,
-                                assignedProjects:
-                                {
-                                    $sortArray: { input: "$assignedProjects", sortBy: { "projectName.name": 1 } }
-                                },
+                                _id: 0,
+                                startDate: 1,
+                                endDate: 1,
+                                projectName: 1,
+                                // projectCategoryName: 1,
                                 totalHour: 1,
-                                totalMinutes: 1
+                                totalMinutes: 1,
                             }
+                        },
+                        {
+                            $sort: { projectName: 1 }
                         }
                     ])
                     // .sort({ user: -1 })
@@ -406,12 +374,23 @@ module.exports = {
             )
         });
     },
-    countAssignedProject: async (id) => {
+    countAssignedProject: async (filter) => {
         return new Promise(async (resolve) => {
             return resolve(
-                await assignedProjectModel.countDocuments({ user: id })
+                await assignedProjectModel.countDocuments(filter)
             )
         });
+    },
+    countAssignedProjectForUser: async (id) => {
+        try {
+            const count = await assignedProjectModel.countDocuments({
+                user: id,
+                active: true,
+            });
+            return count;
+        } catch (error) {
+            throw error;
+        }
     },
     totalTime: async (project, user) => {
         try {
@@ -421,7 +400,6 @@ module.exports = {
             throw error;
         }
     },
-
     // addManyAssignedProject: async (req_data) => {
     //     return new Promise(async (resolve) => {
     //         await assignedProjectModel.insertMany(req_data);
