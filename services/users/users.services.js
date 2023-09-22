@@ -39,7 +39,7 @@ module.exports = {
                                 designationId: { $arrayElemAt: ["$designationName._id", 0] },
                                 designationName: { $arrayElemAt: ["$designationName.designation", 0] },
                                 roleId: { $arrayElemAt: ["$roles._id", 0] },
-                                role: { $arrayElemAt: ["$roles.role", 0] },
+                                role: { $arrayElemAt: ["$roles.role", 0] }, profilePhoto: 1,
                                 "technologySkillsName._id": 1, "technologySkillsName.technology_skills": 1
                             }
                         },

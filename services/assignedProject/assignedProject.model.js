@@ -12,16 +12,16 @@ const assignedProjectModel = new mongoose.Schema({
         ref: "user"
     },
     project_category: [{
-        type: mongoose.Types.ObjectId,
+        type:  mongoose.Types.ObjectId,
         // required: [true, "project_category are require"],
         ref: "projectCategory"
     }],
-    startDate: {
-        type: Date
-    },
-    endDate: {
-        type: Date
-    },
+    // startDate: {
+    //     type: Date
+    // },
+    // endDate: {
+    //     type: Date
+    // },
     active: {
         type: Boolean,
         default: true

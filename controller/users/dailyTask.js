@@ -10,10 +10,12 @@ module.exports = {
             const req_data = req.body;
             console.log("req_data", req_data)
 
+            req_data.project_category = req_data.project_category ? req_data.project_category : null
+
             const daily_task = await dailyTaskServices.createDailyTask(req_data)
 
             res.status(201).send({
-                success: true,
+                success: true, 
                 message: "Daily task is created successfully.",
                 data: daily_task
             })

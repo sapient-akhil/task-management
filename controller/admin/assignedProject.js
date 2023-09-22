@@ -9,7 +9,7 @@ module.exports = {
             const req_data = req.body;
 
             req_data.project = await JSON.parse(req_data.project);
-            req_data.project_category = await JSON.parse(req_data.project_category);
+            req_data.project_category = req_data.project_category ? JSON.parse(req_data.project_category) : []
 
             const assignedProject = await assignedProjectServices.createAssignedProject(req_data)
 
@@ -102,7 +102,7 @@ module.exports = {
             const id = req.params.id
 
             req_data.project = await JSON.parse(req_data.project);
-            req_data.project_category = await JSON.parse(req_data.project_category);
+            req_data.project_category = req_data.project_category ? JSON.parse(req_data.project_category) : []
 
             const assignedProject = await assignedProjectServices.updateAssignedProject(id, req_data)
             if (!assignedProject) throw createError.NotFound("The assigned project with the provided ID could not be found. Please ensure the ID is correct and try again")

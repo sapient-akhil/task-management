@@ -24,11 +24,10 @@ module.exports = {
         totalExperience: validate.number,
         ctc: validate.number,
         profilePhoto: validate.string,
-        designation: validate.id,
-        user_role: validate.id,
+        designation: validate.string,
+        user_role: validate.string,
         technology_skills: validate.string,
         password: validate.reqPassword,
-        profilePhoto: validate.string
     }),
     updateUsersSchema: joi.object().keys({
         username: validate.reqstring,
@@ -52,8 +51,8 @@ module.exports = {
         totalExperience: validate.number,
         ctc: validate.number,
         profilePhoto: validate.string,
-        designation: validate.id,
-        user_role: validate.id,
+        designation: validate.string,
+        user_role: validate.string,
         technology_skills: validate.string,
         password: validate.password,
         // profilePhoto: validate.string
@@ -83,8 +82,8 @@ module.exports = {
     assignedProjectSchema: joi.object().keys({
         project: validate.reqstring,
         user: validate.reqstring,
-        startDate: validate.date,
-        endDate: validate.date,
+        // startDate: validate.date,
+        // endDate: validate.date,
         project_category: validate.string,
     }),
     loginSchema: joi.object().keys({
@@ -94,7 +93,7 @@ module.exports = {
     dailyTaskSchema: joi.object().keys({
         user: validate.reqId,
         project: validate.reqId,
-        project_category: validate.id,
+        project_category: validate.string,
         date: validate.date,
         hours: validate.reqNumber,
         minutes: validate.reqNumber,
