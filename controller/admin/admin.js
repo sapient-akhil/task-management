@@ -10,12 +10,12 @@ module.exports = {
             const req_data = req.body
 
             console.log("req_data", req_data)
-       
+
             // req_data.technology_skills = await JSON.parse(req_data.technology_skills);
             req_data.technology_skills = req_data.technology_skills ? JSON.parse(req_data.technology_skills) : []
             req_data.user_role = req_data.user_role ? req_data.user_role : null
             req_data.designation = req_data.designation ? req_data.designation : null
-            // req_data.profilePhoto = req.files.profilePhoto ? req.files.profilePhoto : null
+            req_data.profilePhoto = req_data.profilePhoto ? req_data.profilePhoto : null
 
             // const hash = await bcrypt.hash(req_data.password, 10);
             // req_data.password = hash
@@ -32,16 +32,16 @@ module.exports = {
             // const upload = uploadProfilePhoto(req.files.profilePhoto, res);
             // req.files.profilePhoto = upload
 
-            const file = req.files.profilePhoto
-            const filePath = path.join(__dirname, "../../uploads", `${Date.now() + '_' + file.name}`)
-            console.log("filePath :", filePath)
+            // const file = req.files.profilePhoto
+            // const filePath = path.join(__dirname, "../../uploads", `${Date.now() + '_' + file.name}`)
+            // console.log("filePath :", filePath)
 
-            file.mv(filePath, err => {
-                if (err) return res.status(500).send(err)
-            })
+            // file.mv(filePath, err => {
+            //     if (err) return res.status(500).send(err)
+            // })
 
-            req_data.profilePhoto = filePath
-            console.log("req_data", req.files.profilePhoto)
+            // req_data.profilePhoto = filePath
+            // console.log("req_data", req.files.profilePhoto)
 
             if (existData.status) {
                 const usersData = await usersServices.createUsersData(req_data);
@@ -119,6 +119,7 @@ module.exports = {
             req_data.technology_skills = req_data.technology_skills ? JSON.parse(req_data.technology_skills) : []
             req_data.user_role = req_data.user_role ? req_data.user_role : null
             req_data.designation = req_data.designation ? req_data.designation : null
+            req_data.profilePhoto = req_data.profilePhoto ? req_data.profilePhoto : null
 
             let hash;
             if (req_data.password) {
@@ -137,15 +138,15 @@ module.exports = {
             //     req_data.profilePhoto = upload[0]
             // }
 
-            const file = req.files.profilePhoto
-            const filePath = path.join(__dirname, "../../uploads", `${Date.now() + '_' + file.name}`)
-            console.log(filePath)
+            // const file = req.files.profilePhoto
+            // const filePath = path.join(__dirname, "../../uploads", `${Date.now() + '_' + file.name}`)
+            // console.log(filePath)
 
-            file.mv(filePath, err => {
-                if (err) return res.status(500).send(err)
-            })
+            // file.mv(filePath, err => {
+            //     if (err) return res.status(500).send(err)
+            // })
 
-            req_data.profilePhoto = filePath
+            // req_data.profilePhoto = filePath
 
 
             if (existData.status) {

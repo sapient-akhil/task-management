@@ -36,7 +36,7 @@ module.exports = {
                     $lte: new Date(req_data.endDate)
                 };
             }
-            
+
             if (req_data.startDate && req_data.endDate) {
                 if (req_data.startDate === req_data.endDate) {
                     filter.fromDate = {

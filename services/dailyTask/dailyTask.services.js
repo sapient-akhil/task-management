@@ -368,7 +368,7 @@ module.exports = {
             await dailyTaskModel.insertMany(req_data);
             return resolve(
                 await dailyTaskModel.find(
-                    { },
+                    {},
                     { __v: 0 }
                 )
             );
