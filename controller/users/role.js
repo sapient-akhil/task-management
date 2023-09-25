@@ -15,7 +15,7 @@ module.exports = {
         } catch (error) {
             next(error)
         }
-    },
+    }, 
     oneRole: async (req, res, next) => {
         try {
 

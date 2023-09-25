@@ -1,9 +1,8 @@
 const createError = require("http-errors")
-const { usersServices, roleServices } = require("../../services/index")
+const { usersServices, roleServices, otpServices } = require("../../services/index")
 const Jwt = require("jsonwebtoken")
 const JWTSecretKey = process.env.JWT_SECRET_KEY;
 const bcrypt = require("bcrypt")
-const usersModel = require("../../services/users/users.model")
 
 module.exports = {
     usersLogin: async (req, res, next) => {
@@ -31,6 +30,7 @@ module.exports = {
             next(error)
         }
     },
+
     allUsers: async (req, res, next) => {
         try {
             const page = parseInt(req.query.page || 1);

@@ -11,14 +11,11 @@ module.exports = {
 
             console.log("req_data", req_data)
 
-            // req_data.technology_skills = await JSON.parse(req_data.technology_skills);
             req_data.technology_skills = req_data.technology_skills ? JSON.parse(req_data.technology_skills) : []
             req_data.user_role = req_data.user_role ? req_data.user_role : null
             req_data.designation = req_data.designation ? req_data.designation : null
             req_data.profilePhoto = req_data.profilePhoto ? req_data.profilePhoto : null
 
-            // const hash = await bcrypt.hash(req_data.password, 10);
-            // req_data.password = hash
             let hash;
             if (req_data.password) {
                 hash = await bcrypt.hash(req_data.password, 10);
@@ -26,22 +23,6 @@ module.exports = {
             }
 
             const existData = await usersServices.existData(null, req_data.email, req_data.phoneNumber, req_data.emergencyContact, req_data.aadharCard, req_data.bankAccountNumber, req_data.ifscCode, req_data.panCard, req_data.username)
-
-            // IMAGE UPLOAD AND WHEN IMAGE IS UPDATE OLD IMAGE DELETE FUNCTION
-
-            // const upload = uploadProfilePhoto(req.files.profilePhoto, res);
-            // req.files.profilePhoto = upload
-
-            // const file = req.files.profilePhoto
-            // const filePath = path.join(__dirname, "../../uploads", `${Date.now() + '_' + file.name}`)
-            // console.log("filePath :", filePath)
-
-            // file.mv(filePath, err => {
-            //     if (err) return res.status(500).send(err)
-            // })
-
-            // req_data.profilePhoto = filePath
-            // console.log("req_data", req.files.profilePhoto)
 
             if (existData.status) {
                 const usersData = await usersServices.createUsersData(req_data);

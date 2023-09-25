@@ -10,5 +10,6 @@ module.exports = {
     leaveStatusServices: require("./leaveStatus/leaveStatus.services"),
     leaveTypeServices: require("./leaveType/leaveType.services"),
     leaveServices: require("./leave/leave.services"),
-    quickLinksServices:require("./quickLinks/quickLinks.services")
+    quickLinksServices:require("./quickLinks/quickLinks.services"),
+    otpServices:require("./otp/otp.services")
 }
