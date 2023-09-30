@@ -69,6 +69,20 @@ module.exports = {
             next(error)
         }
     },
+    findAllTodayOnLeaveUser: async (req, res, next) => {
+        try {
+
+            const allTodayLeaveUser = await leaveServices.findAllTodayOnLeaveUser()
+
+            res.status(201).send({
+                success: true,
+                message: "All today leave user data is fetch successfully.",
+                data: allTodayLeaveUser
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
     oneLeave: async (req, res, next) => {
         try {
 

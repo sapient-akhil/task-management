@@ -64,6 +64,8 @@ const assignedProjectController = require("../controller/admin/assignedProject")
 
 router.post("/assigned-projects", verifyAccessTokenforAdmin, Validators.forReqBody(Schema.assignedProjectSchema), assignedProjectController.createAssignedProject)
 router.post("/get-assigned-projects", verifyAccessTokenforUsersAdmin, assignedProjectController.allAssignedProject)
+router.get("/assigned-projects", assignedProjectController.allProjectTotalTimeForAdmin)
+router.get("/assigned-projects/category", assignedProjectController.allProjectCategoryTotalTimeForAdmin)
 router.get("/assigned-projects/:id", verifyAccessTokenforUsersAdmin, Validators.forParams(Schema.params), assignedProjectController.oneAssignedProject)
 router.put("/assigned-projects/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), Validators.forReqBody(Schema.assignedProjectSchema), assignedProjectController.updateAssignedProject)
 router.delete("/assigned-projects/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), assignedProjectController.deleteAssignedProject)
@@ -98,6 +100,7 @@ router.delete("/leave-type/:id", verifyAccessTokenforAdmin, Validators.forParams
 const leaveController = require("../controller/admin/leave")
 
 router.post("/leave", verifyAccessTokenforAdmin, leaveController.allLeave)
+router.get("/leave/today", leaveController.findAllTodayOnLeaveUser)
 router.get("/leave/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveController.oneLeave)
 router.patch("/leave/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveController.updateLeave)
 router.delete("/leave/:id", verifyAccessTokenforAdmin, Validators.forParams(Schema.params), leaveController.deleteLeave)

@@ -79,6 +79,34 @@ module.exports = {
             next(error);
         }
     },
+    allProjectTotalTimeForAdmin: async (req, res, next) => {
+        try {
+
+            const allProject= await assignedProjectServices.allProjectTotalTimeForAdmin()
+
+            res.status(201).send({
+                success: true,
+                message: "All all project data is fetch successfully.",
+                data: allProject
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    allProjectCategoryTotalTimeForAdmin: async (req, res, next) => {
+        try {
+
+            const allProjectCategory= await assignedProjectServices.allProjectCategoryTotalTimeForAdmin()
+
+            res.status(201).send({
+                success: true,
+                message: "allProjectCategory data is fetch successfully.",
+                data: allProjectCategory
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
     oneAssignedProject: async (req, res, next) => {
         try {
 
