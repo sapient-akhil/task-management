@@ -82,7 +82,7 @@ module.exports = {
 
       const simplifiedData = allTodayLeaveUser.map((leave) => ({
         _id:leave.user._id,
-        username: leave.user.username,
+        name: leave.user.name,
       }));
 
       res.status(201).send({

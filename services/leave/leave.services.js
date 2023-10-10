@@ -50,7 +50,7 @@ module.exports = {
             __v: 0,
           }
         )
-        .populate("user", { username: 1, _id: 1 });
+        .populate("user", { name: 1, _id: 1 });
 
       const targetDate = new Date();
       targetDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
