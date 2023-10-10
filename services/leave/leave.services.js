@@ -35,25 +35,37 @@ module.exports = {
   },
   findAllTodayOnLeaveUser: async () => {
     return new Promise(async (resolve) => {
-        const allLeaveUser = await leaveModel.find({ active: true }, { __v: 0 })
-        
-        // Specify the target date (e.g., 2023-09-03)
-        const targetDate = new Date();
-        targetDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
-        
-        // Filter leave records for the target date
-        const leaveOnTargetDate = allLeaveUser.filter(leave => {
-            const fromDate = new Date(leave.fromDate);
-            fromDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
-            const toDate = new Date(leave.toDate);
-            toDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
-            return targetDate >= fromDate && targetDate <= toDate;
-        });
-        
-        return resolve(leaveOnTargetDate);
-    })
-    
-},
+      const allLeaveUser = await leaveModel
+        .find(
+          { active: true },
+          {
+            _id: 0,
+            reason: 0,
+            totalLeave: 0,
+            leaveType: 0,
+            leaveStatus: 0,
+            active: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+          }
+        )
+        .populate("user", { username: 1, _id: 1 });
+
+      const targetDate = new Date();
+      targetDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+
+      // Filter leave records for the target date
+      const leaveOnTargetDate = allLeaveUser.filter((leave) => {
+        const fromDate = new Date(leave.fromDate);
+        fromDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+        const toDate = new Date(leave.toDate);
+        toDate.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+        return targetDate >= fromDate && targetDate <= toDate;
+      });
+      return resolve(leaveOnTargetDate);
+    });
+  },
   createLeave: async (req_data) => {
     return new Promise(async (resolve) => {
       await leaveModel.insertMany({ ...req_data });

@@ -405,7 +405,7 @@ module.exports = {
                   },
                 },
               ],
-              as: "data",
+              as: "time",
             },
           },
           {
@@ -421,14 +421,23 @@ module.exports = {
               "projectName.deployed": false,
             },
           },
-            {
-              $project: {
-                "data.totalHour": 1,
-                "data.totalMinutes": 1,
-                "projectName.name": 1,
-                "projectName._id": 1,
+          {
+            $project: {
+              _id: 0,
+              projectId: {
+                $arrayElemAt: ["$projectName._id", 0],
+              },
+              projectName: {
+                $arrayElemAt: ["$projectName.name", 0],
+              },
+              totalHour: {
+                $arrayElemAt: ["$time.totalHour", 0],
+              },
+              totalMinutes: {
+                $arrayElemAt: ["$time.totalMinutes", 0],
               },
             },
+          },
         ])
       );
     });
@@ -441,14 +450,19 @@ module.exports = {
             $match: { active: true },
           },
           {
+            $unwind: "$project",
+          },
+          {
             $unwind: "$project_category",
           },
           {
             $group: {
               _id: {
                 project_category_id: "$project_category",
+                projectId: "$project",
               },
               project_category: { $first: "$project_category" },
+              project: { $first: "$project" },
             },
           },
           {
@@ -456,6 +470,7 @@ module.exports = {
               from: "dailytasks",
               let: {
                 project_category_id: "$_id.project_category_id",
+                projectId: "$_id.projectId",
               },
               pipeline: [
                 {
@@ -463,6 +478,7 @@ module.exports = {
                     $expr: {
                       $and: [
                         { $eq: ["$project_category", "$$project_category_id"] },
+                        { $eq: ["$project", "$$projectId"] },
                       ],
                     },
                   },
@@ -471,6 +487,7 @@ module.exports = {
                   $group: {
                     _id: {
                       project: "$project_category_id",
+                      project: "$project",
                     },
                     totalHour: { $sum: "$hours" },
                     totalMinutes: { $sum: "$minutes" },
@@ -494,7 +511,7 @@ module.exports = {
                   },
                 },
               ],
-              as: "data",
+              as: "time",
             },
           },
           {
@@ -506,11 +523,39 @@ module.exports = {
             },
           },
           {
+            $lookup: {
+              from: "projects",
+              localField: "project",
+              foreignField: "_id",
+              as: "projectName",
+            },
+          },
+          {
+            $match: {
+              "projectName.deployed": false,
+            },
+          },
+          {
             $project: {
-              "data.totalHour": 1,
-              "data.totalMinutes": 1,
-              "projectCategoryName.name": 1,
-              "projectCategoryName._id": 1,
+              _id: 0,
+              projectId: {
+                $arrayElemAt: ["$projectName._id", 0],
+              },
+              projectName: {
+                $arrayElemAt: ["$projectName.name", 0],
+              },
+              projectCategoryId: {
+                $arrayElemAt: ["$projectCategoryName._id", 0],
+              },
+              projectCategoryName: {
+                $arrayElemAt: ["$projectCategoryName.name", 0],
+              },
+              totalHour: {
+                $arrayElemAt: ["$time.totalHour", 0],
+              },
+              totalMinutes: {
+                $arrayElemAt: ["$time.totalMinutes", 0],
+              },
             },
           },
         ])
